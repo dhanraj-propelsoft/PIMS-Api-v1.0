@@ -15,5 +15,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Include API version 1 routes
-include_once('Api/master.php');
+Route::apiResource('salutation', SalutationController::class);
