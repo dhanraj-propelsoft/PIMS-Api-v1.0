@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Api\Master;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Api\Master\SalutationService;
+use App\Http\Services\Api\Master\GenderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class SalutationController extends Controller
+class GenderController extends Controller
 {
-    public function __construct(SalutationService $salutationService)
+    public function __construct(GenderService $GenderService)
     {
-        $this->salutationService = $salutationService;
+        $this->GenderService = $GenderService;
     }
     /**
      * Display a listing of the resource.
@@ -20,10 +20,9 @@ class SalutationController extends Controller
      */
     public function index()
     {
-
-        Log::info('SalutationController-> index Inside.' . json_encode('yes'));
-        $response = $this->salutationService->index();
-        Log::info('HrmResourceController>Store Return.' . json_encode($response));
+        Log::info('GenderController -> index Inside.' . json_encode('yes'));
+        $response = $this->GenderService->index();
+        Log::info('GenderController ->Store Return.' . json_encode($response));
         return $response;
 
     }
@@ -46,10 +45,10 @@ class SalutationController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info('SalutationController-> index Inside.' . json_encode($request->all()));
-        $response = $this->salutationService->store($request->all());
+        Log::info('GenderController-> index Inside.' . json_encode($request->all()));
+        $response = $this->GenderService->store($request->all());
         return $response;
-        Log::info('SalutationController>Store Return.' . json_encode($response));
+        Log::info('GenderController>Store Return.' . json_encode($response));
     }
 
     /**
@@ -71,10 +70,11 @@ class SalutationController extends Controller
      */
     public function edit($id)
     {
-        Log::info('SalutationController-> index Inside.' . json_encode($id));
-        $response = $this->salutationService->getSalutationById($id);
+        Log::info('GenderController-> index Inside.' . json_encode($id));
+        $response = $this->GenderService->getGenderById($id);
         return $response;
-        Log::info('HrmResourceController>Store Return.' . json_encode($response));
+        Log::info('GenderController ->Store Return.' . json_encode($response));
+
     }
 
     /**
@@ -97,9 +97,9 @@ class SalutationController extends Controller
      */
     public function destroy($id)
     {
-        Log::info('SalutationController-> destroy Inside.' . json_encode($id));
-        $response = $this->salutationService->destroySalutationById($id);
+        Log::info('GenderController-> destroy Inside.' . json_encode($id));
+        $response = $this->GenderService->destroyGenderById($id);
         return $response;
-        Log::info('HrmResourceController>destroy Return.' . json_encode($response));
+        Log::info('GenderController ->destroy Return.' . json_encode($response));
     }
 }

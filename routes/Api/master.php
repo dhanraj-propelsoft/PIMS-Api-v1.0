@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\Master\SalutationController;
+use App\Http\Controllers\Api\Master\GenderController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,3 +18,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::apiResource('salutation', SalutationController::class);
+Route::apiResource('gender', GenderController::class);
