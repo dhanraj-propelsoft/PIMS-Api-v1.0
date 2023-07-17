@@ -54,7 +54,8 @@ class SalutationService
         ]);
 
         if ($validator->fails()) {
-            return new ErrorApiResponse($validator->errors(), 500);
+            $error=$validator->errors();
+            return new ErrorApiResponse($error, 500);
         }
         $model->salutation = $datasArray['salutation'];
         $model->active_status = isset($datasArray['active_status'])?$datasArray['active_status']:null;
