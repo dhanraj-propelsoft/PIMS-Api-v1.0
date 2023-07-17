@@ -4,6 +4,7 @@ namespace App\Http\Services\Api\Master;
 use App\Http\Interfaces\Api\Master\GenderInterface;
 use App\Http\Responses\ApiResponse;
 use App\Http\Responses\SuccessApiResponse;
+use App\Http\Responses\ErrorApiResponse;
 use App\Models\PimsPersonGender;
 use Illuminate\Support\Facades\Log;
 
@@ -39,18 +40,29 @@ class GenderService
     }
     public function convertGender($datas)
     {
+        $datasArray = json_decode(json_encode($datas), true);
+        $model = $this->GenderInterface->getGenderById(isset($datasArray['id']) ? $datasArray['id'] : '');
 
-        $model = $this->getGenderById(isset($datas->id) ? $datas->id : '');
         if ($model) {
-            $model->id = $datas->id;
+            $model->id = $datasArray['id'];
         } else {
             $model = new PimsPersonGender();
         }
-        $model->gender = $datas->gender;
-        $model->active_status = isset($datas->active_status)?$datas->active_status:null;
-        return $model;
 
+        $validator = Validator::make($datasArray, [
+            'gender' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $error=$validator->errors();
+            return new ErrorApiResponse($error, 500);
+        }
+        $model->gender = $datasArray['gender'];
+        $model->active_status = isset($datasArray['active_status'])?$datasArray['active_status']:null;
+        return $model;
     }
+
+
     public function destroyGenderById($id)
     {
         $destory = $this->GenderInterface->destroyGender($id);

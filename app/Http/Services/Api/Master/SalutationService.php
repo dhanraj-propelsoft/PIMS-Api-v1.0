@@ -2,12 +2,16 @@
 namespace App\Http\Services\Api\Master;
 
 use App\Http\Interfaces\Api\Master\salutationInterface;
+use App\Http\Responses\ErrorApiResponse;
+use App\Http\Responses\SuccessApiResponse;
 use App\Models\PimsPersonSalutation;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Response;
 
 class SalutationService
 {
+    protected $SalutationInterface;
     public function __construct(salutationInterface $SalutationInterface)
     {
         $this->SalutationInterface = $SalutationInterface;
@@ -17,7 +21,7 @@ class SalutationService
     {
         $datas = $this->SalutationInterface->index();
 
-        return $datas;
+        return new SuccessApiResponse($datas,200);
 
     }
     public function store($datas)
@@ -26,30 +30,39 @@ class SalutationService
         $convert = $this->convertSalutation($datas);
         $storeModel = $this->SalutationInterface->store($convert);
         Log::info('SalutationService >Store Return.' . json_encode($storeModel));
-        return $storeModel;
+        return new SuccessApiResponse($storeModel,200);
 
     }
     public function getSalutationById($id = null)
     {
         $model = $this->SalutationInterface->getSalutationById($id);
-        return $model;
-
+        return new SuccessApiResponse($model ,200);
     }
     public function convertSalutation($datas)
     {
-        $model = $this->getSalutationById(isset($datas->id) ? $datas->id : '');
+        $datasArray = json_decode(json_encode($datas), true);
+        $model = $this->SalutationInterface->getSalutationById(isset($datasArray['id']) ? $datasArray['id'] : '');
+
         if ($model) {
-            $model->id = $datas->id;
+            $model->id = $datasArray['id'];
         } else {
             $model = new PimsPersonSalutation();
         }
-        $model->salutation = $datas->salutation;
-        $model->active_status = $datas->active_status;
+
+        $validator = Validator::make($datasArray, [
+            'salutation' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return new ErrorApiResponse($validator->errors(), 500);
+        }
+        $model->salutation = $datasArray['salutation'];
+        $model->active_status = isset($datasArray['active_status'])?$datasArray['active_status']:null;
         return $model;
     }
     public function destroySalutationById($id)
     {
         $destory = $this->SalutationInterface->destroySalutation($id);
-        return $destory;
+        return new SuccessApiResponse($destory ,200);
     }
 }

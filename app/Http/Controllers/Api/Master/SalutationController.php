@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class SalutationController extends Controller
-{
-    protected $salutationService;
+{  protected $salutationService;
+
     public function __construct(SalutationService $salutationService)
     {
         $this->salutationService = $salutationService;
@@ -61,7 +61,10 @@ class SalutationController extends Controller
      */
     public function show($id)
     {
-        //
+        Log::info('SalutationController-> index Inside.' . json_encode($id));
+        $response = $this->salutationService->getSalutationById($id);
+        return $response;
+        Log::info('HrmResourceController>Store Return.' . json_encode($response));
     }
 
     /**
@@ -72,10 +75,7 @@ class SalutationController extends Controller
      */
     public function edit($id)
     {
-        Log::info('SalutationController-> index Inside.' . json_encode($id));
-        $response = $this->salutationService->getSalutationById($id);
-        return $response;
-        Log::info('HrmResourceController>Store Return.' . json_encode($response));
+
     }
 
     /**
