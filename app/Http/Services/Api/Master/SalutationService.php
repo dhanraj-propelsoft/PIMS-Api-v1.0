@@ -26,8 +26,9 @@ class SalutationService
             $name = $model->salutation;
             $status = ($model->active_status == 1) ? "Active" : "In-Active";
             $activeStatus = $model->active_status;
+            $description = $model->description;
             $id = $model->id;
-            $datas = ['name' => $name, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['name' => $name, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id,'description'=> $description ];
             return $datas;
         });
 
@@ -70,19 +71,16 @@ class SalutationService
     }
     public function convertSalutation($datas)
     {
-
-        $datasArray = json_decode(json_encode($datas), true);
-        $model = $this->SalutationInterface->getSalutationById(isset($datasArray['id']) ? $datasArray['id'] : '');
+        $model = $this->SalutationInterface->getSalutationById(isset($datas->id) ?$datas->id: '');
 
         if ($model) {
-            $model->id = $datasArray['id'];
+            $model->id = $datas->id;
         } else {
             $model = new PimsPersonSalutation();
         }
-
-
-        $model->salutation = $datasArray['salutation'];
-        $model->active_status = isset($datasArray['active_status']) ? $datasArray['active_status'] : null;
+        $model->salutation = $datas->salutation;
+        $model->description = isset($datas->description) ? $datas->description : null;
+        $model->active_status = isset($datas->active_status) ? $datas->active_status : null;
         return $model;
     }
     public function destroySalutationById($id)
