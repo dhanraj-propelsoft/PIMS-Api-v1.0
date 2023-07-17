@@ -61,7 +61,7 @@ class GenderService
             $id = $model->id;
             $datas = ['name' => $name, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id, 'description' => $description];
         }
-        return new SuccessApiResponse($model, 200);
+        return new SuccessApiResponse($datas, 200);
 
     }
     public function convertGender($datas)

@@ -71,6 +71,10 @@ ALTER TABLE pims_person_genders
 ADD active_status INT;
 
 ALTER TABLE pims_person_genders
+ADD description TEXT;
+
+
+ALTER TABLE pims_person_genders
 ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
 
 ALTER TABLE pims_person_salutations
@@ -78,3 +82,6 @@ ADD active_status INT;
 
 ALTER TABLE pims_person_salutations
 ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
+
+ALTER TABLE pims_person_salutations
+ADD description TEXT;
