@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\Api\Master\GenderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\Console\Input\Input;
 
 class GenderController extends Controller
 {
+    protected $GenderService;
     public function __construct(GenderService $GenderService)
     {
         $this->GenderService = $GenderService;
@@ -22,9 +24,9 @@ class GenderController extends Controller
     {
         Log::info('GenderController -> index Inside.' . json_encode('yes'));
         $response = $this->GenderService->index();
+      
         Log::info('GenderController ->Store Return.' . json_encode($response));
         return $response;
-
     }
 
     /**
@@ -45,6 +47,7 @@ class GenderController extends Controller
      */
     public function store(Request $request)
     {
+        
         Log::info('GenderController-> index Inside.' . json_encode($request->all()));
         $response = $this->GenderService->store($request->all());
         return $response;
@@ -59,7 +62,10 @@ class GenderController extends Controller
      */
     public function show($id)
     {
-        //
+        Log::info('GenderController-> show >index Inside.' . json_encode($id));
+        $response = $this->edit($id);
+        return $response;
+        Log::info('GenderController ->show > Return.' . json_encode($response));
     }
 
     /**
@@ -74,7 +80,6 @@ class GenderController extends Controller
         $response = $this->GenderService->getGenderById($id);
         return $response;
         Log::info('GenderController ->Store Return.' . json_encode($response));
-
     }
 
     /**
@@ -85,8 +90,8 @@ class GenderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    {        
+        dd($request->all(),$id);
     }
 
     /**

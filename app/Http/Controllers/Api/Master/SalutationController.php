@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class SalutationController extends Controller
 {
+    protected $salutationService;
     public function __construct(SalutationService $salutationService)
     {
         $this->salutationService = $salutationService;
