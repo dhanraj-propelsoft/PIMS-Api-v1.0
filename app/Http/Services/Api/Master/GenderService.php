@@ -76,7 +76,7 @@ class GenderService
         }
         $model->gender = $datas->gender;
         $model->description = isset($datas->description) ? $datas->description : null;
-        $model->active_status = isset($datas->active_status) ? $datas->active_status : null;
+        $model->active_status = isset($datas->active_status) ? $datas->active_status : '0';
         return $model;
     }
 

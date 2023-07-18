@@ -80,7 +80,7 @@ class SalutationService
         }
         $model->salutation = $datas->salutation;
         $model->description = isset($datas->description) ? $datas->description : null;
-        $model->active_status = isset($datas->active_status) ? $datas->active_status : null;
+        $model->active_status = isset($datas->active_status) ? $datas->active_status : '0';
         return $model;
     }
     public function destroySalutationById($id)
