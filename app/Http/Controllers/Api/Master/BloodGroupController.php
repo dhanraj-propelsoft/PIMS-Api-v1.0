@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api\Master;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Api\Master\GenderService;
+use App\Http\Services\Api\Master\BloodGroupService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class GenderController extends Controller
+class BloodGroupController extends Controller
 {
-    protected $GenderService;
-    public function __construct(GenderService $GenderService)
+    protected $BloodGroupService;
+    public function __construct(BloodGroupService $BloodGroupService)
     {
-        $this->GenderService = $GenderService;
+        $this->BloodGroupService = $BloodGroupService;
     }
     /**
      * Display a listing of the resource.
@@ -21,8 +21,9 @@ class GenderController extends Controller
      */
     public function index()
     {
-        $response = $this->GenderService->index();
-        Log::info('GenderController ->Store Return.' . json_encode($response));
+
+        $response = $this->BloodGroupService->index();
+        Log::info('BloodGroupController ->Store Return.' . json_encode($response));
         return $response;
 
     }
@@ -45,11 +46,10 @@ class GenderController extends Controller
      */
     public function store(Request $request)
     {
-
-        Log::info('GenderController-> index Inside.' . json_encode($request->all()));
-        $response = $this->GenderService->store($request->all());
+        Log::info('BloodGroupController-> index Inside.' . json_encode($request->all()));
+        $response = $this->BloodGroupService->store($request->all());
         return $response;
-        Log::info('GenderController>Store Return.' . json_encode($response));
+        Log::info('BloodGroupController >Store Return.' . json_encode($response));
     }
 
     /**
@@ -60,10 +60,10 @@ class GenderController extends Controller
      */
     public function show($id)
     {
-          Log::info('GenderController-> show >index Inside.' . json_encode($id));
-        $response = $this->GenderService->getGenderById($id);
+        Log::info('BloodGroupController-> show >index Inside.' . json_encode($id));
+        $response = $this->BloodGroupService->getBloodGroupById($id);
         return $response;
-        Log::info('GenderController ->show > Return.' . json_encode($response));
+        Log::info('BloodGroupController ->show > Return.' . json_encode($response));
     }
 
     /**
@@ -74,7 +74,7 @@ class GenderController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -86,6 +86,7 @@ class GenderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //
     }
 
     /**
@@ -96,9 +97,9 @@ class GenderController extends Controller
      */
     public function destroy($id)
     {
-        Log::info('GenderController-> destroy Inside.' . json_encode($id));
-        $response = $this->GenderService->destroyGenderById($id);
+        Log::info('BloodGroupController-> destroy Inside.' . json_encode($id));
+        $response = $this->BloodGroupService->destroyBloodGroupById($id);
         return $response;
-        Log::info('GenderController ->destroy Return.' . json_encode($response));
+        Log::info('BloodGroupController ->destroy Return.' . json_encode($response));
     }
 }

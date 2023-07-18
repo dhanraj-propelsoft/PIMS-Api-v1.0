@@ -16,9 +16,11 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind('App\Http\Interfaces\Api\Master\salutationInterface','App\Http\Repositories\Api\Master\SalutationRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\GenderInterface','App\Http\Repositories\Api\Master\GenderRepository');
+        $this->app->bind('App\Http\Interfaces\Api\Master\BloodGroupInterface','App\Http\Repositories\Api\Master\BloodGroupRepository');
+        $this->app->bind('App\Http\Interfaces\Api\Master\MaritalStatusInterface','App\Http\Repositories\Api\Master\MaritalStatusRepository');
+
 
     }
-
     /**
      * Bootstrap any application services.
      *

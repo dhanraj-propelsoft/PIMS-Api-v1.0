@@ -59,7 +59,6 @@ class SalutationService
         $model = $this->SalutationInterface->getSalutationById($id);
         $datas = array();
         if ($model) {
-            // Modify $item and return the modified value
             $name = $model->salutation;
             $status = ($model->active_status == 1) ? "Active" : "In-Active";
             $activeStatus = $model->active_status;

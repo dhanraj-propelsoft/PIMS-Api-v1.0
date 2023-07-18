@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api\Master;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Api\Master\GenderService;
 use Illuminate\Http\Request;
+use App\Http\Services\Api\Master\MaritalStatusService;
 use Illuminate\Support\Facades\Log;
 
-class GenderController extends Controller
+class MaritalStatusController extends Controller
 {
-    protected $GenderService;
-    public function __construct(GenderService $GenderService)
+    protected $MaritalStatusService;
+    public function __construct(MaritalStatusService $MaritalStatusService)
     {
-        $this->GenderService = $GenderService;
+        $this->MaritalStatusService = $MaritalStatusService;
     }
     /**
      * Display a listing of the resource.
@@ -21,10 +21,9 @@ class GenderController extends Controller
      */
     public function index()
     {
-        $response = $this->GenderService->index();
-        Log::info('GenderController ->Store Return.' . json_encode($response));
+        $response = $this->MaritalStatusService->index();
+        Log::info('MaritalStatusController ->Store Return.' . json_encode($response));
         return $response;
-
     }
 
     /**
@@ -45,11 +44,10 @@ class GenderController extends Controller
      */
     public function store(Request $request)
     {
-
-        Log::info('GenderController-> index Inside.' . json_encode($request->all()));
-        $response = $this->GenderService->store($request->all());
+        Log::info('MaritalStatusController-> index Inside.' . json_encode($request->all()));
+        $response = $this->MaritalStatusService->store($request->all());
         return $response;
-        Log::info('GenderController>Store Return.' . json_encode($response));
+        Log::info('MaritalStatusController >Store Return.' . json_encode($response));
     }
 
     /**
@@ -60,10 +58,10 @@ class GenderController extends Controller
      */
     public function show($id)
     {
-          Log::info('GenderController-> show >index Inside.' . json_encode($id));
-        $response = $this->GenderService->getGenderById($id);
+        Log::info('MaritalStatusController-> show >index Inside.' . json_encode($id));
+        $response = $this->MaritalStatusService->getMaritalStatusById($id);
         return $response;
-        Log::info('GenderController ->show > Return.' . json_encode($response));
+        Log::info('MaritalStatusController ->show > Return.' . json_encode($response));
     }
 
     /**
@@ -74,7 +72,7 @@ class GenderController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -86,6 +84,7 @@ class GenderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //
     }
 
     /**
@@ -96,9 +95,9 @@ class GenderController extends Controller
      */
     public function destroy($id)
     {
-        Log::info('GenderController-> destroy Inside.' . json_encode($id));
-        $response = $this->GenderService->destroyGenderById($id);
+        Log::info('MaritalStatusController-> destroy Inside.' . json_encode($id));
+        $response = $this->MaritalStatusService->destroyMaritalStatusById($id);
         return $response;
-        Log::info('GenderController ->destroy Return.' . json_encode($response));
+        Log::info('MaritalStatusController ->destroy Return.' . json_encode($response));
     }
 }

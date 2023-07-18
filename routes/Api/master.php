@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\Api\Master\SalutationController;
 use App\Http\Controllers\Api\Master\GenderController;
-
+use App\Http\Controllers\Api\Master\BloodGroupController;
+use App\Http\Controllers\Api\Master\MaritalStatusController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('salutation', SalutationController::class);
 Route::apiResource('gender', GenderController::class);
+Route::apiResource('bloodGroup', BloodGroupController::class);
+Route::apiResource('maritalStatus', MaritalStatusController::class);
