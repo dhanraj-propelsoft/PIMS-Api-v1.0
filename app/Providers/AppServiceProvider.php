@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('App\Http\Interfaces\Api\Master\BloodGroupInterface','App\Http\Repositories\Api\Master\BloodGroupRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\MaritalStatusInterface','App\Http\Repositories\Api\Master\MaritalStatusRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\RelationShipInterface','App\Http\Repositories\Api\Master\RelationShipRepository');
+        $this->app->bind('App\Http\Interfaces\Api\Users\UserInterface','App\Http\Repositories\Api\Users\UserRepository');
+
 
 
 
