@@ -105,3 +105,14 @@ ADD active_status INT;
 
 ALTER TABLE pims_person_marital_statues
 ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
+
+//PIMS Person relationships Table Query:
+
+ALTER TABLE pims_person_relationships
+ADD description TEXT;
+
+ALTER TABLE pims_person_relationships
+ADD active_status INT;
+
+ALTER TABLE pims_person_relationships
+ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
