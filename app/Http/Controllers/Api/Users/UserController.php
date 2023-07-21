@@ -21,4 +21,11 @@ class UserController extends Controller
         Log::info('UserController > login function Return.' . json_encode($response));
         return $response;
     }
+    public function userRegister(Request $request)
+    {
+        Log::info('UserController > login function Inside.' . json_encode($request->all()));
+        $response = $this->UserService->userRegister($request->all());
+        Log::info('UserController > login function Return.' . json_encode($response));
+        return $response;
+    }
 }

@@ -117,6 +117,18 @@ ADD active_status INT;
 ALTER TABLE pims_person_relationships
 ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
 
-// Add User Table this Query :
-INSERT  INTO `users`(`id`,`uid`,`primary_mobile`,`primary_email`,`password`,`stage`,`created_at`,`updated_at`) VALUES
-(2,NULL,NULL,'admin@gmail.com','$2y$10$/YrUf2a/t50ThntNbhK33Ox1c9mQics3s/IDPogLMoaKxBfB8fAby',NULL,NULL,NULL);
+// Add Pims_User Table Query:
+
+
+CREATE TABLE Pims_Users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255),
+    mobile VARCHAR(20),
+    email VARCHAR(255),
+    password VARCHAR(255),
+    role_id INT,
+    active_status INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL
+);
