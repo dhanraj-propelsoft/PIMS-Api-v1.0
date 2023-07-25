@@ -17,4 +17,5 @@ use Illuminate\Support\Facades\Route;
 
 // Include API version 1 routes
 include_once('Api/master.php');
-include_once('Api/User.php');
+include_once('Api/user.php');
+include_once('Api/organizationMaster.php');

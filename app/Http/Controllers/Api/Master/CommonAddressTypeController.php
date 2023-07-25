@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Api\Master;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Api\Master\GenderService;
-use Illuminate\Support\Facades\Log;
+use App\Http\Services\Api\Master\CommonAddressTypeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
-
-class GenderController extends Controller
+class CommonAddressTypeController extends Controller
 {
-    protected $GenderService;
-    public function __construct(GenderService $GenderService)
+    protected $CommonAddressTypeService;
+    public function __construct(CommonAddressTypeService $CommonAddressTypeService)
     {
-        $this->GenderService = $GenderService;
+        $this->CommonAddressTypeService = $CommonAddressTypeService;
     }
     /**
      * Display a listing of the resource.
@@ -22,10 +21,9 @@ class GenderController extends Controller
      */
     public function index()
     {
-        $response = $this->GenderService->index();
-        Log::info('GenderController ->index Return.' . json_encode($response));
+        $response = $this->CommonAddressTypeService->index();
+        Log::info('CommonAddressTypeController ->index Return.' . json_encode($response));
         return $response;
-
     }
 
     /**
@@ -46,11 +44,10 @@ class GenderController extends Controller
      */
     public function store(Request $request)
     {
-
-        Log::info('GenderController-> Store Inside.' . json_encode($request->all()));
-        $response = $this->GenderService->store($request->all());
+        Log::info('CommonAddressTypeController-> Store Inside.' . json_encode($request->all()));
+        $response = $this->CommonAddressTypeService->store($request->all());
         return $response;
-        Log::info('GenderController>Store Return.' . json_encode($response));
+        Log::info('CommonAddressTypeController -> Store Return.' . json_encode($response));
     }
 
     /**
@@ -61,10 +58,10 @@ class GenderController extends Controller
      */
     public function show($id)
     {
-          Log::info('GenderController-> show Inside.' . json_encode($id));
-        $response = $this->GenderService->getGenderById($id);
+        Log::info('CommonAddressTypeController-> show  Inside.' . json_encode($id));
+        $response = $this->CommonAddressTypeService->getCommonAddressTypeById($id);
         return $response;
-        Log::info('GenderController ->show  Return.' . json_encode($response));
+        Log::info('CommonAddressTypeController ->show  Return.' . json_encode($response));
     }
 
     /**
@@ -75,7 +72,7 @@ class GenderController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -87,6 +84,7 @@ class GenderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //
     }
 
     /**
@@ -97,9 +95,9 @@ class GenderController extends Controller
      */
     public function destroy($id)
     {
-        Log::info('GenderController-> destroy Inside.' . json_encode($id));
-        $response = $this->GenderService->destroyGenderById($id);
+        Log::info('CommonAddressTypeController-> destroy Inside.' . json_encode($id));
+        $response = $this->CommonAddressTypeService->destroyCommonAddressTypeById($id);
         return $response;
-        Log::info('GenderController ->destroy Return.' . json_encode($response));
+        Log::info('CommonAddressTypeController ->destroy Return.' . json_encode($response));
     }
 }

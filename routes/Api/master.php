@@ -5,6 +5,14 @@ use App\Http\Controllers\Api\Master\GenderController;
 use App\Http\Controllers\Api\Master\BloodGroupController;
 use App\Http\Controllers\Api\Master\MaritalStatusController;
 use App\Http\Controllers\Api\Master\RelationShipController;
+use App\Http\Controllers\Api\Master\BankAccountTypeController;
+use App\Http\Controllers\Api\Master\BankController;
+use App\Http\Controllers\Api\Master\CommonAddressTypeController;
+use App\Http\Controllers\Api\Master\CommonLanguageController;
+use App\Http\Controllers\Api\Master\DocumentTypeController;
+use App\Http\Controllers\Api\Master\CommonCountryController;
+use App\Http\Controllers\Api\Master\CommonStateController;
+use App\Http\Controllers\Api\Master\CommonCityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +29,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('salutation', SalutationController::class);
 Route::apiResource('gender', GenderController::class);
+Route::apiResource('bank', BankController::class);
 Route::apiResource('bloodGroup', BloodGroupController::class);
 Route::apiResource('maritalStatus', MaritalStatusController::class);
 Route::apiResource('relationShip', RelationShipController::class);
+Route::apiResource('bankAccountType', BankAccountTypeController::class);
+Route::apiResource('commonAddressType', CommonAddressTypeController::class);
+Route::apiResource('commonLanguage', CommonLanguageController::class);
+Route::apiResource('documentType', DocumentTypeController::class);
+Route::apiResource('commonCountry', CommonCountryController::class);
+Route::apiResource('commonState', CommonStateController::class);
+Route::apiResource('commonCity', CommonCityController::class);
+
+
+

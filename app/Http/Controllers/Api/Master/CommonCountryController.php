@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Api\Master;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Api\Master\GenderService;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Http\Services\Api\Master\CommonCountryService;
+use Illuminate\Support\Facades\Log;
 
-
-class GenderController extends Controller
+class CommonCountryController extends Controller
 {
-    protected $GenderService;
-    public function __construct(GenderService $GenderService)
+    protected $CommonCountryService;
+    public function __construct(CommonCountryService $CommonCountryService)
     {
-        $this->GenderService = $GenderService;
+        $this->CommonCountryService = $CommonCountryService;
     }
     /**
      * Display a listing of the resource.
@@ -22,8 +21,9 @@ class GenderController extends Controller
      */
     public function index()
     {
-        $response = $this->GenderService->index();
-        Log::info('GenderController ->index Return.' . json_encode($response));
+
+        $response = $this->CommonCountryService->index();
+        Log::info('CommonCountryController ->index Return.' . json_encode($response));
         return $response;
 
     }
@@ -46,11 +46,10 @@ class GenderController extends Controller
      */
     public function store(Request $request)
     {
-
-        Log::info('GenderController-> Store Inside.' . json_encode($request->all()));
-        $response = $this->GenderService->store($request->all());
+        Log::info('CommonCountryController-> Store Inside.' . json_encode($request->all()));
+        $response = $this->CommonCountryService->store($request->all());
         return $response;
-        Log::info('GenderController>Store Return.' . json_encode($response));
+        Log::info('CommonCountryController -> Store Return.' . json_encode($response));
     }
 
     /**
@@ -61,10 +60,10 @@ class GenderController extends Controller
      */
     public function show($id)
     {
-          Log::info('GenderController-> show Inside.' . json_encode($id));
-        $response = $this->GenderService->getGenderById($id);
+        Log::info('CommonCountryController -> show Inside.' . json_encode($id));
+        $response = $this->CommonCountryService->getCommonCountryById($id);
         return $response;
-        Log::info('GenderController ->show  Return.' . json_encode($response));
+        Log::info('CommonCountryController  ->show  Return.' . json_encode($response));
     }
 
     /**
@@ -75,7 +74,7 @@ class GenderController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -87,6 +86,7 @@ class GenderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //
     }
 
     /**
@@ -97,9 +97,9 @@ class GenderController extends Controller
      */
     public function destroy($id)
     {
-        Log::info('GenderController-> destroy Inside.' . json_encode($id));
-        $response = $this->GenderService->destroyGenderById($id);
+        Log::info('CommonCountryController -> destroy Inside.' . json_encode($id));
+        $response = $this->CommonCountryService->destroyCountryById($id);
         return $response;
-        Log::info('GenderController ->destroy Return.' . json_encode($response));
+        Log::info('CommonCountryController  -> destroy Return.' . json_encode($response));
     }
 }

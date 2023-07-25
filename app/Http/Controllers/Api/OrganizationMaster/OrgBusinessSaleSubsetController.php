@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\Master;
+namespace App\Http\Controllers\Api\OrganizationMaster;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Api\Master\GenderService;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Http\Services\Api\OrganizationMaster\OrgBusinessSaleSubsetService;
+use Illuminate\Support\Facades\Log;
 
-
-class GenderController extends Controller
+class OrgBusinessSaleSubsetController extends Controller
 {
-    protected $GenderService;
-    public function __construct(GenderService $GenderService)
+    protected $OrgBusinessSaleSubsetService;
+    public function __construct(OrgBusinessSaleSubsetService $OrgBusinessSaleSubsetService)
     {
-        $this->GenderService = $GenderService;
+        $this->OrgBusinessSaleSubsetService = $OrgBusinessSaleSubsetService;
     }
     /**
      * Display a listing of the resource.
@@ -22,10 +21,10 @@ class GenderController extends Controller
      */
     public function index()
     {
-        $response = $this->GenderService->index();
-        Log::info('GenderController ->index Return.' . json_encode($response));
-        return $response;
 
+        $response = $this->OrgBusinessSaleSubsetService->index();
+        Log::info('OrgBusinessSaleSubsetController -> index Return.' . json_encode($response));
+        return $response;
     }
 
     /**
@@ -47,10 +46,10 @@ class GenderController extends Controller
     public function store(Request $request)
     {
 
-        Log::info('GenderController-> Store Inside.' . json_encode($request->all()));
-        $response = $this->GenderService->store($request->all());
+        Log::info('OrgBusinessSaleSubsetController -> Store Inside.' . json_encode($request->all()));
+        $response = $this->OrgBusinessSaleSubsetService->store($request->all());
         return $response;
-        Log::info('GenderController>Store Return.' . json_encode($response));
+        Log::info('OrgBusinessSaleSubsetController -> Store Return.' . json_encode($response));
     }
 
     /**
@@ -61,10 +60,11 @@ class GenderController extends Controller
      */
     public function show($id)
     {
-          Log::info('GenderController-> show Inside.' . json_encode($id));
-        $response = $this->GenderService->getGenderById($id);
+
+        Log::info('OrgBusinessSaleSubsetController -> show Inside.' . json_encode($id));
+        $response = $this->OrgBusinessSaleSubsetService->getOrgBusinessSaleSubsetById($id);
         return $response;
-        Log::info('GenderController ->show  Return.' . json_encode($response));
+        Log::info('OrgBusinessSaleSubsetController  -> show  Return.' . json_encode($response));
     }
 
     /**
@@ -75,7 +75,7 @@ class GenderController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -87,6 +87,7 @@ class GenderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //
     }
 
     /**
@@ -97,9 +98,9 @@ class GenderController extends Controller
      */
     public function destroy($id)
     {
-        Log::info('GenderController-> destroy Inside.' . json_encode($id));
-        $response = $this->GenderService->destroyGenderById($id);
+        Log::info('OrgBusinessSaleSubsetController -> destroy Inside.' . json_encode($id));
+        $response = $this->OrgBusinessSaleSubsetService->destroyOrgBusinessSaleSubsetById($id);
         return $response;
-        Log::info('GenderController ->destroy Return.' . json_encode($response));
+        Log::info('OrgBusinessSaleSubsetController  ->destroy Return.' . json_encode($response));
     }
 }

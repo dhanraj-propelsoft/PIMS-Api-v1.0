@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Api\Master;
+namespace App\Http\Controllers\Api\OrganizationMaster;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Api\Master\GenderService;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Http\Services\Api\OrganizationMaster\OrgBusinessActivitiesService;
+use Illuminate\Support\Facades\Log;
 
 
-class GenderController extends Controller
+class OrgBusinessActivitiesController extends Controller
 {
-    protected $GenderService;
-    public function __construct(GenderService $GenderService)
+    protected $OrgBusinessActivitiesService;
+    public function __construct(OrgBusinessActivitiesService $OrgBusinessActivitiesService)
     {
-        $this->GenderService = $GenderService;
+        $this->OrgBusinessActivitiesService = $OrgBusinessActivitiesService;
     }
     /**
      * Display a listing of the resource.
@@ -22,10 +22,10 @@ class GenderController extends Controller
      */
     public function index()
     {
-        $response = $this->GenderService->index();
-        Log::info('GenderController ->index Return.' . json_encode($response));
-        return $response;
 
+        $response = $this->OrgBusinessActivitiesService->index();
+        Log::info('OrgBusinessActivitiesController -> index Return.' . json_encode($response));
+        return $response;
     }
 
     /**
@@ -46,11 +46,10 @@ class GenderController extends Controller
      */
     public function store(Request $request)
     {
-
-        Log::info('GenderController-> Store Inside.' . json_encode($request->all()));
-        $response = $this->GenderService->store($request->all());
+        Log::info('OrgBusinessActivitiesController -> Store Inside.' . json_encode($request->all()));
+        $response = $this->OrgBusinessActivitiesService->store($request->all());
         return $response;
-        Log::info('GenderController>Store Return.' . json_encode($response));
+        Log::info('OrgBusinessActivitiesController -> Store Return.' . json_encode($response));
     }
 
     /**
@@ -61,10 +60,10 @@ class GenderController extends Controller
      */
     public function show($id)
     {
-          Log::info('GenderController-> show Inside.' . json_encode($id));
-        $response = $this->GenderService->getGenderById($id);
+        Log::info('OrgBusinessActivitiesController -> show Inside.' . json_encode($id));
+        $response = $this->OrgBusinessActivitiesService->getOrgBusinessActivitiesById($id);
         return $response;
-        Log::info('GenderController ->show  Return.' . json_encode($response));
+        Log::info('OrgBusinessActivitiesController  -> show  Return.' . json_encode($response));
     }
 
     /**
@@ -75,7 +74,7 @@ class GenderController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -87,6 +86,7 @@ class GenderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //
     }
 
     /**
@@ -97,9 +97,9 @@ class GenderController extends Controller
      */
     public function destroy($id)
     {
-        Log::info('GenderController-> destroy Inside.' . json_encode($id));
-        $response = $this->GenderService->destroyGenderById($id);
+        Log::info('OrgBusinessActivitiesController -> destroy Inside.' . json_encode($id));
+        $response = $this->OrgBusinessActivitiesService->destroyOrgBusinessActivitiesById($id);
         return $response;
-        Log::info('GenderController ->destroy Return.' . json_encode($response));
+        Log::info('OrgBusinessActivitiesController  ->destroy Return.' . json_encode($response));
     }
 }

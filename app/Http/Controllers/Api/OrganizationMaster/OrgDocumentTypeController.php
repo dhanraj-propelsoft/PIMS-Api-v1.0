@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\Master;
+namespace App\Http\Controllers\Api\OrganizationMaster;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Api\Master\GenderService;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Http\Services\Api\OrganizationMaster\OrgDocumentTypeService;
+use Illuminate\Support\Facades\Log;
 
-
-class GenderController extends Controller
+class OrgDocumentTypeController extends Controller
 {
-    protected $GenderService;
-    public function __construct(GenderService $GenderService)
+    protected $OrgDocumentTypeService;
+    public function __construct(OrgDocumentTypeService $OrgDocumentTypeService)
     {
-        $this->GenderService = $GenderService;
+        $this->OrgDocumentTypeService = $OrgDocumentTypeService;
     }
     /**
      * Display a listing of the resource.
@@ -22,10 +21,9 @@ class GenderController extends Controller
      */
     public function index()
     {
-        $response = $this->GenderService->index();
-        Log::info('GenderController ->index Return.' . json_encode($response));
+        $response = $this->OrgDocumentTypeService->index();
+        Log::info('OrgDocumentTypeController -> index Return.' . json_encode($response));
         return $response;
-
     }
 
     /**
@@ -46,11 +44,10 @@ class GenderController extends Controller
      */
     public function store(Request $request)
     {
-
-        Log::info('GenderController-> Store Inside.' . json_encode($request->all()));
-        $response = $this->GenderService->store($request->all());
+        Log::info('OrgDocumentTypeController -> Store Inside.' . json_encode($request->all()));
+        $response = $this->OrgDocumentTypeService->store($request->all());
         return $response;
-        Log::info('GenderController>Store Return.' . json_encode($response));
+        Log::info('OrgDocumentTypeController -> Store Return.' . json_encode($response));
     }
 
     /**
@@ -61,10 +58,10 @@ class GenderController extends Controller
      */
     public function show($id)
     {
-          Log::info('GenderController-> show Inside.' . json_encode($id));
-        $response = $this->GenderService->getGenderById($id);
+        Log::info('OrgDocumentTypeController -> show Inside.' . json_encode($id));
+        $response = $this->OrgDocumentTypeService->getOrgDocumentTypeById($id);
         return $response;
-        Log::info('GenderController ->show  Return.' . json_encode($response));
+        Log::info('OrgDocumentTypeController  -> show  Return.' . json_encode($response));
     }
 
     /**
@@ -75,7 +72,7 @@ class GenderController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -87,6 +84,7 @@ class GenderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //
     }
 
     /**
@@ -97,9 +95,9 @@ class GenderController extends Controller
      */
     public function destroy($id)
     {
-        Log::info('GenderController-> destroy Inside.' . json_encode($id));
-        $response = $this->GenderService->destroyGenderById($id);
+        Log::info('OrgDocumentTypeController -> destroy Inside.' . json_encode($id));
+        $response = $this->OrgDocumentTypeService->destroyOrgDocumentTypeById($id);
         return $response;
-        Log::info('GenderController ->destroy Return.' . json_encode($response));
+        Log::info('OrgDocumentTypeController  ->destroy Return.' . json_encode($response));
     }
 }
