@@ -133,49 +133,49 @@ ADD COLUMN active_status INT NULL;
 
 ALTER TABLE Pims_com_address_types
 ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL,
-CHANGE COLUMN status active_Status INT;
+CHANGE COLUMN status active_status INT;
 
 10)Add Pims_com_languages Table query:
 
 ALTER TABLE Pims_com_languages
-CHANGE COLUMN status active_Status INT,
+CHANGE COLUMN status active_status INT,
 ADD COLUMN created_at TIMESTAMP NULL DEFAULT NULL,
 ADD COLUMN updated_at TIMESTAMP NULL DEFAULT NULL,
 ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
 
 11) Add Pims_org_administrator_types Table query:
 ALTER TABLE Pims_org_administrator_types
-CHANGE COLUMN STATUS active_Status INT,
+CHANGE COLUMN STATUS active_status INT,
 ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
 
 12) Add Pims_org_business_activities  Table query:
 ALTER TABLE Pims_org_business_activities
-CHANGE COLUMN STATUS active_Status INT,
+CHANGE COLUMN STATUS active_status INT,
 ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
 
 13) Add Pims_org_business_sale_subsets  Table query:
 
 
 ALTER TABLE Pims_org_business_sale_subsets
-CHANGE COLUMN STATUS active_Status INT,
+CHANGE COLUMN STATUS active_status INT,
 ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
 
 14) Add Pims_org_business_sectors  Table query:
 
 ALTER TABLE Pims_org_business_sectors
-CHANGE COLUMN STATUS active_Status INT,
+CHANGE COLUMN STATUS active_status INT,
 ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
 
 15) Add Pims_org_categories  Table query:
 
 ALTER TABLE Pims_org_categories
-CHANGE COLUMN STATUS active_Status INT,
+CHANGE COLUMN STATUS active_status INT,
 ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
 
 16) Add Pims_org_document_types  Table query:
 
 ALTER TABLE Pims_org_document_types
-CHANGE COLUMN STATUS active_Status INT,
+CHANGE COLUMN STATUS active_status INT,
 ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
 
 17) Add Pims_org_ownerships  Table query:
@@ -187,7 +187,7 @@ ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
 18)Add Pims_person_document_types  Table query:
 
 ALTER TABLE Pims_person_document_types
-CHANGE COLUMN mandatory_status active_Status INT,
+CHANGE COLUMN mandatory_status active_status INT,
 ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
 
 19) Delete table Lists:
