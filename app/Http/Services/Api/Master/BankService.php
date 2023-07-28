@@ -51,7 +51,7 @@ class BankService
         Log::info('BankService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getBankById($id = null)
+    public function getBankById($id)
     {
         $model = $this->BankInterface->getBankById($id);
         $datas = array();

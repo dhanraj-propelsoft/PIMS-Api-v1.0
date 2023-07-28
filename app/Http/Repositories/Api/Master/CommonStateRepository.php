@@ -4,8 +4,10 @@ namespace App\Http\Repositories\Api\Master;
 
 use App\Http\Interfaces\Api\Master\CommonStateInterface;
 use App\Models\PimsCommonState;
+use App\Models\PimsCommonCity;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CommonStateRepository implements CommonStateInterface
 {
@@ -42,6 +44,12 @@ class CommonStateRepository implements CommonStateInterface
     }
     public function destroyState($id)
     {
-        return PimsCommonState::where('id', $id)->update(['deleted_at' => Carbon::now()]);
+        try {
+            $model = PimsCommonCity::where('state_id', $id)->whereNull('deleted_at')->firstOrFail();
+            return ['type' => 2, 'message' => 'Failed'];
+        } catch (ModelNotFoundException $e) {
+            PimsCommonState::where('id', $id)->update(['deleted_at' => Carbon::now()]);
+            return ['type' => 1, 'message' => 'Success'];
+        }
     }
 }

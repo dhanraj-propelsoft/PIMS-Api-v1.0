@@ -4,8 +4,10 @@ namespace App\Http\Repositories\Api\Master;
 
 use App\Http\Interfaces\Api\Master\CommonCountryInterface;
 use App\Models\PimsCommonCountry;
+use App\Models\PimsCommonState;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CommonCountryRepository implements CommonCountryInterface
 {
@@ -43,6 +45,12 @@ class CommonCountryRepository implements CommonCountryInterface
     }
     public function destroyCountry($id)
     {
-        return PimsCommonCountry::where('id', $id)->update(['deleted_at' => Carbon::now()]);
+        try {
+            $model = PimsCommonState::where('country_id', $id)->whereNull('deleted_at')->firstOrFail();
+            return ['type' => 2, 'message' => 'Failed'];
+        } catch (ModelNotFoundException $e) {
+            PimsCommonCountry::where('id', $id)->update(['deleted_at' => Carbon::now()]);
+            return ['type' => 1, 'message' => 'Success'];
+        }
     }
 }

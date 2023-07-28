@@ -47,7 +47,7 @@ class DocumentTypeService
         Log::info('DocumentTypeService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getDocumentTypeById($id = null)
+    public function getDocumentTypeById($id )
     {
         $model = $this->DocumentTypeInterface->getDocumentTypeById($id);
         $datas = array();

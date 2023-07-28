@@ -48,7 +48,7 @@ class CommonCountryService
         Log::info('CommonCountryService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getCommonCountryById($id = null)
+    public function getCommonCountryById($id )
     {
         $model = $this->CommonCountryInterface->getCountryById($id);
         $datas = array();

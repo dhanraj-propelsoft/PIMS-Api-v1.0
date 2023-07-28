@@ -61,7 +61,7 @@ class RelationShipService
         return $model;
     }
 
-    public function getRelationShipById($id = null)
+    public function getRelationShipById($id )
     {
         $model = $this->RelationShipInterface->getRelationShipById($id);
         $datas = array();

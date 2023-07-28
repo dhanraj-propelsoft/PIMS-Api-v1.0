@@ -46,7 +46,7 @@ class OrgBusinessActivitiesService
         Log::info('OrgBusinessActivitiesService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getOrgBusinessActivitiesById($id = null)
+    public function getOrgBusinessActivitiesById($id )
     {
         $model = $this->OrgBusinessActivitiesInterface->getOrgBusinessActivitiesById($id);
         $datas = array();

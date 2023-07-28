@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Services\Api\Master;
 
+use App\Http\Interfaces\Api\Master\CommonCountryInterface;
 use App\Http\Interfaces\Api\Master\CommonStateInterface;
 use App\Http\Responses\ErrorApiResponse;
 use App\Http\Responses\SuccessApiResponse;
@@ -11,25 +12,32 @@ use Illuminate\Support\Facades\Validator;
 class CommonStateService
 {
     protected $CommonStateInterface;
-    public function __construct(CommonStateInterface $CommonStateInterface)
+    public function __construct(CommonStateInterface $CommonStateInterface, CommonCountryInterface $CommonCountryInterface)
     {
         $this->CommonStateInterface = $CommonStateInterface;
+        $this->CommonCountryInterface = $CommonCountryInterface;
     }
 
     public function index()
     {
-
         $models = $this->CommonStateInterface->index();
-        $entities = $models->map(function ($model) {
+        $country = $this->CommonCountryInterface->index();
+        $entities = $models->map(function ($model) use ($country) {
             $state = $model->name;
             $status = ($model->active_status == 1) ? "Active" : "In-Active";
             $activeStatus = $model->active_status;
-            $country_id = $model->country_id;
             $id = $model->id;
-            $datas = ['state' => $state, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id, 'country_id' => $country_id];
+            $countryData = $country->firstWhere('id',  $model->country_id);
+            $country_name = ($countryData) ? $countryData->name : 'Null';
+            $datas = [
+                'state' => $state,
+                'status' => $status,
+                'activeStatus' => $activeStatus,
+                'id' => $id,
+                'country_name' => $country_name,
+            ];
             return $datas;
         });
-
         return new SuccessApiResponse($entities, 200);
 
     }
@@ -50,17 +58,20 @@ class CommonStateService
         Log::info('CommonStateService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getStateById($id = null)
+    public function getStateById($id)
     {
         $model = $this->CommonStateInterface->getStateById($id);
+        $country = $this->CommonCountryInterface->index();
         $datas = array();
         if ($model) {
             $state = $model->name;
             $status = ($model->active_status == 1) ? "Active" : "In-Active";
             $activeStatus = $model->active_status;
-            $country_id = $model->country_id;
+            $country_id=$model->country_id;
             $id = $model->id;
-            $datas = ['state' => $state, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id, 'country_id' => $country_id];
+            $countryData = $country->firstWhere('id',  $country_id);
+            $country_name = ($countryData) ? $countryData->name : 'Null';
+            $datas = ['country_id'=>$country_id, 'state' => $state, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id, 'country_name' => $country_name];
         }
         return new SuccessApiResponse($datas, 200);
 
@@ -75,7 +86,7 @@ class CommonStateService
             $model = new PimsCommonState();
         }
         $model->name = $datas->state;
-        $model->country_id = isset($datas->countryId) ? $datas->countryId : null;
+        $model->country_id = isset($datas->country_id) ? $datas->country_id: null;
         $model->active_status = isset($datas->active_status) ? $datas->active_status : '0';
         return $model;
     }

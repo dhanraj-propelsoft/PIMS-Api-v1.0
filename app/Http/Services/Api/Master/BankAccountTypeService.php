@@ -46,7 +46,7 @@ class BankAccountTypeService
         Log::info('BankAccountTypeService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getBankAccountTypeById($id = null)
+    public function getBankAccountTypeById($id)
     {
         $model = $this->BankAccountTypeInterface->getBankAccountTypeById($id);
         $datas = array();

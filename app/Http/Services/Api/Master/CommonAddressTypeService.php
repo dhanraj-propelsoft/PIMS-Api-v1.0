@@ -46,7 +46,7 @@ class CommonAddressTypeService
         Log::info('CommonAddressTypeService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getCommonAddressTypeById($id = null)
+    public function getCommonAddressTypeById($id )
     {
         $model = $this->CommonAddressTypeInterface->getCommonAddressTypeById($id);
         $datas = array();

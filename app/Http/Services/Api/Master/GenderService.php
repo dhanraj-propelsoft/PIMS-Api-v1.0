@@ -50,7 +50,7 @@ class GenderService
         Log::info('GenderService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getGenderById($id = null)
+    public function getGenderById($id)
     {
         $model = $this->GenderInterface->getGenderById($id);
         $datas = array();

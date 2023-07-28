@@ -63,7 +63,7 @@ class MaritalStatusService
         $model->active_status = isset($datas->active_status) ? $datas->active_status : '0';
         return $model;
     }
-    public function getMaritalStatusById($id = null)
+    public function getMaritalStatusById($id)
     {
         $model = $this->MaritalStatusInterface->getMaritalStatusById($id);
         $datas = array();

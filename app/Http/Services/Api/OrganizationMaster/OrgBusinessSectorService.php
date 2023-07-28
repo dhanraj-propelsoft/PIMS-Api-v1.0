@@ -46,7 +46,7 @@ class OrgBusinessSectorService
         Log::info('OrgBusinessSectorService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getOrgBusinessSectorById($id = null)
+    public function getOrgBusinessSectorById($id )
     {
         $model = $this->OrgBusinessSectorInterface->getOrgBusinessSectorById($id);
         $datas = array();

@@ -46,7 +46,7 @@ class OrgBusinessSaleSubsetService
         Log::info('OrgBusinessSaleSubsetService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getOrgBusinessSaleSubsetById($id = null)
+    public function getOrgBusinessSaleSubsetById($id )
     {
         $model = $this->OrgBusinessSaleSubsetInterface->getOrgBusinessSaleSubsetById($id);
         $datas = array();

@@ -54,7 +54,7 @@ class SalutationService
         Log::info('SalutationService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getSalutationById($id = null)
+    public function getSalutationById($id )
     {
         $model = $this->SalutationInterface->getSalutationById($id);
         $datas = array();

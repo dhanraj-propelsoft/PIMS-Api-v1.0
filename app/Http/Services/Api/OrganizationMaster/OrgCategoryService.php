@@ -46,7 +46,7 @@ class OrgCategoryService
         Log::info('OrgCategoryService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getOrgCategoryById($id = null)
+    public function getOrgCategoryById($id)
     {
         $model = $this->OrgCategoryInterface->getOrgCategoryById($id);
         $datas = array();

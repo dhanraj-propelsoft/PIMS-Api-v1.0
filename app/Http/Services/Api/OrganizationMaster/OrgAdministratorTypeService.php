@@ -47,7 +47,7 @@ class OrgAdministratorTypeService
         Log::info('OrgAdministratorTypeService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getOrgAdministratorTypeById($id = null)
+    public function getOrgAdministratorTypeById($id )
     {
         $model = $this->OrgAdministratorTypeInterface->getOrgAdministratorTypeById($id);
         $datas = array();

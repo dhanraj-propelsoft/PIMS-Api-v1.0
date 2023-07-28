@@ -46,7 +46,7 @@ class CommonLanguageService
         Log::info('CommonLanguageService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getCommonLanguageById($id = null)
+    public function getCommonLanguageById($id )
     {
         $model = $this->CommonLanguageInterface->getCommonLanguageById($id);
         $datas = array();

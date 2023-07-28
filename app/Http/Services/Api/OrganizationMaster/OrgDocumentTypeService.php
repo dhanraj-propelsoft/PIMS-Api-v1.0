@@ -46,7 +46,7 @@ class OrgDocumentTypeService
         Log::info('OrgDocumentTypeService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getOrgDocumentTypeById($id = null)
+    public function getOrgDocumentTypeById($id)
     {
         $model = $this->OrgDocumentTypeInterface->getOrgDocumentTypeById($id);
         $datas = array();

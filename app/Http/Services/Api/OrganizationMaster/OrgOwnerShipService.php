@@ -46,7 +46,7 @@ class OrgOwnerShipService
         Log::info('OrgOwnerShipService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getOrgOwnerShipById($id = null)
+    public function getOrgOwnerShipById($id )
     {
         $model = $this->OrgOwnerShipInterface->getOrgOwnerShipById($id);
         $datas = array();

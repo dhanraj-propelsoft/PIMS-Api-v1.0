@@ -63,7 +63,7 @@ class BloodGroupService
         $model->active_status = isset($datas->active_status) ? $datas->active_status : '0';
         return $model;
     }
-    public function getBloodGroupById($id = null)
+    public function getBloodGroupById($id)
     {
         $model = $this->BloodGroupInterface->getBloodGroupById($id);
         $datas = array();
