@@ -36,12 +36,11 @@ class BloodGroupService
     {
 
         $validator = Validator::make($datas, [
-            'BloodGroup' => 'required',
+            'bloodGroup' => 'required',
         ]);
 
         if ($validator->fails()) {
             $error = $validator->errors();
-            //dd($error);
             return new ErrorApiResponse($error, 300);
         }
         $datas = (object) $datas;
@@ -59,7 +58,7 @@ class BloodGroupService
         } else {
             $model = new PimsPersonBloodGroup();
         }
-        $model->blood_group = $datas->BloodGroup;
+        $model->blood_group = $datas->bloodGroup;
         $model->description = isset($datas->description) ? $datas->description : null;
         $model->active_status = isset($datas->active_status) ? $datas->active_status : '0';
         return $model;

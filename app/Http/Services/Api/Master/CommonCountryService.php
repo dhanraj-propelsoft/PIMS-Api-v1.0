@@ -53,11 +53,11 @@ class CommonCountryService
         $model = $this->CommonCountryInterface->getCountryById($id);
         $datas = array();
         if ($model) {
-            $name = $model->name;
+            $country = $model->name;
             $status = ($model->active_status == 1) ? "Active" : "In-Active";
             $activeStatus = $model->active_status;
             $id = $model->id;
-            $datas = ['name' => $name, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['country' => $country, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
         }
         return new SuccessApiResponse($datas, 200);
 

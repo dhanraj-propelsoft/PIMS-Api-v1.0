@@ -35,7 +35,7 @@ class BankService
     public function store($datas)
     {
         $validator = Validator::make($datas, [
-            'bankName' => 'required',
+            'bank' => 'required',
             'ifsc' => 'required',
             'micr' => 'required',
         ]);
@@ -76,7 +76,7 @@ class BankService
         } else {
             $model = new PimsBank();
         }
-        $model->bank = $datas->bankName;
+        $model->bank = $datas->bank;
         $model->ifsc = $datas->ifsc;
         $model->micr = $datas->micr;
         $model->active_status = isset($datas->active_status) ? $datas->active_status : '0';
