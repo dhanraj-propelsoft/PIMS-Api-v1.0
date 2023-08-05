@@ -225,3 +225,38 @@ CREATE TABLE pims_com_cities (
 	    updated_at TIMESTAMP NULL DEFAULT NULL,
 	    deleted_at TIMESTAMP NULL DEFAULT NULL
 	);
+
+    23) create pims_permissions tables:
+
+    CREATE TABLE pims_permissions (
+	    id INT PRIMARY KEY AUTO_INCREMENT,
+	    NAME VARCHAR(255),
+		active_status INT,
+	    created_at TIMESTAMP NULL DEFAULT NULL,
+	    updated_at TIMESTAMP NULL DEFAULT NULL,
+	    deleted_at TIMESTAMP NULL DEFAULT NULL
+	);
+
+24)  create pims_role_masters tables:
+
+	CREATE TABLE pims_role_masters (
+	    id INT PRIMARY KEY AUTO_INCREMENT,
+	    NAME VARCHAR(255),
+	    as_admin INT,
+	    active_status INT,
+	    created_at TIMESTAMP NULL DEFAULT NULL,
+	    updated_at TIMESTAMP NULL DEFAULT NULL,
+	    deleted_at TIMESTAMP NULL DEFAULT NULL
+	);
+
+	25)   create pims_roles tables:
+
+		CREATE TABLE pims_roles (
+	    id INT PRIMARY KEY AUTO_INCREMENT,
+	    role_id INT,
+	    permission_id INT,
+	    active_status INT,
+	    created_at TIMESTAMP NULL DEFAULT NULL,
+	    updated_at TIMESTAMP NULL DEFAULT NULL,
+	    deleted_at TIMESTAMP NULL DEFAULT NULL
+	);

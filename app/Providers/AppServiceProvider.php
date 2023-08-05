@@ -19,7 +19,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('App\Http\Interfaces\Api\Master\BloodGroupInterface','App\Http\Repositories\Api\Master\BloodGroupRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\MaritalStatusInterface','App\Http\Repositories\Api\Master\MaritalStatusRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\RelationShipInterface','App\Http\Repositories\Api\Master\RelationShipRepository');
-        $this->app->bind('App\Http\Interfaces\Api\Users\UserInterface','App\Http\Repositories\Api\Users\UserRepository');
+        $this->app->bind('App\Http\Interfaces\Api\Setting\UserInterface','App\Http\Repositories\Api\Setting\UserRepository');
+        $this->app->bind('App\Http\Interfaces\Api\Setting\RoleInterface','App\Http\Repositories\Api\Setting\RoleRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\BankAccountTypeInterface','App\Http\Repositories\Api\Master\BankAccountTypeRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\BankInterface','App\Http\Repositories\Api\Master\BankRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\CommonAddressTypeInterface','App\Http\Repositories\Api\Master\CommonAddressTypeRepository');

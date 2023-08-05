@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api\Users;
+namespace App\Http\Controllers\Api\Setting;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Api\Users\UserService;
+use App\Http\Services\Api\Setting\UserService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
