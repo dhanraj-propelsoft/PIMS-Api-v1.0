@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('App\Http\Interfaces\Api\Setting\RoleInterface','App\Http\Repositories\Api\Setting\RoleRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\BankAccountTypeInterface','App\Http\Repositories\Api\Master\BankAccountTypeRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\BankInterface','App\Http\Repositories\Api\Master\BankRepository');
-        $this->app->bind('App\Http\Interfaces\Api\Master\CommonAddressTypeInterface','App\Http\Repositories\Api\Master\CommonAddressTypeRepository');
+        $this->app->bind('App\Http\Interfaces\Api\CommonMaster\AddressTypeInterface','App\Http\Repositories\Api\CommonMaster\AddressTypeRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\CommonLanguageInterface','App\Http\Repositories\Api\Master\CommonLanguageRepository');
         $this->app->bind('App\Http\Interfaces\Api\OrganizationMaster\OrgAdministratorTypeInterface','App\Http\Repositories\Api\OrganizationMaster\OrgAdministratorTypeRepository');
         $this->app->bind('App\Http\Interfaces\Api\OrganizationMaster\OrgBusinessActivitiesInterface','App\Http\Repositories\Api\OrganizationMaster\OrgBusinessActivitiesRepository');
@@ -33,9 +33,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('App\Http\Interfaces\Api\OrganizationMaster\OrgDocumentTypeInterface','App\Http\Repositories\Api\OrganizationMaster\OrgDocumentTypeRepository');
         $this->app->bind('App\Http\Interfaces\Api\OrganizationMaster\OrgOwnerShipInterface','App\Http\Repositories\Api\OrganizationMaster\OrgOwnerShipRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\DocumentTypeInterface','App\Http\Repositories\Api\Master\DocumentTypeRepository');
-        $this->app->bind('App\Http\Interfaces\Api\Master\CommonCountryInterface','App\Http\Repositories\Api\Master\CommonCountryRepository');
-        $this->app->bind('App\Http\Interfaces\Api\Master\CommonStateInterface','App\Http\Repositories\Api\Master\CommonStateRepository');
-        $this->app->bind('App\Http\Interfaces\Api\Master\CommonCityInterface','App\Http\Repositories\Api\Master\CommonCityRepository');
+        $this->app->bind('App\Http\Interfaces\Api\CommonMaster\CountryInterface','App\Http\Repositories\Api\CommonMaster\CountryRepository');
+        $this->app->bind('App\Http\Interfaces\Api\CommonMaster\StateInterface','App\Http\Repositories\Api\CommonMaster\StateRepository');
+        $this->app->bind('App\Http\Interfaces\Api\CommonMaster\CityInterface','App\Http\Repositories\Api\CommonMaster\CityRepository');
 
 
 

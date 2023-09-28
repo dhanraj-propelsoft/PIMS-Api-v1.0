@@ -34,12 +34,8 @@ Route::apiResource('bloodGroup', BloodGroupController::class);
 Route::apiResource('maritalStatus', MaritalStatusController::class);
 Route::apiResource('relationShip', RelationShipController::class);
 Route::apiResource('bankAccountType', BankAccountTypeController::class);
-Route::apiResource('commonAddressType', CommonAddressTypeController::class);
-Route::apiResource('commonLanguage', CommonLanguageController::class);
 Route::apiResource('documentType', DocumentTypeController::class);
-Route::apiResource('commonCountry', CommonCountryController::class);
-Route::apiResource('commonState', CommonStateController::class);
-Route::apiResource('commonCity', CommonCityController::class);
+
 
 
 

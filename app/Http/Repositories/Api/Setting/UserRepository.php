@@ -11,17 +11,10 @@ use Carbon\Carbon;
 
 class UserRepository implements UserInterface
 {
-    public function userAccess($datas)
+    public function userAccess($mobile)
     {
-        $mobile = $datas->mobile;
-        $password = $datas->password;
-        $model = PimsUser::where('mobile', $mobile)->whereNull('deleted_at')->first();
-        if ($model && Hash::check($password, $model->password)) {
-            $response = ['type' => 1, 'status' => 'success'];
-        } else {
-            $response = ['type' => 2, 'status' => 'failed'];
-        }
-        return $response;
+       return PimsUser::where('mobile_no', $mobile)->whereNull('deleted_at')->first();
+        
     }
 
     public function storePimsUser($model)

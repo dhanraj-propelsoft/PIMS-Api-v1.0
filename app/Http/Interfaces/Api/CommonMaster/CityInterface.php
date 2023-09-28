@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Interfaces\Api\Master;
+namespace App\Http\Interfaces\Api\CommonMaster;
 
-interface CommonCityInterface
+interface CityInterface
 {
 
     public function index();

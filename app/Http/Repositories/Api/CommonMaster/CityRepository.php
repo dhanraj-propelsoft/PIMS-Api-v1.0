@@ -1,18 +1,21 @@
 <?php
 
-namespace App\Http\Repositories\Api\Master;
+namespace App\Http\Repositories\Api\CommonMaster;
 
-use App\Http\Interfaces\Api\Master\CommonCityInterface;
-use App\Models\PimsCommonCity;
+use App\Http\Interfaces\Api\CommonMaster\CityInterface;
+use App\Models\City;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class CommonCityRepository implements CommonCityInterface
+class CityRepository implements CityInterface
 {
     public function index()
     {
-        return PimsCommonCity::whereNull('deleted_at')->get();
-    }
+        return City::where('pfm_active_status_id', 1)
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')
+        ->get();   
+     }
     public function store($model)
     {
         try {
@@ -37,11 +40,14 @@ class CommonCityRepository implements CommonCityInterface
     }
     public function getCityById($id)
     {
-        return PimsCommonCity::where('id', $id)->whereNull('deleted_at')->first();
+        return City::where(['id'=>$id,'pfm_active_status_id'=>1])
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')->first();
+
 
     }
     public function destroyCity($id)
     {
-        return PimsCommonCity::where('id', $id)->update(['deleted_at' => Carbon::now()]);
+        return City::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

@@ -8,6 +8,7 @@ use App\Models\PimsUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class UserService
 {
@@ -84,6 +85,7 @@ class UserService
     }
     public function userAccess($datas)
     {
+       
         Log::info('UserService > userAccess function Inside.' . json_encode($datas));
         $validator = Validator::make($datas, [
 
@@ -95,8 +97,14 @@ class UserService
             return new ErrorApiResponse($error, 300);
         }
         $datas = (object) $datas;
-        $checkUser = $this->UserInterface->userAccess($datas);
-        return new SuccessApiResponse($checkUser, 200);
+        $checkUser = $this->UserInterface->userAccess($datas->mobile);
+        if ($checkUser && Hash::check($datas->password, $checkUser->password)) {   
+            $token = $checkUser->createToken('my-app-token')->plainTextToken;
+             $response = ['type' => 1, 'status' => 'success','message'=>'User Login Successfully','token'=>$token ];
+        } else {
+            $response = ['type' => 2, 'status' => 'failed','message'=>'Password Incorrect'];
+        }
+        return new SuccessApiResponse($response, 200);
     }
 
 }

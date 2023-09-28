@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\Master;
+namespace App\Http\Controllers\Api\CommonMaster;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Services\Api\Master\CommonLanguageService;
+use App\Http\Services\Api\CommonMaster\StateService;
 use Illuminate\Support\Facades\Log;
 
-class CommonLanguageController extends Controller
+class StateController extends Controller
 {
-    protected $CommonLanguageService;
-    public function __construct(CommonLanguageService $CommonLanguageService)
+    protected $StateService;
+    public function __construct(StateService $StateService)
     {
-        $this->CommonLanguageService = $CommonLanguageService;
+        $this->StateService = $StateService;
     }
     /**
      * Display a listing of the resource.
@@ -21,12 +21,10 @@ class CommonLanguageController extends Controller
      */
     public function index()
     {
-
-        $response = $this->CommonLanguageService->index();
-        Log::info('CommonLanguageController ->index Return.' . json_encode($response));
+        $response = $this->StateService->index();
+        Log::info('StateController ->index Return.' . json_encode($response));
         return $response;
-
-     }
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -35,7 +33,7 @@ class CommonLanguageController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -46,10 +44,11 @@ class CommonLanguageController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info('CommonLanguageController -> Store Inside.' . json_encode($request->all()));
-        $response = $this->CommonLanguageService->store($request->all());
+       
+        Log::info('StateController-> Store Inside.' . json_encode($request->all()));
+        $response = $this->StateService->store($request->all());
         return $response;
-        Log::info('CommonLanguageController -> Store Return.' . json_encode($response));
+        Log::info('StateController ->Store Return.' . json_encode($response));
     }
 
     /**
@@ -60,10 +59,10 @@ class CommonLanguageController extends Controller
      */
     public function show($id)
     {
-        Log::info('CommonLanguageController -> show Inside.' . json_encode($id));
-        $response = $this->CommonLanguageService->getCommonLanguageById($id);
+        Log::info('StateController -> show Inside.' . json_encode($id));
+        $response = $this->StateService->getStateById($id);
         return $response;
-        Log::info('CommonLanguageController  ->show  Return.' . json_encode($response));
+        Log::info('StateController  -> show  Return.' . json_encode($response));
     }
 
     /**
@@ -97,9 +96,9 @@ class CommonLanguageController extends Controller
      */
     public function destroy($id)
     {
-        Log::info('CommonLanguageController -> destroy Inside.' . json_encode($id));
-        $response = $this->CommonLanguageService->destroyCommonLanguageById($id);
+        Log::info('StateController -> destroy Inside.' . json_encode($id));
+        $response = $this->StateService->destroyStateById($id);
         return $response;
-        Log::info('CommonLanguageController  ->destroy Return.' . json_encode($response));
+        Log::info('StateController -> destroy Return.' . json_encode($response));
     }
 }

@@ -1,18 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Api\Master;
+namespace App\Http\Controllers\Api\CommonMaster;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Services\Api\Master\CommonCityService;
+use App\Http\Services\Api\CommonMaster\CountryService;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
-class CommonCityController extends Controller
+
+class CountryController extends Controller
 {
-    protected $CommonCityService;
-    public function __construct(CommonCityService $CommonCityService)
+    protected $CountryService;
+    public function __construct(CountryService $CountryService)
     {
-        $this->CommonCityService = $CommonCityService;
+        $this->CountryService = $CountryService;
     }
     /**
      * Display a listing of the resource.
@@ -22,9 +24,10 @@ class CommonCityController extends Controller
     public function index()
     {
 
-        $response = $this->CommonCityService->index();
-        Log::info('CommonCityController ->index Return.' . json_encode($response));
+        $response = $this->CountryService->index();
+        Log::info('CountryController ->index Return.' . json_encode($response));
         return $response;
+
     }
 
     /**
@@ -45,10 +48,10 @@ class CommonCityController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info('CommonCityController -> Store Inside.' . json_encode($request->all()));
-        $response = $this->CommonCityService->store($request->all());
+        Log::info('CountryController-> Store Inside.' . json_encode($request->all()));
+        $response = $this->CountryService->store($request->all());
         return $response;
-        Log::info('CommonCityController -> Store Return.' . json_encode($response));
+        Log::info('CountryController -> Store Return.' . json_encode($response));
     }
 
     /**
@@ -59,10 +62,10 @@ class CommonCityController extends Controller
      */
     public function show($id)
     {
-        Log::info('CommonCityController -> show Inside.' . json_encode($id));
-        $response = $this->CommonCityService->getCityById($id);
+        Log::info('CountryController -> show Inside.' . json_encode($id));
+        $response = $this->CountryService->getCountryById($id);
         return $response;
-        Log::info('CommonCityController ->show  Return.' . json_encode($response));
+        Log::info('CountryController  ->show  Return.' . json_encode($response));
     }
 
     /**
@@ -96,9 +99,9 @@ class CommonCityController extends Controller
      */
     public function destroy($id)
     {
-        Log::info('CommonCityController -> destroy Inside.' . json_encode($id));
-        $response = $this->CommonCityService->destroyCityById($id);
+        Log::info('CountryController -> destroy Inside.' . json_encode($id));
+        $response = $this->CountryService->destroyCountryById($id);
         return $response;
-        Log::info('CommonCityController  ->destroy Return.' . json_encode($response));
+        Log::info('CountryController  -> destroy Return.' . json_encode($response));
     }
 }

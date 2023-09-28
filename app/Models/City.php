@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PimsCommonAddressType extends Model
+class City extends Model
 {
     use HasFactory;
-    protected $table = 'pims_com_address_types';
+    protected $table = 'pims_com_cities';
+
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Interfaces\Api\Master;
+namespace App\Http\Interfaces\Api\CommonMaster;
 
-interface CommonCountryInterface
+interface CountryInterface
 {
 
     public function index();

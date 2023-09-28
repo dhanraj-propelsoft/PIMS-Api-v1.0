@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\Master\SalutationController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +11,17 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
+Route::post('userAccess', 'App\Http\Controllers\Api\Setting\UserController@userAccess')->name('userAccess');
 
+Route::group(['middleware' => 'auth:sanctum'], function(){
+    //All secure URL's
+    include_once ('Api/master.php');
+    include_once ('Api/setting.php');
+    include_once ('Api/organizationMaster.php');
+    include_once ('Api/commonMaster.php');
+
+    });
+    // Your routes here, which will only be accessible to authenticated users
+    
 // Include API version 1 routes
-include_once('Api/master.php');
-include_once('Api/setting.php');
-include_once('Api/organizationMaster.php');

@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\Master;
+namespace App\Http\Controllers\Api\CommonMaster;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Api\Master\CommonAddressTypeService;
+use App\Http\Services\Api\CommonMaster\AddressTypeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class CommonAddressTypeController extends Controller
+class AddressTypeController extends Controller
 {
-    protected $CommonAddressTypeService;
-    public function __construct(CommonAddressTypeService $CommonAddressTypeService)
+    protected $AddressTypeService;
+    public function __construct(AddressTypeService $AddressTypeService)
     {
-        $this->CommonAddressTypeService = $CommonAddressTypeService;
+        $this->AddressTypeService = $AddressTypeService;
     }
     /**
      * Display a listing of the resource.
@@ -21,8 +21,8 @@ class CommonAddressTypeController extends Controller
      */
     public function index()
     {
-        $response = $this->CommonAddressTypeService->index();
-        Log::info('CommonAddressTypeController ->index Return.' . json_encode($response));
+        $response = $this->AddressTypeService->index();
+        Log::info('AddressTypeController ->index Return.' . json_encode($response));
         return $response;
     }
 
@@ -44,10 +44,11 @@ class CommonAddressTypeController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info('CommonAddressTypeController-> Store Inside.' . json_encode($request->all()));
-        $response = $this->CommonAddressTypeService->store($request->all());
+        
+        Log::info('AddressTypeController-> Store Inside.' . json_encode($request->all()));
+        $response = $this->AddressTypeService->store($request->all());
         return $response;
-        Log::info('CommonAddressTypeController -> Store Return.' . json_encode($response));
+        Log::info('AddressTypeController -> Store Return.' . json_encode($response));
     }
 
     /**
@@ -58,10 +59,10 @@ class CommonAddressTypeController extends Controller
      */
     public function show($id)
     {
-        Log::info('CommonAddressTypeController-> show  Inside.' . json_encode($id));
-        $response = $this->CommonAddressTypeService->getCommonAddressTypeById($id);
+        Log::info('AddressTypeController-> show  Inside.' . json_encode($id));
+        $response = $this->AddressTypeService->getAddressTypeById($id);
         return $response;
-        Log::info('CommonAddressTypeController ->show  Return.' . json_encode($response));
+        Log::info('AddressTypeController ->show  Return.' . json_encode($response));
     }
 
     /**
@@ -95,9 +96,9 @@ class CommonAddressTypeController extends Controller
      */
     public function destroy($id)
     {
-        Log::info('CommonAddressTypeController-> destroy Inside.' . json_encode($id));
-        $response = $this->CommonAddressTypeService->destroyCommonAddressTypeById($id);
+        Log::info('AddressTypeController-> destroy Inside.' . json_encode($id));
+        $response = $this->AddressTypeService->destroyAddressTypeById($id);
         return $response;
-        Log::info('CommonAddressTypeController ->destroy Return.' . json_encode($response));
+        Log::info('AddressTypeController ->destroy Return.' . json_encode($response));
     }
 }

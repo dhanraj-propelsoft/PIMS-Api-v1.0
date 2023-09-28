@@ -1,19 +1,22 @@
 <?php
 
-namespace App\Http\Repositories\Api\Master;
+namespace App\Http\Repositories\Api\CommonMaster;
 
-use App\Http\Interfaces\Api\Master\CommonStateInterface;
-use App\Models\PimsCommonState;
-use App\Models\PimsCommonCity;
+use App\Http\Interfaces\Api\CommonMaster\StateInterface;
+use App\Models\State;
+use App\Models\City;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class CommonStateRepository implements CommonStateInterface
+class StateRepository implements StateInterface
 {
     public function index()
     {
-        return PimsCommonState::whereNull('deleted_at')->get();
+        return State::where('pfm_active_status_id', 1)
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')
+        ->get();
     }
     public function store($model)
     {
@@ -39,16 +42,19 @@ class CommonStateRepository implements CommonStateInterface
     }
     public function getStateById($id)
     {
-        return PimsCommonState::where('id', $id)->whereNull('deleted_at')->first();
+        return State::where(['id'=>$id,'pfm_active_status_id'=>1])
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')->first();
+
 
     }
     public function destroyState($id)
     {
         try {
-            $model = PimsCommonCity::where('state_id', $id)->whereNull('deleted_at')->firstOrFail();
-            return ['type' => 2, 'message' => 'Failed'];
+            $model = City::where('state_id', $id)->whereNull('deleted_at')->firstOrFail();
+            return ['type' => 2, 'message' => 'Failed','status'=>'This state dependent on City'];
         } catch (ModelNotFoundException $e) {
-            PimsCommonState::where('id', $id)->update(['deleted_at' => Carbon::now()]);
+            State::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
             return ['type' => 1, 'message' => 'Success'];
         }
     }

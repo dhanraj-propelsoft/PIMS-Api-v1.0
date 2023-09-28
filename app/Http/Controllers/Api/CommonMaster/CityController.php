@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\Master;
+namespace App\Http\Controllers\Api\CommonMaster;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Services\Api\Master\CommonStateService;
+use App\Http\Services\Api\CommonMaster\CityService;
 use Illuminate\Support\Facades\Log;
 
-class CommonStateController extends Controller
+class CityController extends Controller
 {
-    protected $CommonStateService;
-    public function __construct(CommonStateService $CommonStateService)
+    protected $CityService;
+    public function __construct(CityService $CityService)
     {
-        $this->CommonStateService = $CommonStateService;
+        $this->CityService = $CityService;
     }
     /**
      * Display a listing of the resource.
@@ -21,8 +21,9 @@ class CommonStateController extends Controller
      */
     public function index()
     {
-        $response = $this->CommonStateService->index();
-        Log::info('CommonStateController ->index Return.' . json_encode($response));
+
+        $response = $this->CityService->index();
+        Log::info('CityController ->index Return.' . json_encode($response));
         return $response;
     }
 
@@ -44,10 +45,10 @@ class CommonStateController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info('CommonStateController-> Store Inside.' . json_encode($request->all()));
-        $response = $this->CommonStateService->store($request->all());
+        Log::info('CityController -> Store Inside.' . json_encode($request->all()));
+        $response = $this->CityService->store($request->all());
         return $response;
-        Log::info('CommonStateController ->Store Return.' . json_encode($response));
+        Log::info('CityController -> Store Return.' . json_encode($response));
     }
 
     /**
@@ -58,10 +59,10 @@ class CommonStateController extends Controller
      */
     public function show($id)
     {
-        Log::info('CommonStateController -> show Inside.' . json_encode($id));
-        $response = $this->CommonStateService->getStateById($id);
+        Log::info('CityController -> show Inside.' . json_encode($id));
+        $response = $this->CityService->getCityById($id);
         return $response;
-        Log::info('CommonStateController  -> show  Return.' . json_encode($response));
+        Log::info('CityController ->show  Return.' . json_encode($response));
     }
 
     /**
@@ -95,9 +96,9 @@ class CommonStateController extends Controller
      */
     public function destroy($id)
     {
-        Log::info('CommonStateController -> destroy Inside.' . json_encode($id));
-        $response = $this->CommonStateService->destroyStateById($id);
+        Log::info('CityController -> destroy Inside.' . json_encode($id));
+        $response = $this->CityService->destroyCityById($id);
         return $response;
-        Log::info('CommonStateController -> destroy Return.' . json_encode($response));
+        Log::info('CityController  ->destroy Return.' . json_encode($response));
     }
 }
