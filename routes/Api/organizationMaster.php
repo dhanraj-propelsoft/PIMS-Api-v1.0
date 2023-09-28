@@ -9,8 +9,7 @@ use App\Http\Controllers\Api\OrganizationMaster\OrgBusinessSectorController;
 use App\Http\Controllers\Api\OrganizationMaster\OrgCategoryController;
 use App\Http\Controllers\Api\OrganizationMaster\OrgDocumentTypeController;
 use App\Http\Controllers\Api\OrganizationMaster\OrgOwnerShipController;
-
-
+use App\Http\Controllers\Api\OrganizationMaster\OrgStructureController;
 
 
 
@@ -21,3 +20,4 @@ Route::apiResource('orgBusinessSector',OrgBusinessSectorController::class);
 Route::apiResource('orgCategory',OrgCategoryController::class);
 Route::apiResource('orgDocumentType',OrgDocumentTypeController::class);
 Route::apiResource('orgOwnerShip',OrgOwnerShipController::class);
+Route::apiResource('orgStructure',OrgStructureController::class);
