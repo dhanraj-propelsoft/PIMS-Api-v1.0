@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('App\Http\Interfaces\Api\Master\BankAccountTypeInterface','App\Http\Repositories\Api\Master\BankAccountTypeRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\BankInterface','App\Http\Repositories\Api\Master\BankRepository');
         $this->app->bind('App\Http\Interfaces\Api\CommonMaster\AddressTypeInterface','App\Http\Repositories\Api\CommonMaster\AddressTypeRepository');
-        $this->app->bind('App\Http\Interfaces\Api\Master\CommonLanguageInterface','App\Http\Repositories\Api\Master\CommonLanguageRepository');
+        $this->app->bind('App\Http\Interfaces\Api\CommonMaster\LanguageInterface','App\Http\Repositories\Api\CommonMaster\LanguageRepository');
         $this->app->bind('App\Http\Interfaces\Api\OrganizationMaster\OrgAdministratorTypeInterface','App\Http\Repositories\Api\OrganizationMaster\OrgAdministratorTypeRepository');
         $this->app->bind('App\Http\Interfaces\Api\OrganizationMaster\OrgBusinessActivitiesInterface','App\Http\Repositories\Api\OrganizationMaster\OrgBusinessActivitiesRepository');
         $this->app->bind('App\Http\Interfaces\Api\OrganizationMaster\OrgBusinessSaleSubsetInterface','App\Http\Repositories\Api\OrganizationMaster\OrgBusinessSaleSubsetRepository');

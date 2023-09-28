@@ -2,7 +2,7 @@
 
 // use App\Http\Controllers\Api\Master\BankAccountTypeController;
 // use App\Http\Controllers\Api\Master\BankController;
-// use App\Http\Controllers\Api\Master\CommonLanguageController;
+use App\Http\Controllers\Api\CommonMaster\LanguageController;
 use App\Http\Controllers\Api\CommonMaster\CountryController;
 use App\Http\Controllers\Api\CommonMaster\StateController;
 use App\Http\Controllers\Api\CommonMaster\CityController;
@@ -15,4 +15,4 @@ use Illuminate\Support\Facades\Route;
   Route::apiResource('state',  StateController::class);
   Route::apiResource('city', CityController::class);
   Route::apiResource('addressType',AddressTypeController::class);
-// Route::apiResource('commonLanguage', CommonLanguageController::class);
+  Route::apiResource('language', LanguageController::class);
