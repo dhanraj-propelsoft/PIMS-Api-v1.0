@@ -20,11 +20,11 @@ class AddressTypeService
     {
         $models = $this->AddressTypeInterface->index();
         $entities = $models->map(function ($model) {
-            $name = $model->address_of;
+            $addressType = $model->address_of;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $id = $model->id;
-            $datas = ['name' => $name, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['addressType' => $addressType, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });
 
@@ -51,11 +51,11 @@ class AddressTypeService
         $model = $this->AddressTypeInterface->getAddressTypeById($id);
         $datas = array();
         if ($model) {
-            $name = $model->address_of;
+            $addressType = $model->address_of;
             $status = ($model->pfm_active_status_id== 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $id = $model->id;
-            $datas = ['name' => $name, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['addressType' => $addressType, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
         }
         return new SuccessApiResponse($datas, 200);
 
