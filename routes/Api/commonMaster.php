@@ -7,6 +7,10 @@ use App\Http\Controllers\Api\CommonMaster\CountryController;
 use App\Http\Controllers\Api\CommonMaster\StateController;
 use App\Http\Controllers\Api\CommonMaster\CityController;
 use App\Http\Controllers\Api\CommonMaster\AddressTypeController;
+use App\Http\Controllers\Api\CommonMaster\DistrictController;
+use App\Http\Controllers\Api\CommonMaster\AreaController;
+
+
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,3 +20,5 @@ use Illuminate\Support\Facades\Route;
   Route::apiResource('city', CityController::class);
   Route::apiResource('addressType',AddressTypeController::class);
   Route::apiResource('language', LanguageController::class);
+  Route::apiResource('district',  DistrictController::class);
+  Route::apiResource('area',  AreaController::class);

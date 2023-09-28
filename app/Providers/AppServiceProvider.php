@@ -36,6 +36,15 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('App\Http\Interfaces\Api\CommonMaster\CountryInterface','App\Http\Repositories\Api\CommonMaster\CountryRepository');
         $this->app->bind('App\Http\Interfaces\Api\CommonMaster\StateInterface','App\Http\Repositories\Api\CommonMaster\StateRepository');
         $this->app->bind('App\Http\Interfaces\Api\CommonMaster\CityInterface','App\Http\Repositories\Api\CommonMaster\CityRepository');
+        $this->app->bind('App\Http\Interfaces\Api\CommonMaster\DistrictInterface','App\Http\Repositories\Api\CommonMaster\DistrictRepository');
+        $this->app->bind('App\Http\Interfaces\Api\CommonMaster\AreaInterface','App\Http\Repositories\Api\CommonMaster\AreaRepository');
+
+
+
+
+
+
+
 
 
 
