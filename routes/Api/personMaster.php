@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\PersonMaster\DocumentTypeController;
 use App\Http\Controllers\Api\PersonMaster\CommonCountryController;
 use App\Http\Controllers\Api\PersonMaster\CommonStateController;
 use App\Http\Controllers\Api\PersonMaster\CommonCityController;
+use App\Http\Controllers\Api\PersonMaster\QualificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,7 @@ Route::apiResource('maritalStatus', MaritalStatusController::class);
 Route::apiResource('relationShip', RelationShipController::class);
 Route::apiResource('bankAccountType', BankAccountTypeController::class);
 Route::apiResource('documentType', DocumentTypeController::class);
+Route::apiResource('qualification', QualificationController::class);
 
 
 
