@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('App\Http\Interfaces\Api\PFM\PersonStageInterface','App\Http\Repositories\Api\PFM\PersonStageRepository');
         $this->app->bind('App\Http\Interfaces\Api\PFM\SurvivalInterface','App\Http\Repositories\Api\PFM\SurvivalRepository');
         $this->app->bind('App\Http\Interfaces\Api\PFM\ValidationInterface','App\Http\Repositories\Api\PFM\ValidationRepository');
-
+        $this->app->bind('App\Http\Interfaces\Api\PersonMaster\QualificationInterface','App\Http\Repositories\Api\PersonMaster\QualificationRepository');
 
 
 
