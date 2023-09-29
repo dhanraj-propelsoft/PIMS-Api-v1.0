@@ -2,6 +2,7 @@
 namespace App\Http\Services\Api\CommonMaster;
 
 use App\Http\Interfaces\Api\CommonMaster\AreaInterface;
+use App\Http\Interfaces\Api\CommonMaster\DistrictInterface;
 use App\Http\Responses\ErrorApiResponse;
 use App\Http\Responses\SuccessApiResponse;
 use App\Models\Area;
@@ -11,21 +12,25 @@ use Illuminate\Support\Facades\Validator;
 class AreaService
 {
     protected $AreaInterface;
-    public function __construct(AreaInterface $AreaInterface)
+    public function __construct(AreaInterface $AreaInterface, DistrictInterface $DistrictInterface)
     {
         $this->AreaInterface = $AreaInterface;
+        $this->DistrictInterface = $DistrictInterface;
     }
 
     public function index()
     {
 
         $models = $this->AreaInterface->index();
-        $entities = $models->map(function ($model) {
+        $district = $this->DistrictInterface->index();
+        $entities = $models->map(function ($model) use ($district) {
             $area = $model->area;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $id = $model->id;
-            $datas = ['area' => $area, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $districtData = $district->firstWhere('id', $model->district_id);
+            $districtName = ($districtData) ? $districtData->district : null;
+            $datas = ['districtName' => $districtName, 'area' => $area, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });
 
@@ -49,16 +54,20 @@ class AreaService
         Log::info('AreaService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getAreaById($id )
+    public function getAreaById($id)
     {
         $model = $this->AreaInterface->getAreaById($id);
+        $district = $this->DistrictInterface->index();
         $datas = array();
         if ($model) {
             $area = $model->area;
+            $districtId = $model->district_id;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $id = $model->id;
-            $datas = ['area' => $area, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $districtData = $district->firstWhere('id', $districtId);
+            $districtName = ($districtData) ? $districtData->district : null;
+            $datas = ['districtId' => $districtId, 'districtName' => $districtName, 'area' => $area, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
         }
         return new SuccessApiResponse($datas, 200);
 
@@ -67,18 +76,18 @@ class AreaService
     {
         $model = $this->AreaInterface->getAreaById(isset($datas->id) ? $datas->id : '');
 
-        if ($model){
+        if ($model) {
             $model->id = $datas->id;
-            $model->last_updated_by=auth()->user()->id;
+            $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Area();
-            $model->created_by=auth()->user()->id;
+            $model->created_by = auth()->user()->id;
         }
         $model->area = $datas->area;
-        $model->state_id = isset($datas->stateId) ? $datas->stateId :null;
-        $model->description = isset($datas->description) ? $datas->description :null;
-        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus :null;
-        $model->pin_code = isset($datas->pin_code) ? $datas->pin_code :null;
+        $model->district_id = isset($datas->districtId) ? $datas->districtId : null;
+        $model->description = isset($datas->description) ? $datas->description : null;
+        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : null;
+        $model->pin_code = isset($datas->pinCode) ? $datas->pinCode : null;
 
         return $model;
     }

@@ -50,12 +50,8 @@ class AreaRepository implements AreaInterface
     }
     public function destroyArea($id)
     {
-        try {
-            $model = Area::where('state_id', $id)->whereNull('deleted_at')->firstOrFail();
-            return ['type' => 2, 'message' => 'Failed', 'status' => 'This State Dependent on Area'];
-        } catch (ModelNotFoundException $e) {
-            Area::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
-            return ['type' => 1, 'message' => 'Success'];
-        }
+           $destroy = Area::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
+            return $destroy;
+        
     }
 }

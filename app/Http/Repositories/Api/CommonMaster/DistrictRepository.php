@@ -3,8 +3,8 @@
 namespace App\Http\Repositories\Api\CommonMaster;
 
 use App\Http\Interfaces\Api\CommonMaster\DistrictInterface;
+use App\Models\Area;
 use App\Models\District;
-use App\Models\State;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -50,8 +50,8 @@ class DistrictRepository implements DistrictInterface
     public function destroyDistrict($id)
     {
         try {
-            $model = district::where('state_id', $id)->whereNull('deleted_at')->firstOrFail();
-            return ['type' => 2, 'message' => 'Failed', 'status' => 'This State Dependent on District'];
+            $model = Area::where('district_id', $id)->whereNull('deleted_at')->firstOrFail();
+            return ['type' => 2, 'message' => 'Failed', 'status' => 'This District Dependent on Area'];
         } catch (ModelNotFoundException $e) {
             District::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
             return ['type' => 1, 'message' => 'Success'];

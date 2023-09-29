@@ -2,6 +2,7 @@
 namespace App\Http\Services\Api\CommonMaster;
 
 use App\Http\Interfaces\Api\CommonMaster\DistrictInterface;
+use App\Http\Interfaces\Api\CommonMaster\StateInterface;
 use App\Http\Responses\ErrorApiResponse;
 use App\Http\Responses\SuccessApiResponse;
 use App\Models\District;
@@ -11,21 +12,25 @@ use Illuminate\Support\Facades\Validator;
 class DistrictService
 {
     protected $DistrictInterface;
-    public function __construct(DistrictInterface $DistrictInterface)
+    public function __construct(DistrictInterface $DistrictInterface, StateInterface $StateInterface)
     {
         $this->DistrictInterface = $DistrictInterface;
+        $this->StateInterface = $StateInterface;
     }
 
     public function index()
     {
 
         $models = $this->DistrictInterface->index();
-        $entities = $models->map(function ($model) {
+        $state = $this->StateInterface->index();
+        $entities = $models->map(function ($model) use ($state) {
             $district = $model->district;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $id = $model->id;
-            $datas = ['district' => $district, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $stateData = $state->firstWhere('id', $model->state_id);
+            $stateName = ($stateData) ? $stateData->state : null;
+            $datas = ['stateName' => $stateName, 'district' => $district, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });
 
@@ -49,16 +54,20 @@ class DistrictService
         Log::info('DistrictService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getDistrictById($id )
+    public function getDistrictById($id)
     {
         $model = $this->DistrictInterface->getDistrictById($id);
+        $state = $this->StateInterface->index();
         $datas = array();
         if ($model) {
             $district = $model->district;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
+            $stateId = $model->state_id;
             $id = $model->id;
-            $datas = ['district' => $district, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $stateData = $state->firstWhere('id', $stateId);
+            $stateName = ($stateData) ? $stateData->state : null;
+            $datas = ['stateId' => $stateId, 'stateName' => $stateName, 'district' => $district, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
         }
         return new SuccessApiResponse($datas, 200);
 
@@ -67,17 +76,17 @@ class DistrictService
     {
         $model = $this->DistrictInterface->getDistrictById(isset($datas->id) ? $datas->id : '');
 
-        if ($model){
+        if ($model) {
             $model->id = $datas->id;
-            $model->last_updated_by=auth()->user()->id;
+            $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new District();
-            $model->created_by=auth()->user()->id;
+            $model->created_by = auth()->user()->id;
         }
         $model->district = $datas->district;
-        $model->state_id = isset($datas->stateId) ? $datas->stateId :null;
-        $model->description = isset($datas->description) ? $datas->description :null;
-        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus :null;
+        $model->state_id = isset($datas->stateId) ? $datas->stateId : null;
+        $model->description = isset($datas->description) ? $datas->description : null;
+        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : null;
 
         return $model;
     }
