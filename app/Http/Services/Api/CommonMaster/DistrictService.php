@@ -27,10 +27,11 @@ class DistrictService
             $district = $model->district;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
+            $description=$model->description;
             $id = $model->id;
             $stateData = $state->firstWhere('id', $model->state_id);
             $stateName = ($stateData) ? $stateData->state : null;
-            $datas = ['stateName' => $stateName, 'district' => $district, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['stateName' => $stateName, 'description'=>$description,'district' => $district, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });
 
@@ -64,10 +65,11 @@ class DistrictService
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $stateId = $model->state_id;
+            $description=$model->description;
             $id = $model->id;
             $stateData = $state->firstWhere('id', $stateId);
             $stateName = ($stateData) ? $stateData->state : null;
-            $datas = ['stateId' => $stateId, 'stateName' => $stateName, 'district' => $district, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['stateId' => $stateId,'description'=>$description, 'stateName' => $stateName, 'district' => $district, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
         }
         return new SuccessApiResponse($datas, 200);
 

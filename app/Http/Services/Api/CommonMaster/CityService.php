@@ -27,11 +27,12 @@ class CityService
             $city = $model->city;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
+            $description=$model->description;
             $stateId = $model->state_id;
             $id = $model->id;
             $stateData = $state->firstWhere('id',  $model->state_id);
             $stateName = ($stateData) ? $stateData->state : null;
-            $datas = ['city' => $city, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id, 'stateName' => $stateName];
+            $datas = ['city' => $city, 'status' => $status,'description'=>$description, 'activeStatus' => $activeStatus, 'id' => $id, 'stateName' => $stateName];
             return $datas;
         });
 
@@ -64,10 +65,11 @@ class CityService
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $stateId = $model->state_id;
+            $description=$model->description;
             $id = $model->id;
             $stateData = $state->firstWhere('id',  $stateId);
             $stateName = ($stateData) ? $stateData->state : null;
-            $datas = ['stateName'=>$stateName,'city' => $city, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id, 'stateId' => $stateId];
+            $datas = ['stateName'=>$stateName,'city' => $city, 'description'=>$description,'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id, 'stateId' => $stateId];
         }
         return new SuccessApiResponse($datas, 200);
 

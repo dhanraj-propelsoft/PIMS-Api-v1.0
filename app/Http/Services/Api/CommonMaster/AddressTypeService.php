@@ -23,8 +23,9 @@ class AddressTypeService
             $addressType = $model->address_of;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
+            $description=$model->description;
             $id = $model->id;
-            $datas = ['addressType' => $addressType, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['addressType' => $addressType, 'description'=>$description,'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });
 
@@ -54,8 +55,9 @@ class AddressTypeService
             $addressType = $model->address_of;
             $status = ($model->pfm_active_status_id== 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
+            $description=$model->description;
             $id = $model->id;
-            $datas = ['addressType' => $addressType, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['addressType' => $addressType,'description'=>$description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
         }
         return new SuccessApiResponse($datas, 200);
 

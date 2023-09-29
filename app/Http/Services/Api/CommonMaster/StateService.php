@@ -26,12 +26,14 @@ class StateService
             $state = $model->state;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
+            $description=$model->description;
             $id = $model->id;
             $countryData = $country->firstWhere('id',  $model->country_id);
             $countryName = ($countryData) ? $countryData->country : null;
             $datas = [
                 'state' => $state,
                 'status' => $status,
+                'description'=>$description,
                 'activeStatus' => $activeStatus,
                 'id' => $id,
                 'countryName' => $countryName,
@@ -67,11 +69,12 @@ class StateService
             $state = $model->state;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
+            $description=$model->description;
             $countryId=$model->country_id;
             $id = $model->id;
             $countryData = $country->firstWhere('id',  $countryId);
             $countryName = ($countryData) ? $countryData->country : null;
-            $datas = ['countryId'=>$countryId, 'state' => $state, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id, 'countryName' => $countryName];
+            $datas = ['countryId'=>$countryId, 'description'=>$description,'state' => $state, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id, 'countryName' => $countryName];
         }
         return new SuccessApiResponse($datas, 200);
 

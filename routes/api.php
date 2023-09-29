@@ -16,7 +16,7 @@ Route::post('userAccess', 'App\Http\Controllers\Api\Setting\UserController@userA
 
 Route::group(['middleware' => 'auth:sanctum'], function(){
     //All secure URL's
-    include_once ('Api/master.php');
+    include_once ('Api/personMaster.php');
     include_once ('Api/setting.php');
     include_once ('Api/organizationMaster.php');
     include_once ('Api/commonMaster.php');
