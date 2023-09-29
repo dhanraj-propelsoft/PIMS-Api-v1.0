@@ -20,11 +20,12 @@ class OrgStructureService
     {
         $models = $this->OrgStructureInterface->index();
         $entities = $models->map(function ($model) {
-            $name = $model->org_structure;
+            $orgStructure = $model->org_structure;
             $status = ($model->active_status == 1) ? "Active" : "In-Active";
             $activeStatus = $model->active_status;
+            $description = $model->description;
             $id = $model->id;
-            $datas = ['name' => $name, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['org$orgStructure' => $orgStructure,'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });
 
@@ -51,11 +52,12 @@ class OrgStructureService
         $model = $this->OrgStructureInterface->getOrgStructureById($id);
         $datas = array();
         if ($model) {
-            $name = $model->org_structure;
+            $orgStructure = $model->org_structure;
             $status = ($model->active_status == 1) ? "Active" : "In-Active";
             $activeStatus = $model->active_status;
+            $description = $model->description;
             $id = $model->id;
-            $datas = ['name' => $name, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['orgStructure' => $orgStructure, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
                 }
         return new SuccessApiResponse($datas, 200);
 
