@@ -32,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('App\Http\Interfaces\Api\OrganizationMaster\OrgCategoryInterface','App\Http\Repositories\Api\OrganizationMaster\OrgCategoryRepository');
         $this->app->bind('App\Http\Interfaces\Api\OrganizationMaster\OrgDocumentTypeInterface','App\Http\Repositories\Api\OrganizationMaster\OrgDocumentTypeRepository');
         $this->app->bind('App\Http\Interfaces\Api\OrganizationMaster\OrgOwnerShipInterface','App\Http\Repositories\Api\OrganizationMaster\OrgOwnerShipRepository');
+        $this->app->bind('App\Http\Interfaces\Api\OrganizationMaster\OrgStructureInterface','App\Http\Repositories\Api\OrganizationMaster\OrgStructureRepository');
         $this->app->bind('App\Http\Interfaces\Api\Master\DocumentTypeInterface','App\Http\Repositories\Api\Master\DocumentTypeRepository');
         $this->app->bind('App\Http\Interfaces\Api\CommonMaster\CountryInterface','App\Http\Repositories\Api\CommonMaster\CountryRepository');
         $this->app->bind('App\Http\Interfaces\Api\CommonMaster\StateInterface','App\Http\Repositories\Api\CommonMaster\StateRepository');

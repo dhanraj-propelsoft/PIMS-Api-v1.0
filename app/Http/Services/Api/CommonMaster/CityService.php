@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Validator;
 
 class CityService
 {
-    protected $CityInterface;
+    protected $CityInterface,$StateInterface;
+
     public function __construct(CityInterface $CityInterface,StateInterface $StateInterface)
     {
         $this->CityInterface = $CityInterface;
