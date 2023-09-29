@@ -20,8 +20,9 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     include_once ('Api/setting.php');
     include_once ('Api/organizationMaster.php');
     include_once ('Api/commonMaster.php');
+    include_once ('Api/PFM.php');
 
     });
     // Your routes here, which will only be accessible to authenticated users
-    
+
 // Include API version 1 routes

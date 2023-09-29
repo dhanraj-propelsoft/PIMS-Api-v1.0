@@ -39,7 +39,15 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('App\Http\Interfaces\Api\CommonMaster\CityInterface','App\Http\Repositories\Api\CommonMaster\CityRepository');
         $this->app->bind('App\Http\Interfaces\Api\CommonMaster\DistrictInterface','App\Http\Repositories\Api\CommonMaster\DistrictRepository');
         $this->app->bind('App\Http\Interfaces\Api\CommonMaster\AreaInterface','App\Http\Repositories\Api\CommonMaster\AreaRepository');
-        $this->app->bind('App\Http\Interfaces\Api\PersonMaster\QualificationInterface','App\Http\Repositories\Api\PersonMaster\QualificationRepository');
+        $this->app->bind('App\Http\Interfaces\Api\PFM\ActiveStatusInterface','App\Http\Repositories\Api\PFM\ActiveStatusRepository');
+        $this->app->bind('App\Http\Interfaces\Api\PFM\AuthorizationInterface','App\Http\Repositories\Api\PFM\AuthorizationRepository');
+        $this->app->bind('App\Http\Interfaces\Api\PFM\CachetInterface','App\Http\Repositories\Api\PFM\CachetRepository');
+        $this->app->bind('App\Http\Interfaces\Api\PFM\DeponeStatusInterface','App\Http\Repositories\Api\PFM\DeponeStatusRepository');
+        $this->app->bind('App\Http\Interfaces\Api\PFM\ExistenceInterface','App\Http\Repositories\Api\PFM\ExistenceRepository');
+        $this->app->bind('App\Http\Interfaces\Api\PFM\OriginInterface','App\Http\Repositories\Api\PFM\OriginRepository');
+        $this->app->bind('App\Http\Interfaces\Api\PFM\PersonStageInterface','App\Http\Repositories\Api\PFM\PersonStageRepository');
+        $this->app->bind('App\Http\Interfaces\Api\PFM\SurvivalInterface','App\Http\Repositories\Api\PFM\SurvivalRepository');
+        $this->app->bind('App\Http\Interfaces\Api\PFM\ValidationInterface','App\Http\Repositories\Api\PFM\ValidationRepository');
 
 
 
