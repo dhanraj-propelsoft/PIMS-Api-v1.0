@@ -2,22 +2,22 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\OrganizationMaster\OrgAdministratorTypeController;
-use App\Http\Controllers\Api\OrganizationMaster\OrgBusinessActivitiesController;
-use App\Http\Controllers\Api\OrganizationMaster\OrgBusinessSaleSubsetController;
-use App\Http\Controllers\Api\OrganizationMaster\OrgBusinessSectorController;
-use App\Http\Controllers\Api\OrganizationMaster\OrgCategoryController;
-use App\Http\Controllers\Api\OrganizationMaster\OrgDocumentTypeController;
-use App\Http\Controllers\Api\OrganizationMaster\OrgOwnerShipController;
-use App\Http\Controllers\Api\OrganizationMaster\OrgStructureController;
+use App\Http\Controllers\Api\OrganizationMaster\AdministratorTypeController;
+use App\Http\Controllers\Api\OrganizationMaster\BusinessActivitiesController;
+use App\Http\Controllers\Api\OrganizationMaster\BusinessSaleSubsetController;
+use App\Http\Controllers\Api\OrganizationMaster\BusinessSectorController;
+use App\Http\Controllers\Api\OrganizationMaster\CategoryController;
+use App\Http\Controllers\Api\OrganizationMaster\DocumentTypeController;
+use App\Http\Controllers\Api\OrganizationMaster\OwnerShipController;
+use App\Http\Controllers\Api\OrganizationMaster\StructureController;
 
 
 
-Route::apiResource('orgAdministratorType',OrgAdministratorTypeController::class);
-Route::apiResource('orgBusinessActivities',OrgBusinessActivitiesController::class);
-Route::apiResource('orgBusinessSaleSubset',OrgBusinessSaleSubsetController::class);
-Route::apiResource('orgBusinessSector',OrgBusinessSectorController::class);
-Route::apiResource('orgCategory',OrgCategoryController::class);
-Route::apiResource('orgDocumentType',OrgDocumentTypeController::class);
-Route::apiResource('orgOwnerShip',OrgOwnerShipController::class);
-Route::apiResource('orgStructure',OrgStructureController::class);
+Route::apiResource('administratorType',AdministratorTypeController::class);
+Route::apiResource('businessActivities',BusinessActivitiesController::class);
+Route::apiResource('businessSaleSubset',BusinessSaleSubsetController::class);
+Route::apiResource('businessSector',BusinessSectorController::class);
+Route::apiResource('category',CategoryController::class);
+Route::apiResource('documentType',DocumentTypeController::class);
+Route::apiResource('ownerShip',OwnerShipController::class);
+Route::apiResource('structure',StructureController::class);
