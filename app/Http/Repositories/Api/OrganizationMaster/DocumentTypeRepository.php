@@ -12,8 +12,8 @@ class DocumentTypeRepository implements DocumentTypeInterface
     public function index()
     {
 
-        return DocumentType::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return DocumentType::
+        whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();   
     }
@@ -41,7 +41,7 @@ class DocumentTypeRepository implements DocumentTypeInterface
     }
     public function getDocumentTypeById($id)
     {
-        return DocumentType::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return DocumentType::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
 

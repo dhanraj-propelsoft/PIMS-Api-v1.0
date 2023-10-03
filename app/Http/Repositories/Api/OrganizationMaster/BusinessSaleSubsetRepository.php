@@ -11,8 +11,8 @@ class BusinessSaleSubsetRepository implements BusinessSaleSubsetInterface
 {
     public function index()
     {
-        return BusinessSaleSubset::where('pfm_active_status_id', 1)
-            ->whereNull('deleted_at')
+        return BusinessSaleSubset::
+            whereNull('deleted_at')
             ->whereNull('deleted_flag')
             ->get();
     }
@@ -41,7 +41,7 @@ class BusinessSaleSubsetRepository implements BusinessSaleSubsetInterface
     }
     public function getBusinessSaleSubsetById($id)
     {
-        return BusinessSaleSubset::where(['id' => $id, 'pfm_active_status_id' => 1])
+        return BusinessSaleSubset::where('id',$id)
             ->whereNull('deleted_at')
             ->whereNull('deleted_flag')->first();
 

@@ -11,10 +11,10 @@ class ValidationRepository implements ValidationInterface
 {
     public function index()
     {
-        return Validation::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
-        ->whereNull('deleted_flag')
-        ->get();   
+        return Validation::
+            whereNull('deleted_at')
+            ->whereNull('deleted_flag')
+            ->get();
     }
     public function store($model)
     {
@@ -40,13 +40,13 @@ class ValidationRepository implements ValidationInterface
     }
     public function getValidationById($id)
     {
-        return Validation::where(['id'=>$id,'pfm_active_status_id'=>1])
-        ->whereNull('deleted_at')
-        ->whereNull('deleted_flag')->first();
+        return Validation::where('id', $id)
+            ->whereNull('deleted_at')
+            ->whereNull('deleted_flag')->first();
 
     }
     public function destroyValidation($id)
     {
-        return Validation::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return Validation::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
     }
 }

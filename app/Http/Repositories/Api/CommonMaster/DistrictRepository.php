@@ -13,8 +13,8 @@ class DistrictRepository implements DistrictInterface
 {
     public function index()
     {
-        return District::where('pfm_active_status_id', 1)
-            ->whereNull('deleted_at')
+        return District::
+            whereNull('deleted_at')
             ->whereNull('deleted_flag')
             ->get();
     }
@@ -43,7 +43,7 @@ class DistrictRepository implements DistrictInterface
     }
     public function getDistrictById($id)
     {
-        return District::where(['id' => $id, 'pfm_active_status_id' => 1])
+        return District::where('id',$id)
             ->whereNull('deleted_at')
             ->whereNull('deleted_flag')->first();
     }

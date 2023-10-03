@@ -11,8 +11,8 @@ class BankRepository implements BankInterface
 {
     public function index()
     {
-        return Bank::where('pfm_active_status_id', 1)
-            ->whereNull('deleted_at')
+        return Bank::
+            whereNull('deleted_at')
             ->whereNull('deleted_flag')->get();
     }
     public function store($model)
@@ -39,7 +39,7 @@ class BankRepository implements BankInterface
     }
     public function getBankById($id)
     {
-        return Bank::where(['id' => $id, 'pfm_active_status_id' => 1])
+        return Bank::where('id', $id)
             ->whereNull('deleted_at')
             ->whereNull('deleted_flag')->first();
     }

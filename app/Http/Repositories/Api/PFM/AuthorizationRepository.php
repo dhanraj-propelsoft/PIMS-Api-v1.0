@@ -11,10 +11,10 @@ class AuthorizationRepository implements AuthorizationInterface
 {
     public function index()
     {
-        return Authorization::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
-        ->whereNull('deleted_flag')
-        ->get();   
+        return Authorization::
+            whereNull('deleted_at')
+            ->whereNull('deleted_flag')
+            ->get();
     }
     public function store($model)
     {
@@ -40,12 +40,12 @@ class AuthorizationRepository implements AuthorizationInterface
     }
     public function getAuthorizationById($id)
     {
-        return Authorization::where(['id'=>$id,'pfm_active_status_id'=>1])
-        ->whereNull('deleted_at')
-        ->whereNull('deleted_flag')->first();
+        return Authorization::where('id', $id)
+            ->whereNull('deleted_at')
+            ->whereNull('deleted_flag')->first();
     }
     public function destroyAuthorization($id)
     {
-        return Authorization::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return Authorization::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
     }
 }

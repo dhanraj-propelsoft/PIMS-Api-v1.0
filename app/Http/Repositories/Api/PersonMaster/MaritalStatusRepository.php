@@ -11,8 +11,8 @@ class MaritalStatusRepository implements MaritalStatusInterface
 {
     public function index()
     {
-        return MaritalStatus::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return MaritalStatus::
+        whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();
     }
@@ -41,7 +41,7 @@ class MaritalStatusRepository implements MaritalStatusInterface
     }
     public function getMaritalStatusById($id)
     {
-        return MaritalStatus::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return MaritalStatus::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
 

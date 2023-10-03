@@ -12,8 +12,8 @@ class BusinessSectorRepository implements BusinessSectorInterface
     public function index()
     {
 
-        return BusinessSector::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return BusinessSector::
+        whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();   ;
     }
@@ -41,7 +41,7 @@ class BusinessSectorRepository implements BusinessSectorInterface
     }
     public function getBusinessSectorById($id)
     {
-        return BusinessSector::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return BusinessSector::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
 

@@ -12,8 +12,8 @@ class CategoryRepository implements CategoryInterface
     public function index()
     {
 
-        return Category::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return Category::
+        whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();   
     }
@@ -41,7 +41,7 @@ class CategoryRepository implements CategoryInterface
     }
     public function getCategoryById($id)
     {
-        return Category::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return Category::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
 

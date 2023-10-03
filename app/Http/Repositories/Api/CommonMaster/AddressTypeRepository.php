@@ -11,8 +11,8 @@ class AddressTypeRepository implements AddressTypeInterface
 {
     public function index()
     {
-        return AddressType::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return AddressType::
+        whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();   
     }
@@ -40,7 +40,7 @@ class AddressTypeRepository implements AddressTypeInterface
     }
     public function getAddressTypeById($id)
     {
-        return AddressType::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return AddressType::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
 

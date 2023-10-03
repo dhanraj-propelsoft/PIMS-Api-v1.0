@@ -12,10 +12,10 @@ class BloodGroupRepository implements BloodGroupInterface
     public function index()
     {
 
-        return BloodGroup::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
-        ->whereNull('deleted_flag')
-        ->get();
+        return BloodGroup::
+            whereNull('deleted_at')
+            ->whereNull('deleted_flag')
+            ->get();
     }
     public function store($model)
     {
@@ -42,14 +42,14 @@ class BloodGroupRepository implements BloodGroupInterface
     }
     public function getBloodGroupById($id)
     {
-        return BloodGroup::where(['id'=>$id,'pfm_active_status_id'=>1])
-        ->whereNull('deleted_at')
-        ->whereNull('deleted_flag')->first();
+        return BloodGroup::where('id', $id)
+            ->whereNull('deleted_at')
+            ->whereNull('deleted_flag')->first();
 
     }
     public function destroyBloodGroup($id)
     {
-        return BloodGroup::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return BloodGroup::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
     }
 
 }

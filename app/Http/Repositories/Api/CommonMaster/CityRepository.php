@@ -11,8 +11,8 @@ class CityRepository implements CityInterface
 {
     public function index()
     {
-        return City::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return City::
+        whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();   
      }
@@ -40,7 +40,7 @@ class CityRepository implements CityInterface
     }
     public function getCityById($id)
     {
-        return City::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return City::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
 

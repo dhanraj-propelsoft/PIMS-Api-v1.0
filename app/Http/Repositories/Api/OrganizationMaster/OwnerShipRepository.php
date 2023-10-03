@@ -11,8 +11,8 @@ class OwnerShipRepository implements OwnerShipInterface
     public function index()
     {
 
-        return OwnerShip::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return OwnerShip::
+        whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();   
     }
@@ -41,7 +41,7 @@ class OwnerShipRepository implements OwnerShipInterface
     }
     public function getOwnerShipById($id)
     {
-        return OwnerShip::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return OwnerShip::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
 

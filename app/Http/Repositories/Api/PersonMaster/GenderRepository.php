@@ -11,8 +11,8 @@ class GenderRepository implements GenderInterface
 {
     public function index()
     {
-        return Gender::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return Gender::
+    whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();
     }
@@ -40,7 +40,7 @@ class GenderRepository implements GenderInterface
     }
     public function getGenderById($id)
     {
-        return Gender::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return Gender::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
 

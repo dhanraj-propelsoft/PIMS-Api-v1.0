@@ -11,10 +11,10 @@ class SalutationRepository implements salutationInterface
 {
     public function index()
     {
-        return Salutation::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
-        ->whereNull('deleted_flag')
-        ->get();
+        return Salutation::
+            whereNull('deleted_at')
+            ->whereNull('deleted_flag')
+            ->get();
     }
     public function store($model)
     {
@@ -39,13 +39,13 @@ class SalutationRepository implements salutationInterface
     }
     public function getSalutationById($id)
     {
-        return Salutation::where(['id'=>$id,'pfm_active_status_id'=>1])
-        ->whereNull('deleted_at')
-        ->whereNull('deleted_flag')->first();
+        return Salutation::where('id', $id)
+            ->whereNull('deleted_at')
+            ->whereNull('deleted_flag')->first();
 
     }
     public function destroySalutation($id)
     {
-        return Salutation::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return Salutation::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
     }
 }

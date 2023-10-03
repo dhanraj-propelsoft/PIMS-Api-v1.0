@@ -12,8 +12,8 @@ class StructureRepository implements StructureInterface
     public function index()
     {
 
-        return Structure::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return Structure::
+        whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();   
     }
@@ -42,7 +42,7 @@ class StructureRepository implements StructureInterface
     }
     public function getStructureById($id)
     {
-        return Structure::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return Structure::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
     }

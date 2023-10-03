@@ -11,8 +11,8 @@ class RelationShipRepository implements RelationShipInterface
 {
     public function index()
     {
-        return RelationShip::where('pfm_active_status_id', 1)
-            ->whereNull('deleted_at')
+        return RelationShip::
+            whereNull('deleted_at')
             ->whereNull('deleted_flag')
             ->get();
     }
@@ -41,7 +41,7 @@ class RelationShipRepository implements RelationShipInterface
     }
     public function getRelationShipById($id)
     {
-        return RelationShip::where(['id' => $id, 'pfm_active_status_id' => 1])
+        return RelationShip::where('id',$id)
             ->whereNull('deleted_at')
             ->whereNull('deleted_flag')->first();
 

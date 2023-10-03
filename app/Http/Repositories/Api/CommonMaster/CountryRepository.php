@@ -13,8 +13,8 @@ class CountryRepository implements CountryInterface
 {
     public function index()
     {
-        return Country::where('pfm_active_status_id', 1)
-            ->whereNull('deleted_at')
+        return Country::
+            whereNull('deleted_at')
             ->whereNull('deleted_flag')
             ->get();
     }
@@ -43,7 +43,7 @@ class CountryRepository implements CountryInterface
     }
     public function getCountryById($id)
     {
-        return Country::where(['id' => $id, 'pfm_active_status_id' => 1])
+        return Country::where('id',$id)
             ->whereNull('deleted_at')
             ->whereNull('deleted_flag')->first();
 

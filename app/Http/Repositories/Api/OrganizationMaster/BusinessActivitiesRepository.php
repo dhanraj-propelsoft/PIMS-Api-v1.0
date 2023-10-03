@@ -11,8 +11,8 @@ class BusinessActivitiesRepository implements BusinessActivitiesInterface
 {
     public function index()
     {
-        return BusinessActivities::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return BusinessActivities::
+        whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();   
     }
@@ -40,7 +40,7 @@ class BusinessActivitiesRepository implements BusinessActivitiesInterface
     }
     public function getBusinessActivitiesById($id)
     {
-        return BusinessActivities::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return BusinessActivities::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
 

@@ -11,8 +11,8 @@ class QualificationRepository implements QualificationInterface
 {
     public function index()
     {
-        return Qualification::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return Qualification::
+        whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();
     }
@@ -40,7 +40,7 @@ class QualificationRepository implements QualificationInterface
     }
     public function getQualificationById($id)
     {
-        return Qualification::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return Qualification::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
 

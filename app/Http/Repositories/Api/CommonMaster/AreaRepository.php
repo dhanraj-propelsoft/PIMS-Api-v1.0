@@ -13,8 +13,8 @@ class AreaRepository implements AreaInterface
 {
     public function index()
     {
-        return Area::where('pfm_active_status_id', 1)
-            ->whereNull('deleted_at')
+        return Area::
+            whereNull('deleted_at')
             ->whereNull('deleted_flag')
             ->get();
     }
@@ -43,7 +43,7 @@ class AreaRepository implements AreaInterface
     }
     public function getAreaById($id)
     {
-        return Area::where(['id' => $id, 'pfm_active_status_id' => 1])
+        return Area::where('id',$id)
             ->whereNull('deleted_at')
             ->whereNull('deleted_flag')->first();
 

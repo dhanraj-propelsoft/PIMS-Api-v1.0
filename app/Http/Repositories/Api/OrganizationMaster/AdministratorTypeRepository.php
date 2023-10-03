@@ -11,8 +11,8 @@ class AdministratorTypeRepository implements AdministratorTypeInterface
 {
     public function index()
     {
-        return  AdministratorType::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return  AdministratorType::
+        whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();   
     }
@@ -40,7 +40,7 @@ class AdministratorTypeRepository implements AdministratorTypeInterface
     }
     public function getAdministratorTypeById($id)
     {
-        return  AdministratorType::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return  AdministratorType::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
 

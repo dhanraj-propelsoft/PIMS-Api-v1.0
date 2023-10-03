@@ -13,8 +13,8 @@ class StateRepository implements StateInterface
 {
     public function index()
     {
-        return State::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return State::
+        whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();
     }
@@ -42,7 +42,7 @@ class StateRepository implements StateInterface
     }
     public function getStateById($id)
     {
-        return State::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return State::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
 

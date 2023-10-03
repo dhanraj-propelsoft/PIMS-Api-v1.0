@@ -12,8 +12,8 @@ class LanguageRepository implements LanguageInterface
     public function index()
     {
 
-        return Language::where('pfm_active_status_id', 1)
-        ->whereNull('deleted_at')
+        return Language::
+        whereNull('deleted_at')
         ->whereNull('deleted_flag')
         ->get();   
     }
@@ -41,7 +41,7 @@ class LanguageRepository implements LanguageInterface
     }
     public function getLanguageById($id)
     {
-        return Language::where(['id'=>$id,'pfm_active_status_id'=>1])
+        return Language::where('id',$id)
         ->whereNull('deleted_at')
         ->whereNull('deleted_flag')->first();
 
