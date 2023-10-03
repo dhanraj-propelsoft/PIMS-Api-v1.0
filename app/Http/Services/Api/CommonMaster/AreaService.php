@@ -27,11 +27,12 @@ class AreaService
             $area = $model->area;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
-            $description=$model->description;
+            $description = $model->description;
+            $pinCode = $model->pin_code;
             $id = $model->id;
             $districtData = $district->firstWhere('id', $model->district_id);
             $districtName = ($districtData) ? $districtData->district : null;
-            $datas = ['districtName' => $districtName, 'description'=>$description,'area' => $area, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['districtName' => $districtName, 'pinCode' => $pinCode, 'description' => $description, 'area' => $area, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });
 
@@ -43,6 +44,7 @@ class AreaService
 
         $validator = Validator::make($datas, [
             'area' => 'required',
+            'pinCode' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -65,11 +67,12 @@ class AreaService
             $districtId = $model->district_id;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
-            $description=$model->description;
+            $pinCode = $model->pin_code;
+            $description = $model->description;
             $id = $model->id;
             $districtData = $district->firstWhere('id', $districtId);
             $districtName = ($districtData) ? $districtData->district : null;
-            $datas = ['districtId' => $districtId, 'districtName' => $districtName,'description'=>$description, 'area' => $area, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['districtId' => $districtId, 'pinCode'=>$pinCode,'districtName' => $districtName, 'description' => $description, 'area' => $area, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
         }
         return new SuccessApiResponse($datas, 200);
 
@@ -86,6 +89,7 @@ class AreaService
             $model->created_by = auth()->user()->id;
         }
         $model->area = $datas->area;
+        $model->pin_code = $datas->pinCode;
         $model->district_id = isset($datas->districtId) ? $datas->districtId : null;
         $model->description = isset($datas->description) ? $datas->description : null;
         $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : null;
