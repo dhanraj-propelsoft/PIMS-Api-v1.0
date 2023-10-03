@@ -93,7 +93,6 @@ class AreaService
         $model->district_id = isset($datas->districtId) ? $datas->districtId : null;
         $model->description = isset($datas->description) ? $datas->description : null;
         $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : null;
-        $model->pin_code = isset($datas->pinCode) ? $datas->pinCode : null;
 
         return $model;
     }
