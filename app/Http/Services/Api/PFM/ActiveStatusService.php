@@ -68,12 +68,14 @@ class ActiveStatusService
 
         if ($model) {
             $model->id = $datas->id;
+            $model->last_updated_by=auth()->user()->id;
         } else {
             $model = new ActiveStatus();
+            $model->created_by=auth()->user()->id;
         }
         $model->active_type = $datas->activeType;
         $model->description = isset($datas->description) ? $datas->description : null;
-        $model->active_status = isset($datas->activeStatus) ? $datas->activeStatus : '0';
+        $model->active_status = isset($datas->activeStatus) ? $datas->activeStatus : null;
         return $model;
     }
 

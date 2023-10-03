@@ -11,7 +11,10 @@ class ActiveStatusRepository implements ActiveStatusInterface
 {
     public function index()
     {
-        return ActiveStatus::whereNull('deleted_at')->get();
+        return ActiveStatus::where('pfm_active_status_id', 1)
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')
+        ->get();   
     }
     public function store($model)
     {
@@ -37,11 +40,13 @@ class ActiveStatusRepository implements ActiveStatusInterface
     }
     public function getActiveStatusById($id)
     {
-        return ActiveStatus::where('id', $id)->whereNull('deleted_at')->first();
+        return ActiveStatus::where(['id'=>$id,'pfm_active_status_id'=>1])
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')->first();
 
     }
     public function destroyActiveStatus($id)
     {
-        return ActiveStatus::where('id', $id)->update(['deleted_at' => Carbon::now()]);
+        return ActiveStatus::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

@@ -11,7 +11,10 @@ class CachetRepository implements CachetInterface
 {
     public function index()
     {
-        return Cachet::whereNull('deleted_at')->get();
+        return Cachet::where('pfm_active_status_id', 1)
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')
+        ->get();   
     }
     public function store($model)
     {
@@ -37,11 +40,14 @@ class CachetRepository implements CachetInterface
     }
     public function getCachetById($id)
     {
-        return Cachet::where('id', $id)->whereNull('deleted_at')->first();
+        return Cachet::where(['id'=>$id,'pfm_active_status_id'=>1])
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')->first();
+
 
     }
     public function destroyCachet($id)
     {
-        return Cachet::where('id', $id)->update(['deleted_at' => Carbon::now()]);
+        return Cachet::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

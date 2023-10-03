@@ -11,7 +11,10 @@ class PersonStageRepository implements PersonStageInterface
 {
     public function index()
     {
-        return PersonStage::whereNull('deleted_at')->get();
+        return PersonStage::where('pfm_active_status_id', 1)
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')
+        ->get();   
     }
     public function store($model)
     {
@@ -37,11 +40,12 @@ class PersonStageRepository implements PersonStageInterface
     }
     public function getPersonStageById($id)
     {
-        return PersonStage::where('id', $id)->whereNull('deleted_at')->first();
-
+        return PersonStage::where(['id'=>$id,'pfm_active_status_id'=>1])
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')->first();
     }
     public function destroyPersonStage($id)
     {
-        return PersonStage::where('id', $id)->update(['deleted_at' => Carbon::now()]);
+        return PersonStage::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

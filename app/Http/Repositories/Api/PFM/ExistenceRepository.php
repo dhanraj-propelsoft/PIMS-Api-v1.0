@@ -11,7 +11,10 @@ class ExistenceRepository implements ExistenceInterface
 {
     public function index()
     {
-        return Existence::whereNull('deleted_at')->get();
+        return Existence::where('pfm_active_status_id', 1)
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')
+        ->get();   
     }
     public function store($model)
     {
@@ -37,11 +40,12 @@ class ExistenceRepository implements ExistenceInterface
     }
     public function getExistenceById($id)
     {
-        return Existence::where('id', $id)->whereNull('deleted_at')->first();
-
+        return Existence::where(['id'=>$id,'pfm_active_status_id'=>1])
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')->first();
     }
     public function destroyExistence($id)
     {
-        return Existence::where('id', $id)->update(['deleted_at' => Carbon::now()]);
+        return Existence::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

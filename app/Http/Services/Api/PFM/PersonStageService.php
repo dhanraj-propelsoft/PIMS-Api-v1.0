@@ -68,12 +68,16 @@ class PersonStageService
 
         if ($model) {
             $model->id = $datas->id;
+            $model->last_updated_by=auth()->user()->id;
+
         } else {
             $model = new PersonStage();
+            $model->created_by=auth()->user()->id;
+
         }
         $model->person_stage = $datas->personStage;
         $model->description = isset($datas->description) ? $datas->description : null;
-        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : '0';
+        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : null;
         return $model;
     }
 

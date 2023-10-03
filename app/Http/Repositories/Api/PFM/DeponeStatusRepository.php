@@ -11,7 +11,10 @@ class DeponeStatusRepository implements DeponeStatusInterface
 {
     public function index()
     {
-        return DeponeStatus::whereNull('deleted_at')->get();
+        return DeponeStatus::where('pfm_active_status_id', 1)
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')
+        ->get();   
     }
     public function store($model)
     {
@@ -37,11 +40,13 @@ class DeponeStatusRepository implements DeponeStatusInterface
     }
     public function getDeponeStatusById($id)
     {
-        return DeponeStatus::where('id', $id)->whereNull('deleted_at')->first();
+        return DeponeStatus::where(['id'=>$id,'pfm_active_status_id'=>1])
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')->first();
 
     }
     public function destroyDeponeStatus($id)
     {
-        return DeponeStatus::where('id', $id)->update(['deleted_at' => Carbon::now()]);
+        return DeponeStatus::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

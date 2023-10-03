@@ -11,7 +11,10 @@ class OriginRepository implements OriginInterface
 {
     public function index()
     {
-        return Origin::whereNull('deleted_at')->get();
+        return Origin::where('pfm_active_status_id', 1)
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')
+        ->get();   
     }
     public function store($model)
     {
@@ -37,11 +40,13 @@ class OriginRepository implements OriginInterface
     }
     public function getOriginById($id)
     {
-        return Origin::where('id', $id)->whereNull('deleted_at')->first();
+        return Origin::where(['id'=>$id,'pfm_active_status_id'=>1])
+        ->whereNull('deleted_at')
+        ->whereNull('deleted_flag')->first();
 
     }
     public function destroyOrigin($id)
     {
-        return Origin::where('id', $id)->update(['deleted_at' => Carbon::now()]);
+        return Origin::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

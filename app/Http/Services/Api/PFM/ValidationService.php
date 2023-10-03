@@ -68,12 +68,14 @@ class ValidationService
 
         if ($model) {
             $model->id = $datas->id;
+            $model->last_updated_by=auth()->user()->id;
         } else {
             $model = new Validation();
+            $model->created_by=auth()->user()->id;
         }
         $model->validation = $datas->validation;
         $model->description = isset($datas->description) ? $datas->description : null;
-        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : '0';
+        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : null;
         return $model;
     }
 

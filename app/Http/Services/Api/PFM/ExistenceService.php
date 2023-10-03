@@ -68,12 +68,16 @@ class ExistenceService
 
         if ($model) {
             $model->id = $datas->id;
+            $model->last_updated_by=auth()->user()->id;
+
         } else {
             $model = new Existence();
+            $model->created_by=auth()->user()->id;
+
         }
         $model->existence = $datas->existence;
         $model->description = isset($datas->description) ? $datas->description : null;
-        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : '0';
+        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : null;
         return $model;
     }
 
