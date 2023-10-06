@@ -52,13 +52,13 @@ class OwnerShipService
         $model = $this->OwnerShipInterface->getOwnerShipById($id);
         $datas = array();
         if ($model) {
-            $owneShip = $model->org_ownership;
+            $ownerShip = $model->org_ownership;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
 
             $id = $model->id;
-            $datas = ['owneShip' => $owneShip,'description'=>$description ,'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['ownerShip' => $ownerShip,'description'=>$description ,'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
         }
         return new SuccessApiResponse($datas, 200);
 

@@ -18,6 +18,6 @@ Route::apiResource('businessActivities',BusinessActivitiesController::class);
 Route::apiResource('businessSaleSubset',BusinessSaleSubsetController::class);
 Route::apiResource('businessSector',BusinessSectorController::class);
 Route::apiResource('category',CategoryController::class);
-Route::apiResource('documentType',DocumentTypeController::class);
+Route::apiResource('orgDocumentType',DocumentTypeController::class);
 Route::apiResource('ownerShip',OwnerShipController::class);
 Route::apiResource('structure',StructureController::class);
