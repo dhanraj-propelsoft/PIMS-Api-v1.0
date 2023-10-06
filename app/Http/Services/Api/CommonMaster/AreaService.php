@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Services\Api\CommonMaster;
 
 use App\Http\Interfaces\Api\CommonMaster\AreaInterface;
@@ -8,10 +9,11 @@ use App\Http\Responses\SuccessApiResponse;
 use App\Models\Area;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AreaService
 {
-    protected $AreaInterface;
+    protected $AreaInterface, $DistrictInterface;
     public function __construct(AreaInterface $AreaInterface, DistrictInterface $DistrictInterface)
     {
         $this->AreaInterface = $AreaInterface;
@@ -22,29 +24,29 @@ class AreaService
     {
 
         $models = $this->AreaInterface->index();
-        $district = $this->DistrictInterface->index();
-        $entities = $models->map(function ($model) use ($district) {
+        $state = $this->DistrictInterface->index();
+        $entities = $models->map(function ($model) use ($state) {
             $area = $model->area;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $pinCode = $model->pin_code;
             $id = $model->id;
-            $districtData = $district->firstWhere('id', $model->district_id);
-            $districtName = ($districtData) ? $districtData->district : null;
-            $datas = ['districtName' => $districtName, 'pinCode' => $pinCode, 'description' => $description, 'area' => $area, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $stateId = $model->state_id;
+            $stateData = $state->firstWhere('id', $stateId);
+            $stateName = ($stateData) ? $stateData->state : null;
+            $datas = ['stateId' => $stateId, 'stateName' => $stateName, 'area' => $area, 'pinCode' => $pinCode, 'description' => $description,  'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });
 
         return new SuccessApiResponse($entities, 200);
-
     }
     public function store($datas)
     {
 
         $validator = Validator::make($datas, [
-            'area' => 'required',
-            'pinCode' => 'required'
+            'area' => ['required', Rule::unique('pims_com_area', 'area'),],
+            'pinCode' => ['required', Rule::unique('pims_com_area', 'pin_code'),],
         ]);
 
         if ($validator->fails()) {
@@ -60,22 +62,21 @@ class AreaService
     public function getAreaById($id)
     {
         $model = $this->AreaInterface->getAreaById($id);
-        $district = $this->DistrictInterface->index();
+        $state = $this->DistrictInterface->index();
         $datas = array();
         if ($model) {
             $area = $model->area;
-            $districtId = $model->district_id;
+            $stateId = $model->state_id;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $pinCode = $model->pin_code;
             $description = $model->description;
             $id = $model->id;
-            $districtData = $district->firstWhere('id', $districtId);
-            $districtName = ($districtData) ? $districtData->district : null;
-            $datas = ['districtId' => $districtId, 'pinCode'=>$pinCode,'districtName' => $districtName, 'description' => $description, 'area' => $area, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $stateData = $state->firstWhere('id', $stateId);
+            $stateName = ($stateData) ? $stateData->state : null;
+            $datas = ['stateId' => $stateId, 'stateName' => $stateName, 'area' => $area, 'pinCode' => $pinCode, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
         }
         return new SuccessApiResponse($datas, 200);
-
     }
     public function convertArea($datas)
     {
@@ -90,7 +91,7 @@ class AreaService
         }
         $model->area = $datas->area;
         $model->pin_code = $datas->pinCode;
-        $model->district_id = isset($datas->districtId) ? $datas->districtId : null;
+        $model->state_id = isset($datas->stateId) ? $datas->stateId : null;
         $model->description = isset($datas->description) ? $datas->description : null;
         $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : null;
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Services\Api\CommonMaster;
 
 use App\Http\Interfaces\Api\CommonMaster\DistrictInterface;
@@ -8,10 +9,11 @@ use App\Http\Responses\SuccessApiResponse;
 use App\Models\District;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class DistrictService
 {
-    protected $DistrictInterface;
+    protected $DistrictInterface, $StateInterface;
     public function __construct(DistrictInterface $DistrictInterface, StateInterface $StateInterface)
     {
         $this->DistrictInterface = $DistrictInterface;
@@ -27,22 +29,22 @@ class DistrictService
             $district = $model->district;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
-            $description=$model->description;
+            $description = $model->description;
             $id = $model->id;
-            $stateData = $state->firstWhere('id', $model->state_id);
+            $stateId = $model->state_id;
+            $stateData = $state->firstWhere('id', $stateId);
             $stateName = ($stateData) ? $stateData->state : null;
-            $datas = ['stateName' => $stateName, 'description'=>$description,'district' => $district, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['stateId' => $stateId, 'stateName' => $stateName, 'district' => $district, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });
 
         return new SuccessApiResponse($entities, 200);
-
     }
     public function store($datas)
     {
 
         $validator = Validator::make($datas, [
-            'district' => 'required',
+            'district' => ['required', Rule::unique('pims_com_districts', 'district'),],
         ]);
 
         if ($validator->fails()) {
@@ -65,14 +67,13 @@ class DistrictService
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $stateId = $model->state_id;
-            $description=$model->description;
+            $description = $model->description;
             $id = $model->id;
             $stateData = $state->firstWhere('id', $stateId);
             $stateName = ($stateData) ? $stateData->state : null;
-            $datas = ['stateId' => $stateId,'description'=>$description, 'stateName' => $stateName, 'district' => $district, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['stateId' => $stateId, 'stateName' => $stateName, 'district' => $district, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
         }
         return new SuccessApiResponse($datas, 200);
-
     }
     public function convertDistrict($datas)
     {
