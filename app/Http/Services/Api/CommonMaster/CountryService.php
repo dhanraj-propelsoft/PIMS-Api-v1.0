@@ -2,18 +2,22 @@
 namespace App\Http\Services\Api\CommonMaster;
 
 use App\Http\Interfaces\Api\CommonMaster\CountryInterface;
-use App\Http\Responses\ErrorApiResponse;
+use App\Http\Interfaces\Api\CommonMaster\StateInterface;
+use App\Http\Interfaces\Api\PFM\ActiveStatusInterface;
 use App\Http\Responses\SuccessApiResponse;
 use App\Models\Country;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class CountryService
 {
     protected $CountryInterface;
-    public function __construct(CountryInterface $CountryInterface)
+    public function __construct(CountryInterface $CountryInterface, StateInterface $StateInterface, ActiveStatusInterface $ActiveStatusInterface)
     {
         $this->CountryInterface = $CountryInterface;
+        $this->StateInterface = $StateInterface;
+        $this->ActiveStatusInterface = $ActiveStatusInterface;
     }
 
     public function index()
@@ -22,11 +26,14 @@ class CountryService
         $models = $this->CountryInterface->index();
         $entities = $models->map(function ($model) {
             $country = $model->country;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
-            $activeStatus = $model->pfm_active_status_id;
-            $description=$model->description;
+            $numericCode = $model->numeric_code;
+            $phoneCode = $model->phone_code;
+            $capital = $model->capital;
+            $flag = $model->flag;
+            $activeStatusId = $model->pfm_active_status_id;
+            $description = $model->description;
             $id = $model->id;
-            $datas = ['country' => $country, 'description'=>$description,'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['country' => $country, 'numericCode' => $numericCode, 'flag' => $flag, 'capital' => $capital, 'phoneCode' => $phoneCode, 'description' => $description, 'activeStatusId' => $activeStatusId, 'id' => $id];
             return $datas;
         });
 
@@ -35,62 +42,121 @@ class CountryService
     }
     public function store($datas)
     {
-     
-        $validator = Validator::make($datas, [
-            'country' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            $error = $validator->errors();
-            return new ErrorApiResponse($error, 300);
+        $validation = $this->ValidationForCountry($datas);
+        if (!$validation) {
+            $datas = (object) $datas;
+            $convert = $this->convertCountry($datas);
+            $storeModel = $this->CountryInterface->store($convert);
+            Log::info('CountryService >Store Return.' . json_encode($storeModel));
+            return new SuccessApiResponse($storeModel, 200);
+        } else {
+            return $validation;
         }
-        $datas = (object) $datas;
-        $convert = $this->convertCountry($datas);
-        $storeModel = $this->CountryInterface->store($convert);
-        Log::info('CountryService >Store Return.' . json_encode($storeModel));
-        return new SuccessApiResponse($storeModel, 200);
+
     }
-    public function getCountryById($id )
+    public function ValidationForCountry($datas)
+    {
+        $rules = [];
+
+        foreach ($datas as $field => $value) {
+            if ($field === 'country') {
+                $rules['country'] = [
+                    'required',
+                    'string',
+                    Rule::unique('pims_com_countries', 'country')->where(function ($query) use ($datas) {
+                        $query->whereNull('deleted_flag');
+                        if (isset($datas['id'])) {
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+                ];
+            } elseif ($field === 'numericCode' && $value !== null) {
+                $rules['numericCode'] = [
+                    Rule::unique('pims_com_countries', 'numeric_code')->where(function ($query) use ($datas) {
+                        $query->whereNull('deleted_flag');
+                        if (isset($datas['id'])) {
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+                ];
+            } elseif ($field === 'phoneCode' && $value !== null) {
+                $rules['phoneCode'] = [
+                    Rule::unique('pims_com_countries', 'phone_code')->where(function ($query) use ($datas) {
+                        $query->whereNull('deleted_flag');
+                        if (isset($datas['id'])) {
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+                ];
+            } elseif ($field === 'capital' && $value !== null) {
+                $rules['capital'] = [
+                    Rule::unique('pims_com_countries', 'capital')->where(function ($query) use ($datas) {
+                        $query->whereNull('deleted_flag');
+                        if (isset($datas['id'])) {
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+                ];
+            }
+        }
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+    }
+    public function getCountryById($id)
     {
         $model = $this->CountryInterface->getCountryById($id);
+        $activeStatus = $this->ActiveStatusInterface->index();
         $datas = array();
         if ($model) {
             $country = $model->country;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
-            $activeStatus = $model->pfm_active_status_id;
-            $description=$model->description;
+            $activeStatusId = $model->pfm_active_status_id;
+            $numericCode = $model->numeric_code;
+            $phoneCode = $model->phone_code;
+            $capital = $model->capital;
+            $flag = $model->flag;
+            $description = $model->description;
             $id = $model->id;
-            $datas = ['country' => $country,'description'=>$description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['country' => $country, 'numericCode' => $numericCode, 'flag' => $flag, 'capital' => $capital, 'phoneCode' => $phoneCode, 'description' => $description, 'activeStatusId' => $activeStatusId, 'id' => $id, 'activeStatus' => $activeStatus];
         }
         return new SuccessApiResponse($datas, 200);
 
     }
     public function convertCountry($datas)
     {
-      
-        $model = $this->CountryInterface->getCountryById(isset($datas->id) ? $datas->id : '');
-
-        if ($model){
+        if (isset($datas->id)) {
+            $model = $this->CountryInterface->getCountryById($datas->id);
             $model->id = $datas->id;
-            $model->last_updated_by=auth()->user()->id;
+            $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Country();
-            $model->created_by=auth()->user()->id;
+            $model->created_by = auth()->user()->id;
         }
         $model->country = $datas->country;
-        $model->numeric_code = isset($datas->numericCode) ? $datas->numericCode :null;
-        $model->phone_code = isset($datas->phoneCode) ? $datas->phoneCode :null;
-        $model->capital = isset($datas->capital) ? $datas->capital :null;
-        $model->flag = isset($datas->flag) ? $datas->flag :null;
-        $model->description = isset($datas->description) ? $datas->description :null;
-        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus :null;
-      
+        $model->numeric_code = isset($datas->numericCode) ? $datas->numericCode : null;
+        $model->phone_code = isset($datas->phoneCode) ? $datas->phoneCode : null;
+        $model->capital = isset($datas->capital) ? $datas->capital : null;
+        $model->flag = isset($datas->flag) ? $datas->flag : null;
+        $model->description = isset($datas->description) ? $datas->description : null;
+        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : null;
+
         return $model;
     }
 
     public function destroyCountryById($id)
     {
-        $destory = $this->CountryInterface->destroyCountry($id);
-        return new SuccessApiResponse($destory, 200);
+        $checkState = $this->StateInterface->getStateById($id);
+        if ($checkState) {
+            $result = ['type' => 2, 'Message' => 'Failed', 'status' => 'This Country Dependent on State'];
+        } else {
+            $destory = $this->CountryInterface->destroyCountry($id);
+            if ($destory) {
+                $result = ['type' => 1, 'Message' => 'Success', 'status' => 'This Country Is Deleted'];
+            } else {
+                $result = ['type' => 3, 'Message' => 'DestoryFailed'];
+            }
+        }
+        return new SuccessApiResponse($result, 200);
     }
 }
