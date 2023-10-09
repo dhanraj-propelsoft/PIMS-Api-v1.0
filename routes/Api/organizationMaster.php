@@ -21,3 +21,5 @@ Route::apiResource('category',CategoryController::class);
 Route::apiResource('orgDocumentType',DocumentTypeController::class);
 Route::apiResource('ownerShip',OwnerShipController::class);
 Route::apiResource('structure',StructureController::class);
+Route::get('tempOrganizationList', 'App\Http\Controllers\Api\OrganizationMaster\OrganizationController@tempOrganizationList')->name('tempOrganizationList');
+
