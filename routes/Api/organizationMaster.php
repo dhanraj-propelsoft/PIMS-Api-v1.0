@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\OrganizationMaster\CategoryController;
 use App\Http\Controllers\Api\OrganizationMaster\DocumentTypeController;
 use App\Http\Controllers\Api\OrganizationMaster\OwnerShipController;
 use App\Http\Controllers\Api\OrganizationMaster\StructureController;
+use App\Http\Controllers\Api\OrganizationMaster\OrganizationController;
 
 
 
@@ -21,5 +22,5 @@ Route::apiResource('category',CategoryController::class);
 Route::apiResource('orgDocumentType',DocumentTypeController::class);
 Route::apiResource('ownerShip',OwnerShipController::class);
 Route::apiResource('structure',StructureController::class);
-Route::get('tempOrganizationList', 'App\Http\Controllers\Api\OrganizationMaster\OrganizationController@tempOrganizationList')->name('tempOrganizationList');
+Route::get('tempOrganizationList', [OrganizationController::class, 'tempOrganizationList'])->name('tempOrganizationList');
 
