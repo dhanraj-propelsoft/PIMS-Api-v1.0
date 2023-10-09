@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Services\Api\CommonMaster;
 
 use App\Http\Interfaces\Api\CommonMaster\CountryInterface;
@@ -38,7 +39,6 @@ class CountryService
         });
 
         return new SuccessApiResponse($entities, 200);
-
     }
     public function store($datas)
     {
@@ -121,7 +121,6 @@ class CountryService
             $datas = ['country' => $country, 'numericCode' => $numericCode, 'flag' => $flag, 'capital' => $capital, 'phoneCode' => $phoneCode, 'description' => $description, 'activeStatusId' => $activeStatusId, 'id' => $id, 'activeStatus' => $activeStatus];
         }
         return new SuccessApiResponse($datas, 200);
-
     }
     public function convertCountry($datas)
     {

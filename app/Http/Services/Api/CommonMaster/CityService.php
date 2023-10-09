@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Services\Api\CommonMaster;
 
 use App\Http\Interfaces\Api\CommonMaster\CityInterface;
@@ -8,12 +9,13 @@ use App\Http\Responses\SuccessApiResponse;
 use App\Models\City;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class CityService
 {
-    protected $CityInterface,$StateInterface;
+    protected $CityInterface, $StateInterface;
 
-    public function __construct(CityInterface $CityInterface,StateInterface $StateInterface)
+    public function __construct(CityInterface $CityInterface, StateInterface $StateInterface)
     {
         $this->CityInterface = $CityInterface;
         $this->StateInterface = $StateInterface;
@@ -23,26 +25,25 @@ class CityService
     {
         $models = $this->CityInterface->index();
         $state = $this->StateInterface->index();
-        $entities = $models->map(function ($model)  use ($state)  {
+        $entities = $models->map(function ($model)  use ($state) {
             $city = $model->city;
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
-            $description=$model->description;
+            $description = $model->description;
             $stateId = $model->state_id;
             $id = $model->id;
-            $stateData = $state->firstWhere('id',  $model->state_id);
+            $stateData = $state->firstWhere('id',  $stateId);
             $stateName = ($stateData) ? $stateData->state : null;
-            $datas = ['city' => $city, 'status' => $status,'description'=>$description, 'activeStatus' => $activeStatus, 'id' => $id, 'stateName' => $stateName];
+            $datas = ['stateId' => $stateId, 'stateName' => $stateName, 'city' => $city, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });
 
         return new SuccessApiResponse($entities, 200);
-
     }
     public function store($datas)
     {
         $validator = Validator::make($datas, [
-            'city' => 'required',
+            'city' => ['required', Rule::unique('pims_com_cities', 'city'),],
         ]);
 
         if ($validator->fails()) {
@@ -55,7 +56,7 @@ class CityService
         Log::info('CityService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getCityById($id )
+    public function getCityById($id)
     {
         $model = $this->CityInterface->getCityById($id);
         $state = $this->StateInterface->index();
@@ -65,14 +66,13 @@ class CityService
             $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $stateId = $model->state_id;
-            $description=$model->description;
+            $description = $model->description;
             $id = $model->id;
             $stateData = $state->firstWhere('id',  $stateId);
             $stateName = ($stateData) ? $stateData->state : null;
-            $datas = ['stateName'=>$stateName,'city' => $city, 'description'=>$description,'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id, 'stateId' => $stateId];
+            $datas = ['stateId' => $stateId, 'stateName' => $stateName, 'city' => $city, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
         }
         return new SuccessApiResponse($datas, 200);
-
     }
     public function convertCity($datas)
     {
@@ -80,10 +80,10 @@ class CityService
 
         if ($model) {
             $model->id = $datas->id;
-            $model->last_updated_by=auth()->user()->id;
+            $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new City();
-            $model->created_by=auth()->user()->id;
+            $model->created_by = auth()->user()->id;
         }
         $model->city = $datas->city;
         $model->state_id = isset($datas->stateId) ? $datas->stateId : null;
