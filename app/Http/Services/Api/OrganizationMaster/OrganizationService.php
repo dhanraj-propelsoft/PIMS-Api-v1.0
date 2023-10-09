@@ -17,6 +17,7 @@ class OrganizationService
     {
         $model = $this->OrganizationInterface->tempOrganizationList();
         $tempOrganization = $model->map(function ($tempOrgItem) {
+            $orgId=$tempOrgItem->id;
             $orgDetails = json_decode($tempOrgItem->organization_detail, true);
             $orgDocuments = json_decode($tempOrgItem->organization_doc_type, true);
             $orgAddress = json_decode($tempOrgItem->organization_address, true);
@@ -56,6 +57,7 @@ class OrganizationService
                 }
             }
             return [
+                'orgId' =>$orgId,
                 'orgName' => $orgName,
                 'orgEmail' => $orgEmail,
                 'orgwebsite' => $orgwebsite,
