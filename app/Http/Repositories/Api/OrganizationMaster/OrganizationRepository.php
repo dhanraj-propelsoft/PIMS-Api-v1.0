@@ -1,20 +1,11 @@
 <?php
 
 namespace App\Http\Repositories\Api\OrganizationMaster;
+
 use App\Http\Interfaces\Api\OrganizationMaster\OrganizationInterface;
-use App\Models\Organization\TempOrganization;
-use App\Models\Organization\Organization;
-use App\Models\Organization\OrganizationCategory;
-use App\Models\Organization\OrganizationDatabase;
-use App\Models\Organization\OrganizationDetail;
-use App\Models\Organization\OrganizationDocument;
-use App\Models\Organization\OrganizationEmail;
-use App\Models\Organization\OrganizationOwnership;
-use App\Models\Organization\OrganizationStructure;
-use App\Models\Organization\OrganizationWebAddress;
-use App\Models\Organization\PropertyAddress;
 use App\Models\Organization\OrganizationAddress;
-use Carbon\Carbon;
+use App\Models\Organization\OrganizationDatabase;
+use App\Models\Organization\TempOrganization;
 use Illuminate\Support\Facades\DB;
 
 class OrganizationRepository implements OrganizationInterface
@@ -22,8 +13,8 @@ class OrganizationRepository implements OrganizationInterface
     public function tempOrganizationList()
     {
         return TempOrganization::
-        whereNull('deleted_flag')
-        ->get();   
+            whereNull('deleted_flag')
+            ->get();
     }
     public function getTempOrganizationDataByTempId($id)
     {
@@ -61,21 +52,21 @@ class OrganizationRepository implements OrganizationInterface
             ];
         }
     }
-   
+
     public function getDataBaseNameByOrgId($id)
     {
         return OrganizationDatabase::where('org_id', $id)->first();
     }
     public function dynamicOrganizationData($orgDocId, $orgOwnershipId, $orgCategoryId, $orgStructureId)
     {
-    //   $db=config('database.connections.mysql_external.database');
-   
+        //   $db=config('database.connections.mysql_external.database');
+
         try {
             $result = DB::transaction(function () use ($orgDocId, $orgOwnershipId, $orgCategoryId, $orgStructureId) {
-                if ($orgDocId) {  
-                for ($i = 0; $i < count($orgDocId); $i++) {
-                    $orgDocId[$i]->save();
-                }
+                if ($orgDocId) {
+                    for ($i = 0; $i < count($orgDocId); $i++) {
+                        $orgDocId[$i]->save();
+                    }
                 }
                 $orgOwnershipId->save();
                 $orgCategoryId->save();
@@ -89,6 +80,32 @@ class OrganizationRepository implements OrganizationInterface
             return $result;
         } catch (\Exception $e) {
             return [
+                'message' => "failed",
+                'data' => $e,
+            ];
+        }
+    }
+    public function destoryTempOrganizationForId($tempId)
+    {
+        return TempOrganization::where('id', $tempId)->delete();
+    }
+    public function UserOrganizationRelational($model)
+    {
+        try {
+            $result = DB::transaction(function () use ($model) {
+
+                $model->save();
+                return [
+                    'message' => "Success",
+                    'data' => $model,
+                ];
+            });
+
+            return $result;
+        } catch (\Exception $e) {
+
+            return [
+
                 'message' => "failed",
                 'data' => $e,
             ];

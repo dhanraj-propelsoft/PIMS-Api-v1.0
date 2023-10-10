@@ -9,6 +9,8 @@ interface OrganizationInterface
     public function saveOrganization($orgModel,$orgDetailModel,$orgEmailModel,$orgWebLinkModel,$propertyAddressModel,$orgDBModel);
     public  function getDataBaseNameByOrgId($id);
     public function dynamicOrganizationData($orgDocId,$orgOwnershipId,$orgCategoryId,$orgStructureId);
+    public function destoryTempOrganizationForId($tempId);
+    public function UserOrganizationRelational($model);
 
 
 
