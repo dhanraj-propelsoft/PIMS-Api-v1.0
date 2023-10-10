@@ -41,20 +41,43 @@ class StateService
     }
     public function store($datas)
     {
-        $validator = Validator::make($datas, [
-            'state' => ['required', Rule::unique('pims_com_states', 'state'),],
-        ]);
-
-        if ($validator->fails()) {
-            $error = $validator->errors();
-
-            return new ErrorApiResponse($error, 300);
+        $validation = $this->ValidationForState($datas);
+        if (!$validation) {
+            $datas = (object) $datas;
+            $convert = $this->convertState($datas);
+            $storeModel = $this->StateInterface->store($convert);
+            Log::info('StateService >Store Return.' . json_encode($storeModel));
+            return new SuccessApiResponse($storeModel, 200);
         }
-        $datas = (object) $datas;
-        $convert = $this->convertState($datas);
-        $storeModel = $this->StateInterface->store($convert);
-        Log::info('StateService >Store Return.' . json_encode($storeModel));
-        return new SuccessApiResponse($storeModel, 200);
+        else{
+            return $validation;
+        }
+
+    }
+    public function ValidationForState($datas){
+        $rules =[];
+
+        foreach ($datas as $field => $value){
+            if($field === 'state'){
+                $rules['state'] = [
+                    'required',
+                    'string',
+                    Rule::unique('pims_com_states', 'state')->where(function ($query) use ($datas){
+                        $query->whereNull('deleted_flag');
+                        if(isset($datas['countryId'])){
+                            $query->where('country_id','=', $datas['countryId']);
+                        }
+                        if(isset($datas['id'])){
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+                ];
+            }
+            $validator = Validator::make($datas, $rules);
+            if($validator->fails()){
+                return response()->json(['errors' => $validator->errors()], 400);
+            }
+        }
     }
     public function getStateById($id)
     {
