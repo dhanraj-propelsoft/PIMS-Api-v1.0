@@ -7,13 +7,14 @@ use App\Http\Interfaces\Api\CommonMaster\StateInterface;
 use App\Http\Interfaces\Api\PFM\ActiveStatusInterface;
 use App\Http\Responses\SuccessApiResponse;
 use App\Models\Country;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class CountryService
 {
-    protected $CountryInterface;
+    protected $CountryInterface, $StateInterface, $ActiveStatusInterface;
     public function __construct(CountryInterface $CountryInterface, StateInterface $StateInterface, ActiveStatusInterface $ActiveStatusInterface)
     {
         $this->CountryInterface = $CountryInterface;
@@ -34,7 +35,11 @@ class CountryService
             $activeStatusId = $model->pfm_active_status_id;
             $description = $model->description;
             $id = $model->id;
-            $datas = ['country' => $country, 'numericCode' => $numericCode, 'flag' => $flag, 'capital' => $capital, 'phoneCode' => $phoneCode, 'description' => $description, 'activeStatusId' => $activeStatusId, 'id' => $id];
+            $status = $this->ActiveStatusInterface->getActiveStatusById($activeStatusId);
+
+            $currentStatusName = ($status) ? ($status->active_type) : "";
+
+            $datas = ['country' => $country, 'numericCode' => $numericCode, 'flag' => $flag, 'capital' => $capital, 'phoneCode' => $phoneCode, 'description' => $description, 'currentStatusName' => $currentStatusName, 'id' => $id];
             return $datas;
         });
 
@@ -52,8 +57,8 @@ class CountryService
         } else {
             return $validation;
         }
-
     }
+
     public function ValidationForCountry($datas)
     {
         $rules = [];
@@ -101,8 +106,15 @@ class CountryService
         }
         $validator = Validator::make($datas, $rules);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
+
+            $resStatus = ['errors' => $validator->errors()];
+            $resCode = 400;
+        } else {
+
+            $resStatus = ['errors' => false];
+            $resCode = 200;
         }
+        return new SuccessApiResponse($resStatus, $resCode);
     }
     public function getCountryById($id)
     {

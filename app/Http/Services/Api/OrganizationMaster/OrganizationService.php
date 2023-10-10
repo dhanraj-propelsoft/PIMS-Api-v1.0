@@ -35,14 +35,17 @@ class OrganizationService
             $orgDetails = json_decode($tempOrgItem->organization_detail, true);
             $orgDocuments = json_decode($tempOrgItem->organization_doc_type, true);
             $orgAddress = json_decode($tempOrgItem->organization_address, true);
+           
             $orgName = $orgDetails['orgName'];
+            
             $orgEmail = $orgDetails['orgEmail'];
             $orgwebsite = $orgDetails['orgwebsite'];
             $orgStructureId = $orgDetails['orgStructureId'];
             $orgCategoryId = $orgDetails['orgCategoryId'];
             $orgOwnershipId = $orgDetails['orgOwnershipId'];
-            $doorNo = $orgAddress['doorNo'];
             $buildingName = $orgAddress['buildingName'];
+            $doorNo = $orgAddress['doorNo'];
+           
             $street = $orgAddress['street'];
             $landMark = $orgAddress['landMark'];
             $pinCode = $orgAddress['pinCode'];
@@ -119,7 +122,7 @@ class OrganizationService
             $generateOrganizationCategoryIdModel = $this->convertOrganizationCategoryModel($orgDetails, $orgId);
             $generateOrganizationStructureIdModel = $this->convertOrganizationStructureModel($orgDetails, $orgId);
             $model = $this->OrganizationInterface->dynamicOrganizationData($generateOrganizationDocumentModel, $generateOrganizationOwnerShipIdModel, $generateOrganizationCategoryIdModel, $generateOrganizationStructureIdModel);
-            
+            return new SuccessApiResponse($model, 200);
             
     }
 }

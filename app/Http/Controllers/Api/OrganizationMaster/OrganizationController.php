@@ -20,11 +20,11 @@ class OrganizationController extends Controller
         Log::info('OrganizationController -> index Return.' . json_encode($response));
         return $response;
     }
-    public function organizationStore(Request $request)
+    public function organizationStore($tempId)
     {
-     
-        Log::info('OrganizationController > store function Inside.' . json_encode($request->all()));
-        $response = $this->OrganizationService->organizationStore($request->all());
+   
+        Log::info('OrganizationController > store function Inside.' . json_encode($tempId));
+        $response = $this->OrganizationService->organizationStore($tempId);
         Log::info('OrganizationController > store function Return.' . json_encode($response));
         return $response;
     }

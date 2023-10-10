@@ -23,6 +23,6 @@ Route::apiResource('orgDocumentType',DocumentTypeController::class);
 Route::apiResource('ownerShip',OwnerShipController::class);
 Route::apiResource('structure',StructureController::class);
 Route::get('tempOrganizationList', [OrganizationController::class, 'tempOrganizationList'])->name('tempOrganizationList');
-Route::post('organizationStore', [OrganizationController::class, 'organizationStore'])->name('organizationStore');
+Route::get('organizationStore/{tempId}', [OrganizationController::class, 'organizationStore'])->name('organizationStore');
 
 
