@@ -13,8 +13,7 @@ class StateRepository implements StateInterface
 {
     public function index()
     {
-        return State::
-        whereNull('deleted_at')
+        return State::with('activeStatus')
         ->whereNull('deleted_flag')
         ->get();
     }

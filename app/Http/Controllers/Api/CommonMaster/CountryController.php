@@ -53,6 +53,13 @@ class CountryController extends Controller
         return $response;
         Log::info('CountryController -> Store Return.' . json_encode($response));
     }
+    public function validation(Request $request)
+    {
+        Log::info('CountryController-> validation Inside.' . json_encode($request->all()));
+        $response = $this->CountryService->ValidationForCountry($request->all());
+        return $response;
+        Log::info('CountryController -> validation Return.' . json_encode($response));
+    }
 
     /**
      * Display the specified resource.

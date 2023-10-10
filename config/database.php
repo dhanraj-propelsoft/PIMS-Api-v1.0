@@ -63,6 +63,23 @@ return [
             ]) : [],
         ],
 
+        'mysql_external' =>
+        array(
+          'driver' => 'mysql',
+          'url' => NULL,
+          'host' => '127.0.0.1',
+          'port' => '3306',
+          'database' =>'',
+          'username' =>  "root",
+          'password' =>"",
+          'unix_socket' => '',
+          'charset' => 'utf8mb4',
+          'collation' => 'utf8mb4_unicode_ci',
+          'prefix' => '',
+          'strict' => true,
+          'engine' => 'InnoDB',
+        ),
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
