@@ -24,37 +24,79 @@ class StateService
     public function index()
     {
         $models = $this->StateInterface->index();
+        
         $country = $this->CountryInterface->index();
         $entities = $models->map(function ($model) use ($country) {
             $state = $model->state;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
-            $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
-            $id = $model->id;
+            $status=$model->activeStatus->active_type;
+            $stateId = $model->id;
             $countryId = $model->country_id;
             $countryData = $country->firstWhere('id',  $countryId);
             $countryName = ($countryData) ? $countryData->country : null;
-            $datas = ['countryId' => $countryId, 'countryName' => $countryName, 'state' => $state, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $datas = ['countryId' => $countryId, 'countryName' => $countryName, 'state' => $state, 'description' => $description, 'status' => $status,'stateId' => $stateId];
             return $datas;
         });
         return new SuccessApiResponse($entities, 200);
     }
     public function store($datas)
     {
-        $validator = Validator::make($datas, [
-            'state' => ['required', Rule::unique('pims_com_states', 'state'),],
-        ]);
-
-        if ($validator->fails()) {
-            $error = $validator->errors();
-
-            return new ErrorApiResponse($error, 300);
-        }
+        $validation = $this->ValidationState($datas);
         $datas = (object) $datas;
         $convert = $this->convertState($datas);
         $storeModel = $this->StateInterface->store($convert);
         Log::info('StateService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
+    }
+    public function ValidationState($datas)
+    {
+      
+        $rules = [];
+
+        foreach ($datas as $field => $value) {
+            if ($field === 'countryId') {
+                $rules['countryId'] = [
+                    'required',
+                    // Rule::unique('pims_com_countries', 'country')->where(function ($query) use ($datas) {
+                    //     $query->whereNull('deleted_flag');
+                    //     if (isset($datas['id'])) {
+                    //         $query->where('id', '!=', $datas['id']);
+                    //     }
+                    // }),
+                ];
+            } elseif ($field === 'numericCode' && $value !== null) {
+                $rules['numericCode'] = [
+                    Rule::unique('pims_com_countries', 'numeric_code')->where(function ($query) use ($datas) {
+                        $query->whereNull('deleted_flag');
+                        if (isset($datas['id'])) {
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+                ];
+            } elseif ($field === 'phoneCode' && $value !== null) {
+                $rules['phoneCode'] = [
+                    Rule::unique('pims_com_countries', 'phone_code')->where(function ($query) use ($datas) {
+                        $query->whereNull('deleted_flag');
+                        if (isset($datas['id'])) {
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+                ];
+            } elseif ($field === 'capital' && $value !== null) {
+                $rules['capital'] = [
+                    Rule::unique('pims_com_countries', 'capital')->where(function ($query) use ($datas) {
+                        $query->whereNull('deleted_flag');
+                        if (isset($datas['id'])) {
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+                ];
+            }
+        }
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
     }
     public function getStateById($id)
     {
