@@ -58,7 +58,10 @@ class StateService
         $rules =[];
 
         foreach ($datas as $field => $value){
-            if($field === 'state'){
+            if($field === 'countryId'){
+                $rules['countryId'] = ['required','integer'];
+            }
+            elseif($field === 'state'){
                 $rules['state'] = [
                     'required',
                     'string',
@@ -79,56 +82,7 @@ class StateService
             }
         }
     }
-    public function ValidationState($datas)
-    {
 
-        $rules = [];
-
-        foreach ($datas as $field => $value) {
-            if ($field === 'countryId') {
-                $rules['countryId'] = [
-                    'required',
-                    // Rule::unique('pims_com_countries', 'country')->where(function ($query) use ($datas) {
-                    //     $query->whereNull('deleted_flag');
-                    //     if (isset($datas['id'])) {
-                    //         $query->where('id', '!=', $datas['id']);
-                    //     }
-                    // }),
-                ];
-            } elseif ($field === 'numericCode' && $value !== null) {
-                $rules['numericCode'] = [
-                    Rule::unique('pims_com_countries', 'numeric_code')->where(function ($query) use ($datas) {
-                        $query->whereNull('deleted_flag');
-                        if (isset($datas['id'])) {
-                            $query->where('id', '!=', $datas['id']);
-                        }
-                    }),
-                ];
-            } elseif ($field === 'phoneCode' && $value !== null) {
-                $rules['phoneCode'] = [
-                    Rule::unique('pims_com_countries', 'phone_code')->where(function ($query) use ($datas) {
-                        $query->whereNull('deleted_flag');
-                        if (isset($datas['id'])) {
-                            $query->where('id', '!=', $datas['id']);
-                        }
-                    }),
-                ];
-            } elseif ($field === 'capital' && $value !== null) {
-                $rules['capital'] = [
-                    Rule::unique('pims_com_countries', 'capital')->where(function ($query) use ($datas) {
-                        $query->whereNull('deleted_flag');
-                        if (isset($datas['id'])) {
-                            $query->where('id', '!=', $datas['id']);
-                        }
-                    }),
-                ];
-            }
-        }
-        $validator = Validator::make($datas, $rules);
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
-    }
     public function getStateById($id)
     {
         $model = $this->StateInterface->getStateById($id);
