@@ -139,11 +139,16 @@ class OrganizationService
     }
     public function convertOrgIdLinkUser($orgId, $uid)
     {
-        $model = new UserOrganizationRelational();
-        $model->uid = $uid;
-        $model->organization_id = $orgId;
-        $model->pfm_active_status_id = 1;
-        return $model;
+        if($orgId){
+            $setDefault=$this->OrganizationInterface->checkDefaultOrganizationByUid($uid);
+            $model = new UserOrganizationRelational();
+            $model->uid = $uid;
+            $model->organization_id = $orgId;
+            $model->default_org=($setDefault)?0:1;
+            $model->pfm_active_status_id = 1;
+            return $model;
+        }
+        
     }
     public function convertToOrganizationModel()
     {
@@ -171,7 +176,7 @@ class OrganizationService
         $datas = (object) $datas;
         $model = new OrganizationEmail();
         $model->email = $datas->orgEmail;
-        $model->pfm_active_status_id = "1";
+        $model->pfm_active_status_id = 1;
         return $model;
     }
     public function convertToOrganizationWebAddressModel($datas)

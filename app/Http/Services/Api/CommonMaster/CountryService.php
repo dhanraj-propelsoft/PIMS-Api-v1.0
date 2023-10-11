@@ -48,14 +48,14 @@ class CountryService
     public function store($datas)
     {
         $validation = $this->ValidationForCountry($datas);
-        if (!$validation) {
+        if ($validation->data['errors'] === false) {
             $datas = (object) $datas;
             $convert = $this->convertCountry($datas);
             $storeModel = $this->CountryInterface->store($convert);
             Log::info('CountryService >Store Return.' . json_encode($storeModel));
             return new SuccessApiResponse($storeModel, 200);
-        } else {
-            return $validation;
+        } else { 
+         return $validation->data['errors'];
         }
     }
 
@@ -109,10 +109,13 @@ class CountryService
 
             $resStatus = ['errors' => $validator->errors()];
             $resCode = 400;
+           
+
         } else {
 
-            $resStatus = ['errors' => false];
+            $resStatus = ['errors' =>false];
             $resCode = 200;
+        
         }
         return new SuccessApiResponse($resStatus, $resCode);
     }

@@ -6,6 +6,7 @@ use App\Http\Interfaces\Api\OrganizationMaster\OrganizationInterface;
 use App\Models\Organization\OrganizationAddress;
 use App\Models\Organization\OrganizationDatabase;
 use App\Models\Organization\TempOrganization;
+use App\Models\Organization\UserOrganizationRelational;
 use Illuminate\Support\Facades\DB;
 
 class OrganizationRepository implements OrganizationInterface
@@ -110,5 +111,9 @@ class OrganizationRepository implements OrganizationInterface
                 'data' => $e,
             ];
         }
+    }
+    public function checkDefaultOrganizationByUid($uid)
+    {
+    return UserOrganizationRelational::where(['uid'=>$uid,'default_org'=>1])->whereNull('deleted_flag')->first();
     }
 }

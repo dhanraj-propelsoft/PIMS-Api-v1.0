@@ -11,6 +11,7 @@ interface OrganizationInterface
     public function dynamicOrganizationData($orgDocId,$orgOwnershipId,$orgCategoryId,$orgStructureId);
     public function destoryTempOrganizationForId($tempId);
     public function UserOrganizationRelational($model);
+    public function checkDefaultOrganizationByUid($uid);
 
 
 
