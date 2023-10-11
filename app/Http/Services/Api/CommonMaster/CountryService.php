@@ -26,20 +26,19 @@ class CountryService
     {
 
         $models = $this->CountryInterface->index();
+       
         $entities = $models->map(function ($model) {
             $country = $model->country;
             $numericCode = $model->numeric_code;
             $phoneCode = $model->phone_code;
             $capital = $model->capital;
             $flag = $model->flag;
-            $activeStatusId = $model->pfm_active_status_id;
+            $status=isset($model->activeStatus->active_type)?$model->activeStatus->active_type:null;
             $description = $model->description;
             $id = $model->id;
-            $status = $this->ActiveStatusInterface->getActiveStatusById($activeStatusId);
+        
 
-            $currentStatusName = ($status) ? ($status->active_type) : "";
-
-            $datas = ['country' => $country, 'numericCode' => $numericCode, 'flag' => $flag, 'capital' => $capital, 'phoneCode' => $phoneCode, 'description' => $description, 'currentStatusName' => $currentStatusName, 'id' => $id];
+            $datas = ['country' => $country, 'numericCode' => $numericCode, 'flag' => $flag, 'capital' => $capital, 'phoneCode' => $phoneCode, 'description' => $description, 'status' => $status, 'id' => $id];
             return $datas;
         });
 
