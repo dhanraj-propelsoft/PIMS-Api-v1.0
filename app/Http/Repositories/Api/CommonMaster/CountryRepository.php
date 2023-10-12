@@ -11,8 +11,8 @@ class CountryRepository implements CountryInterface
 {
     public function index()
     {
-        return Country::
-            whereNull('deleted_at')
+        return Country::with('activeStatus')
+             ->whereNull('deleted_at')
             ->whereNull('deleted_flag')
             ->get();
     }
