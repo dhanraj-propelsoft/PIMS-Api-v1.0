@@ -7,6 +7,7 @@ use App\Http\Responses\SuccessApiResponse;
 use App\Models\PersonStage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class PersonStageService
 {
@@ -33,19 +34,39 @@ class PersonStageService
     }
     public function store($datas)
     {
-        $validator = Validator::make($datas, [
-            'personStage' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            $error = $validator->errors();
-            return new ErrorApiResponse($error, 300);
+        $validation = $this->ValidationForPersonStage($datas);
+        if (!$validation) {
+            $datas = (object) $datas;
+            $convert = $this->convertPersonStage($datas);
+            $storeModel = $this->PersonStageInterface->store($convert);
+            Log::info('PersonStageService >Store Return.' . json_encode($storeModel));
+            return new SuccessApiResponse($storeModel, 200);
         }
-        $datas = (object) $datas;
-        $convert = $this->convertPersonStage($datas);
-        $storeModel = $this->PersonStageInterface->store($convert);
-        Log::info('PersonStageService >Store Return.' . json_encode($storeModel));
-        return new SuccessApiResponse($storeModel, 200);
+        else{
+            return $validation;
+        }
+    }
+    public function ValidationForPersonStage($datas){
+        $rules =[];
+
+        foreach ($datas as $field => $value){
+            if($field === 'personStage'){
+                $rules['personStage'] = [
+                    'required',
+                    'string',
+                    Rule::unique('pfm_person_stage', 'person_stage')->where(function ($query) use ($datas){
+                        $query->whereNull('deleted_flag');
+                        if(isset($datas['id'])){
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+                ];
+            }
+            $validator = Validator::make($datas, $rules);
+            if($validator->fails()){
+                return response()->json(['errors' => $validator->errors()], 400);
+            }
+        }
     }
     public function getPersonStageById($id )
     {

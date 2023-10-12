@@ -8,6 +8,7 @@ use App\Http\Responses\SuccessApiResponse;
 use App\Models\Origin;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class OriginService
 {
@@ -23,11 +24,11 @@ class OriginService
 
         $entities = $models->map(function ($model) {
 
-            $origin = $model->origin;         
+            $origin = $model->origin;
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $id = $model->id;
-            
+
             $status = isset($model->activeStatus->active_type) ? $model->activeStatus->active_type : null;
             $datas = ['origin' => $origin, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
@@ -37,19 +38,39 @@ class OriginService
     }
     public function store($datas)
     {
-        $validator = Validator::make($datas, [
-            'origin' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            $error = $validator->errors();
-            return new ErrorApiResponse($error, 300);
+        $validation = $this->ValidationForOrigin($datas);
+        if (!$validation) {
+            $datas = (object) $datas;
+            $convert = $this->convertOrigin($datas);
+            $storeModel = $this->OriginInterface->store($convert);
+            Log::info('OriginService >Store Return.' . json_encode($storeModel));
+            return new SuccessApiResponse($storeModel, 200);
         }
-        $datas = (object) $datas;
-        $convert = $this->convertOrigin($datas);
-        $storeModel = $this->OriginInterface->store($convert);
-        Log::info('OriginService >Store Return.' . json_encode($storeModel));
-        return new SuccessApiResponse($storeModel, 200);
+        else{
+            return $validation;
+        }
+    }
+    public function ValidationForOrigin($datas){
+        $rules =[];
+
+        foreach ($datas as $field => $value){
+            if($field === 'origin'){
+                $rules['origin'] = [
+                    'required',
+                    'string',
+                    Rule::unique('pfm_origin', 'origin')->where(function ($query) use ($datas){
+                        $query->whereNull('deleted_flag');
+                        if(isset($datas['id'])){
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+                ];
+            }
+            $validator = Validator::make($datas, $rules);
+            if($validator->fails()){
+                return response()->json(['errors' => $validator->errors()], 400);
+            }
+        }
     }
     public function getOriginById($id)
     {

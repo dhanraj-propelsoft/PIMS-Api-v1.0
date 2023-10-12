@@ -7,6 +7,7 @@ use App\Http\Responses\SuccessApiResponse;
 use App\Models\Existence;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ExistenceService
 {
@@ -35,19 +36,39 @@ class ExistenceService
     }
     public function store($datas)
     {
-        $validator = Validator::make($datas, [
-            'existence' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            $error = $validator->errors();
-            return new ErrorApiResponse($error, 300);
+        $validation = $this->ValidationForExistence($datas);
+        if (!$validation) {
+            $datas = (object) $datas;
+            $convert = $this->convertExistence($datas);
+            $storeModel = $this->ExistenceInterface->store($convert);
+            Log::info('ExistenceService >Store Return.' . json_encode($storeModel));
+            return new SuccessApiResponse($storeModel, 200);
         }
-        $datas = (object) $datas;
-        $convert = $this->convertExistence($datas);
-        $storeModel = $this->ExistenceInterface->store($convert);
-        Log::info('ExistenceService >Store Return.' . json_encode($storeModel));
-        return new SuccessApiResponse($storeModel, 200);
+        else{
+            return $validation;
+        }
+    }
+    public function ValidationForExistence($datas){
+        $rules =[];
+
+        foreach ($datas as $field => $value){
+            if($field === 'existence'){
+                $rules['existence'] = [
+                    'required',
+                    'string',
+                    Rule::unique('pfm_existence', 'existence')->where(function ($query) use ($datas){
+                        $query->whereNull('deleted_flag');
+                        if(isset($datas['id'])){
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+                ];
+            }
+            $validator = Validator::make($datas, $rules);
+            if($validator->fails()){
+                return response()->json(['errors' => $validator->errors()], 400);
+            }
+        }
     }
     public function getExistenceById($id )
     {

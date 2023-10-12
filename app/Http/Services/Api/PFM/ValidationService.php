@@ -7,6 +7,7 @@ use App\Http\Responses\SuccessApiResponse;
 use App\Models\Validation;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ValidationService
 {
@@ -34,19 +35,39 @@ class ValidationService
     }
     public function store($datas)
     {
-        $validator = Validator::make($datas, [
-            'validation' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            $error = $validator->errors();
-            return new ErrorApiResponse($error, 300);
+        $validation = $this->ValidationForValidation($datas);
+        if (!$validation) {
+            $datas = (object) $datas;
+            $convert = $this->convertValidation($datas);
+            $storeModel = $this->ValidationInterface->store($convert);
+            Log::info('ValidationService >Store Return.' . json_encode($storeModel));
+            return new SuccessApiResponse($storeModel, 200);
         }
-        $datas = (object) $datas;
-        $convert = $this->convertValidation($datas);
-        $storeModel = $this->ValidationInterface->store($convert);
-        Log::info('ValidationService >Store Return.' . json_encode($storeModel));
-        return new SuccessApiResponse($storeModel, 200);
+        else{
+            return $validation;
+        }
+    }
+    public function ValidationForValidation($datas){
+        $rules =[];
+
+        foreach ($datas as $field => $value){
+            if($field === 'validation'){
+                $rules['validation'] = [
+                    'required',
+                    'string',
+                    Rule::unique('pfm_validation', 'validation')->where(function ($query) use ($datas){
+                        $query->whereNull('deleted_flag');
+                        if(isset($datas['id'])){
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+                ];
+            }
+            $validator = Validator::make($datas, $rules);
+            if($validator->fails()){
+                return response()->json(['errors' => $validator->errors()], 400);
+            }
+        }
     }
     public function getValidationById($id )
     {
