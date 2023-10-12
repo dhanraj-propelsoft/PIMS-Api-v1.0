@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHrmResourcetypeAffinityTable extends Migration
+class CreateHrmResourceSrAffinitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,17 @@ class CreateHrmResourcetypeAffinityTable extends Migration
      */
     public function up()
     {
-        Schema::create('hrm_resource_type_affinity', function (Blueprint $table) {
+        Schema::create('hrm_resource_sr_affinities', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('resource_id');
-            $table->integer('resource_type_id');
-            $table->date('offered_dated')->nullable();
+            $table->integer('resource_sr_id')->nullable();
+            $table->integer('activity_id')->nullable();
+            $table->date('date')->nullable();
+            $table->string('reason')->nullable();
             $table->integer('pfm_active_status_id')->nullable();
             $table->integer('deleted_flag')->nullable();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
-            
+           
         });
     }
 
@@ -33,6 +34,6 @@ class CreateHrmResourcetypeAffinityTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hrm_resource_type_details');
+        Schema::dropIfExists('hrm_resource_sr_affinities');
     }
 }

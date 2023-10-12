@@ -44,11 +44,18 @@ class StateController extends Controller
      */
     public function store(Request $request)
     {
-       
+      
         Log::info('StateController-> Store Inside.' . json_encode($request->all()));
         $response = $this->StateService->store($request->all());
         return $response;
         Log::info('StateController ->Store Return.' . json_encode($response));
+    }
+    public function stateValidation(Request $request)
+    {
+        Log::info('StateController-> validation Inside.' . json_encode($request->all()));
+        $response = $this->StateService->ValidationForState($request->all());
+        return $response;
+        Log::info('StateController -> validation Return.' . json_encode($response));
     }
 
     /**

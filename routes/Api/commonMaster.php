@@ -23,3 +23,4 @@ Route::apiResource('language', LanguageController::class);
 Route::apiResource('district',  DistrictController::class);
 Route::apiResource('area',  AreaController::class);
 Route::post('/countryValidation', [CountryController::class, 'validation'])->name('validation');
+Route::post('/stateValidation', [StateController::class, 'stateValidation'])->name('stateValidation');
