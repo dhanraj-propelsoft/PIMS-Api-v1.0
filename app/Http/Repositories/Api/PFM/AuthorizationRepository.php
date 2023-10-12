@@ -11,8 +11,7 @@ class AuthorizationRepository implements AuthorizationInterface
 {
     public function index()
     {
-        return Authorization::
-            whereNull('deleted_at')
+        return Authorization::with('activeStatus')->whereNull('deleted_at')
             ->whereNull('deleted_flag')
             ->get();
     }

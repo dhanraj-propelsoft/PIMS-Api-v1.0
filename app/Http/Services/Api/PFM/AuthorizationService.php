@@ -21,7 +21,7 @@ class AuthorizationService
         $models = $this->AuthorizationInterface->index();
         $entities = $models->map(function ($model) {
             $authorization = $model->authorization;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
+            $status = isset($model->activeStatus->active_type) ? $model->activeStatus->active_type : null;
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $id = $model->id;

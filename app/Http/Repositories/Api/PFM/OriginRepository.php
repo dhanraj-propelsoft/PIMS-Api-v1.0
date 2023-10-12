@@ -11,10 +11,7 @@ class OriginRepository implements OriginInterface
 {
     public function index()
     {
-        return Origin::
-            whereNull('deleted_at')
-            ->whereNull('deleted_flag')
-            ->get();
+        return Origin::with('activeStatus')->whereNull('deleted_flag')->get();
     }
     public function store($model)
     {
@@ -43,7 +40,6 @@ class OriginRepository implements OriginInterface
         return Origin::where('id', $id)
             ->whereNull('deleted_at')
             ->whereNull('deleted_flag')->first();
-
     }
     public function destroyOrigin($id)
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Services\Api\PFM;
 
 use App\Http\Interfaces\Api\PFM\OriginInterface;
@@ -19,12 +20,15 @@ class OriginService
     public function index()
     {
         $models = $this->OriginInterface->index();
+
         $entities = $models->map(function ($model) {
-            $origin = $model->origin;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
+
+            $origin = $model->origin;         
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $id = $model->id;
+            
+            $status = isset($model->activeStatus->active_type) ? $model->activeStatus->active_type : null;
             $datas = ['origin' => $origin, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });
@@ -47,7 +51,7 @@ class OriginService
         Log::info('OriginService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
     }
-    public function getOriginById($id )
+    public function getOriginById($id)
     {
         $model = $this->OriginInterface->getOriginById($id);
         $datas = array();
@@ -58,9 +62,8 @@ class OriginService
             $description = $model->description;
             $id = $model->id;
             $datas = ['origin' => $origin, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
-                }
+        }
         return new SuccessApiResponse($datas, 200);
-
     }
     public function convertOrigin($datas)
     {
@@ -68,12 +71,10 @@ class OriginService
 
         if ($model) {
             $model->id = $datas->id;
-            $model->last_updated_by=auth()->user()->id;
-
+            $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Origin();
-            $model->created_by=auth()->user()->id;
-
+            $model->created_by = auth()->user()->id;
         }
         $model->origin = $datas->origin;
         $model->description = isset($datas->description) ? $datas->description : null;
