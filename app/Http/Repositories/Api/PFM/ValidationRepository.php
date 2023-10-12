@@ -11,10 +11,7 @@ class ValidationRepository implements ValidationInterface
 {
     public function index()
     {
-        return Validation::
-            whereNull('deleted_at')
-            ->whereNull('deleted_flag')
-            ->get();
+        return Validation::with('activeStatus')->whereNull('deleted_at')->whereNull('deleted_flag')->get();
     }
     public function store($model)
     {

@@ -11,10 +11,8 @@ class CachetRepository implements CachetInterface
 {
     public function index()
     {
-        return Cachet::
-            whereNull('deleted_at')
-            ->whereNull('deleted_flag')
-            ->get();
+        return Cachet::with('activeStatus')->whereNull('deleted_at')->whereNull('deleted_flag')->get();
+
     }
     public function store($model)
     {

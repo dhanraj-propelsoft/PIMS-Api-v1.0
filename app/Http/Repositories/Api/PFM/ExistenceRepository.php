@@ -11,10 +11,8 @@ class ExistenceRepository implements ExistenceInterface
 {
     public function index()
     {
-        return Existence::
-            whereNull('deleted_at')
-            ->whereNull('deleted_flag')
-            ->get();
+        return Existence::with('activeStatus')->whereNull('deleted_at')->whereNull('deleted_flag')->get();
+
     }
     public function store($model)
     {

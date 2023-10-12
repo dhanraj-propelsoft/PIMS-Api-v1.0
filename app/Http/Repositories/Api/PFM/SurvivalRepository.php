@@ -11,10 +11,8 @@ class SurvivalRepository implements SurvivalInterface
 {
     public function index()
     {
-        return Survival::
-            whereNull('deleted_at')
-            ->whereNull('deleted_flag')
-            ->get();
+        return Survival::with('activeStatus')->whereNull('deleted_at')->whereNull('deleted_flag')->get();
+
     }
     public function store($model)
     {

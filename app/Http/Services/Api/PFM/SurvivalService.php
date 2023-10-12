@@ -21,10 +21,10 @@ class SurvivalService
         $models = $this->SurvivalInterface->index();
         $entities = $models->map(function ($model) {
             $survival = $model->survival;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $id = $model->id;
+            $status = isset($model->activeStatus->active_type) ? $model->activeStatus->active_type : null;
             $datas = ['survival' => $survival, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });

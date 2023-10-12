@@ -11,10 +11,8 @@ class PersonStageRepository implements PersonStageInterface
 {
     public function index()
     {
-        return PersonStage::
-            whereNull('deleted_at')
-            ->whereNull('deleted_flag')
-            ->get();
+        return PersonStage::with('activeStatus')->whereNull('deleted_at')->whereNull('deleted_flag')->get();
+
     }
     public function store($model)
     {

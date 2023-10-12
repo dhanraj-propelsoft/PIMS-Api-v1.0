@@ -9,4 +9,9 @@ class DeponeStatus extends Model
 {
     use HasFactory;
     protected $table = 'pfm_depone_status';
+
+    public function activeStatus()
+    {
+        return $this->hasOne(ActiveStatus::class, 'id', 'pfm_active_status_id');
+    }
 }

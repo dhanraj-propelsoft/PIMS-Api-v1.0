@@ -21,10 +21,12 @@ class ExistenceService
         $models = $this->ExistenceInterface->index();
         $entities = $models->map(function ($model) {
             $existence = $model->existence;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $id = $model->id;
+
+            $status = isset($model->activeStatus->active_type) ? $model->activeStatus->active_type : null;
+
             $datas = ['existence' => $existence, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });

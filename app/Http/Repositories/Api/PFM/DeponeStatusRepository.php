@@ -11,10 +11,8 @@ class DeponeStatusRepository implements DeponeStatusInterface
 {
     public function index()
     {
-        return DeponeStatus::
-            whereNull('deleted_at')
-            ->whereNull('deleted_flag')
-            ->get();
+        return DeponeStatus::with('activeStatus')->whereNull('deleted_at')->whereNull('deleted_flag')->get();
+
     }
     public function store($model)
     {

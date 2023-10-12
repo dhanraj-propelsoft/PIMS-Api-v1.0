@@ -21,10 +21,10 @@ class PersonStageService
         $models = $this->PersonStageInterface->index();
         $entities = $models->map(function ($model) {
             $personStage = $model->person_stage;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $id = $model->id;
+            $status = isset($model->activeStatus->active_type) ? $model->activeStatus->active_type : null;
             $datas = ['personStage' => $personStage, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });

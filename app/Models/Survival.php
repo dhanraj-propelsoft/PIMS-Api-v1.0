@@ -9,4 +9,10 @@ class Survival extends Model
 {
     use HasFactory;
     protected $table = 'pfm_survival';
+
+    public function activeStatus()
+    {
+        return $this->hasOne(ActiveStatus::class, 'id', 'pfm_active_status_id');
+    }
+
 }

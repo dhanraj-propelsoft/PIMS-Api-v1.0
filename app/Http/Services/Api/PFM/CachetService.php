@@ -21,10 +21,10 @@ class CachetService
         $models = $this->CachetInterface->index();
         $entities = $models->map(function ($model) {
             $cachet = $model->cachet;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $id = $model->id;
+            $status = isset($model->activeStatus->active_type) ? $model->activeStatus->active_type : null;
             $datas = ['cachet' => $cachet, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
             return $datas;
         });
@@ -72,7 +72,7 @@ class CachetService
         } else {
             $model = new Cachet();
             $model->created_by=auth()->user()->id;
-            
+
         }
         $model->cachet = $datas->cachet;
         $model->description = isset($datas->description) ? $datas->description : null;
