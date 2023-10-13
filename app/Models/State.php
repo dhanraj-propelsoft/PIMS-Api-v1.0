@@ -14,5 +14,9 @@ class State extends Model
     {
         return $this->hasOne(ActiveStatus::class, 'id', 'pfm_active_status_id'); 
     }
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id', 'id'); 
+    }
 
 }

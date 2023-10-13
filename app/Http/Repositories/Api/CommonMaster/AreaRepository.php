@@ -14,8 +14,8 @@ class AreaRepository implements AreaInterface
     public function index()
     {
         return Area::
-            whereNull('deleted_at')
-            ->whereNull('deleted_flag')
+           
+            whereNull('deleted_flag')
             ->get();
     }
 
@@ -44,14 +44,20 @@ class AreaRepository implements AreaInterface
     public function getAreaById($id)
     {
         return Area::where('id',$id)
-            ->whereNull('deleted_at')
+          
             ->whereNull('deleted_flag')->first();
 
     }
     public function destroyArea($id)
     {
-           $destroy = Area::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
-            return $destroy;
+        return Area::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
         
+        
+    }
+    public function checkAreaForCityId($cityId)
+    {
+       
+        return Area::where('city_id', $cityId)->whereNull('deleted_flag')
+        ->get();   
     }
 }

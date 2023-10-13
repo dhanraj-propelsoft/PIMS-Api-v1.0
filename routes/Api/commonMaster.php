@@ -24,3 +24,10 @@ Route::apiResource('district',  DistrictController::class);
 Route::apiResource('area',  AreaController::class);
 Route::post('/countryValidation', [CountryController::class, 'validation'])->name('validation');
 Route::post('/stateValidation', [StateController::class, 'stateValidation'])->name('stateValidation');
+Route::post('/cityValidation', [CityController::class, 'cityValidation'])->name('cityValidation');
+Route::post('/DistrictValidation', [DistrictController::class, 'DistrictValidation'])->name('DistrictValidation');
+
+Route::post('/getStateByCountryId', [StateController::class, 'getStateByCountryId'])->name('getStateByCountryId');
+Route::post('/getDistrictByStateId', [DistrictController::class, 'getDistrictByStateId'])->name('getDistrictByStateId');
+Route::post('/getCityByDistrictId', [CityController::class, 'getCityByDistrictId'])->name('getCityByDistrictId');
+

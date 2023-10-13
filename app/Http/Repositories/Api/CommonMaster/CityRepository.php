@@ -4,6 +4,7 @@ namespace App\Http\Repositories\Api\CommonMaster;
 
 use App\Http\Interfaces\Api\CommonMaster\CityInterface;
 use App\Models\City;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -11,8 +12,7 @@ class CityRepository implements CityInterface
 {
     public function index()
     {
-        return City::
-        whereNull('deleted_at')
+        return City::with('district','activeStatus','district.state.country')
         ->whereNull('deleted_flag')
         ->get();   
      }
@@ -38,16 +38,27 @@ class CityRepository implements CityInterface
             ];
         }
     }
-    public function getCityById($id)
+    public function getCityById($cityId)
     {
-        return City::where('id',$id)
-        ->whereNull('deleted_at')
+        return City::with('district','activeStatus','district.state.country')->where('id',$cityId)
         ->whereNull('deleted_flag')->first();
 
 
     }
-    public function destroyCity($id)
+    public function destroyCity($cityId)
     {
-        return City::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return City::where('id', $cityId)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+    }
+    public function getALlCity()
+    {
+        return City::
+       
+        whereNull('deleted_flag')
+        ->get();   
+        }
+    public function checkCityForDistrictId($districtId)
+    {
+        return City::where('district_id', $districtId)->whereNull('deleted_flag')
+        ->get();   
     }
 }

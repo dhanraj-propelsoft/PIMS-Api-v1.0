@@ -38,7 +38,20 @@ class DistrictController extends Controller
     {
         //
     }
-
+    public function DistrictValidation(Request $request)
+    {
+        Log::info('DistrictController-> validation Inside.' . json_encode($request->all()));
+        $response = $this->CountryService->ValidationForDistrict($request->all());
+        return $response;
+        Log::info('DistrictController -> validation Return.' . json_encode($response));
+    }
+    public function getDistrictByStateId(Request $request)
+    {
+        Log::info('DistrictController-> validation Inside.' . json_encode($request->all()));
+        $response = $this->DistrictService->getDistrictByStateId($request->all());
+        return $response;
+        Log::info('DistrictController -> validation Return.' . json_encode($response));
+    }
     /**
      * Store a newly created resource in storage.
      *

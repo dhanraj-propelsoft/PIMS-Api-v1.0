@@ -57,6 +57,13 @@ class StateController extends Controller
         return $response;
         Log::info('StateController -> validation Return.' . json_encode($response));
     }
+    public function getStateByCountryId(Request $request)
+    {
+        Log::info('StateController-> validation Inside.' . json_encode($request->all()));
+        $response = $this->StateService->getStateByCountryId($request->all());
+        return $response;
+        Log::info('StateController -> validation Return.' . json_encode($response));
+    }
 
     /**
      * Display the specified resource.

@@ -13,8 +13,7 @@ class DistrictRepository implements DistrictInterface
 {
     public function index()
     {
-        return District::
-            whereNull('deleted_at')
+        return District::with('activeStatus', 'state', 'state.country')
             ->whereNull('deleted_flag')
             ->get();
     }
@@ -41,20 +40,25 @@ class DistrictRepository implements DistrictInterface
             ];
         }
     }
-    public function getDistrictById($id)
+    public function getDistrictById($districtId)
     {
-        return District::where('id',$id)
-            ->whereNull('deleted_at')
+        return District::with('activeStatus', 'state', 'state.country')->where('id', $districtId)
             ->whereNull('deleted_flag')->first();
     }
-    public function destroyDistrict($id)
+    public function destroyDistrict($districtId)
     {
-        try {
-            $model = Area::where('district_id', $id)->whereNull('deleted_at')->firstOrFail();
-            return ['type' => 2, 'message' => 'Failed', 'status' => 'This District Dependent on Area'];
-        } catch (ModelNotFoundException $e) {
-            District::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
-            return ['type' => 1, 'message' => 'Success'];
-        }
+        return District::where('id', $districtId)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
+
+    }
+    public function checkDistrictForStateId($stateId)
+    {
+
+        return District::where('state_id', $stateId)
+            ->whereNull('deleted_flag')->get();
+    }
+    public function getAllDistrict()
+    {
+        return District::
+            whereNull('deleted_flag')->get();
     }
 }

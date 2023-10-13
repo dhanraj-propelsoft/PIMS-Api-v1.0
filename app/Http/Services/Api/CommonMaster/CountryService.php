@@ -7,7 +7,6 @@ use App\Http\Interfaces\Api\CommonMaster\StateInterface;
 use App\Http\Interfaces\Api\PFM\ActiveStatusInterface;
 use App\Http\Responses\SuccessApiResponse;
 use App\Models\Country;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -24,21 +23,17 @@ class CountryService
 
     public function index()
     {
-
         $models = $this->CountryInterface->index();
-       
         $entities = $models->map(function ($model) {
             $country = $model->country;
             $numericCode = $model->numeric_code;
             $phoneCode = $model->phone_code;
             $capital = $model->capital;
             $flag = $model->flag;
-            $status=isset($model->activeStatus->active_type)?$model->activeStatus->active_type:null;
+            $status = $model->activeStatus->active_type;
             $description = $model->description;
-            $id = $model->id;
-        
-
-            $datas = ['country' => $country, 'numericCode' => $numericCode, 'flag' => $flag, 'capital' => $capital, 'phoneCode' => $phoneCode, 'description' => $description, 'status' => $status, 'id' => $id];
+            $countryId = $model->id;
+            $datas = ['country' => $country, 'numericCode' => $numericCode, 'flag' => $flag, 'capital' => $capital, 'phoneCode' => $phoneCode, 'description' => $description, 'status' => $status, 'countryId' => $countryId];
             return $datas;
         });
 
@@ -46,6 +41,7 @@ class CountryService
     }
     public function store($datas)
     {
+
         $validation = $this->ValidationForCountry($datas);
         if ($validation->data['errors'] === false) {
             $datas = (object) $datas;
@@ -53,8 +49,8 @@ class CountryService
             $storeModel = $this->CountryInterface->store($convert);
             Log::info('CountryService >Store Return.' . json_encode($storeModel));
             return new SuccessApiResponse($storeModel, 200);
-        } else { 
-         return $validation->data['errors'];
+        } else {
+            return $validation->data['errors'];
         }
     }
 
@@ -108,19 +104,18 @@ class CountryService
 
             $resStatus = ['errors' => $validator->errors()];
             $resCode = 400;
-           
 
         } else {
 
-            $resStatus = ['errors' =>false];
+            $resStatus = ['errors' => false];
             $resCode = 200;
-        
+
         }
         return new SuccessApiResponse($resStatus, $resCode);
     }
-    public function getCountryById($id)
+    public function getCountryById($countryId)
     {
-        $model = $this->CountryInterface->getCountryById($id);
+        $model = $this->CountryInterface->getCountryById($countryId);
         $activeStatus = $this->ActiveStatusInterface->index();
         $datas = array();
         if ($model) {
@@ -131,8 +126,8 @@ class CountryService
             $capital = $model->capital;
             $flag = $model->flag;
             $description = $model->description;
-            $id = $model->id;
-            $datas = ['country' => $country, 'numericCode' => $numericCode, 'flag' => $flag, 'capital' => $capital, 'phoneCode' => $phoneCode, 'description' => $description, 'activeStatusId' => $activeStatusId, 'id' => $id, 'activeStatus' => $activeStatus];
+            $countryId = $model->id;
+            $datas = ['country' => $country, 'numericCode' => $numericCode, 'flag' => $flag, 'capital' => $capital, 'phoneCode' => $phoneCode, 'description' => $description, 'activeStatusId' => $activeStatusId, 'countryId' => $countryId, 'activeStatus' => $activeStatus];
         }
         return new SuccessApiResponse($datas, 200);
     }
@@ -140,7 +135,6 @@ class CountryService
     {
         if (isset($datas->id)) {
             $model = $this->CountryInterface->getCountryById($datas->id);
-            $model->id = $datas->id;
             $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Country();
@@ -157,13 +151,15 @@ class CountryService
         return $model;
     }
 
-    public function destroyCountryById($id)
+    public function destroyCountryById($countryId)
     {
-        $checkState = $this->StateInterface->getStateById($id);
-        if ($checkState) {
+
+        $checkState = $this->StateInterface->getStateForCountryId($countryId);
+        if (!count($checkState) == 0) {
+
             $result = ['type' => 2, 'Message' => 'Failed', 'status' => 'This Country Dependent on State'];
         } else {
-            $destory = $this->CountryInterface->destroyCountry($id);
+            $destory = $this->CountryInterface->destroyCountry($countryId);
             if ($destory) {
                 $result = ['type' => 1, 'Message' => 'Success', 'status' => 'This Country Is Deleted'];
             } else {

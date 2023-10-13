@@ -6,8 +6,10 @@ interface CityInterface
 {
 
     public function index();
+    public function getAllCity();
     public function store($model);
-    public function getCityById($id);
-    public function destroyCity($id);
+    public function getCityById($cityId);
+    public function destroyCity($cityId);
+    public function checkCityForDistrictId($districtId);
 
 }

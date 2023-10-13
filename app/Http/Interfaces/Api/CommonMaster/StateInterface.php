@@ -6,8 +6,11 @@ interface StateInterface
 {
 
     public function index();
+    public function getAllState();
     public function store($model);
-    public function getStateById($id);
-    public function destroyState($id);
+    public function getStateById($stateId);
+    public function destroyState($stateId);
+    public function getStateForCountryId($countryId);
+
 
 }

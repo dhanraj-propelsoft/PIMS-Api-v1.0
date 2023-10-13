@@ -2,9 +2,11 @@
 
 namespace App\Http\Services\Api\CommonMaster;
 
+use App\Http\Interfaces\Api\CommonMaster\CityInterface;
+use App\Http\Interfaces\Api\CommonMaster\CountryInterface;
 use App\Http\Interfaces\Api\CommonMaster\DistrictInterface;
 use App\Http\Interfaces\Api\CommonMaster\StateInterface;
-use App\Http\Responses\ErrorApiResponse;
+use App\Http\Interfaces\Api\PFM\ActiveStatusInterface;
 use App\Http\Responses\SuccessApiResponse;
 use App\Models\District;
 use Illuminate\Support\Facades\Log;
@@ -14,27 +16,28 @@ use Illuminate\Validation\Rule;
 class DistrictService
 {
     protected $DistrictInterface, $StateInterface;
-    public function __construct(DistrictInterface $DistrictInterface, StateInterface $StateInterface)
+    public function __construct(DistrictInterface $DistrictInterface, StateInterface $StateInterface, ActiveStatusInterface $ActiveStatusInterface, CountryInterface $CountryInterface, CityInterface $CityInterface)
     {
         $this->DistrictInterface = $DistrictInterface;
         $this->StateInterface = $StateInterface;
+        $this->ActiveStatusInterface = $ActiveStatusInterface;
+        $this->CountryInterface = $CountryInterface;
+        $this->CityInterface = $CityInterface;
     }
 
     public function index()
     {
-
         $models = $this->DistrictInterface->index();
-        $state = $this->StateInterface->index();
-        $entities = $models->map(function ($model) use ($state) {
+        $entities = $models->map(function ($model) {
             $district = $model->district;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
-            $activeStatus = $model->pfm_active_status_id;
+            $status = $model->activeStatus->active_type;
             $description = $model->description;
-            $id = $model->id;
-            $stateId = $model->state_id;
-            $stateData = $state->firstWhere('id', $stateId);
-            $stateName = ($stateData) ? $stateData->state : null;
-            $datas = ['stateId' => $stateId, 'stateName' => $stateName, 'district' => $district, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $districtId = $model->id;
+            $stateId = $model->state->id;
+            $stateName = $model->state->state;
+            $countryId = $model->state->country->id;
+            $countryName = $model->state->country->country;
+            $datas = ['countryId' => $countryId, 'countryName' => $countryName, 'stateId' => $stateId, 'stateName' => $stateName, 'district' => $district, 'description' => $description, 'status' => $status, 'districtId' => $districtId];
             return $datas;
         });
 
@@ -43,44 +46,81 @@ class DistrictService
     public function store($datas)
     {
 
-        $validator = Validator::make($datas, [
-            'district' => ['required', Rule::unique('pims_com_districts', 'district'),],
-        ]);
-
-        if ($validator->fails()) {
-            $error = $validator->errors();
-            return new ErrorApiResponse($error, 300);
+        $validation = $this->ValidationForDistrict($datas);
+        if ($validation->data['errors'] === false) {
+            $datas = (object) $datas;
+            $convert = $this->convertDistrict($datas);
+            $storeModel = $this->DistrictInterface->store($convert);
+            Log::info('DistrictService >Store Return.' . json_encode($storeModel));
+            return new SuccessApiResponse($storeModel, 200);
+        } else {
+            return $validation;
         }
-        $datas = (object) $datas;
-        $convert = $this->convertDistrict($datas);
-        $storeModel = $this->DistrictInterface->store($convert);
-        Log::info('DistrictService >Store Return.' . json_encode($storeModel));
-        return new SuccessApiResponse($storeModel, 200);
     }
-    public function getDistrictById($id)
+    public function ValidationForDistrict($datas)
     {
-        $model = $this->DistrictInterface->getDistrictById($id);
-        $state = $this->StateInterface->index();
+        $rules = [];
+
+        foreach ($datas as $field => $value) {
+            if ($field === 'countryId') {
+                $rules['countryId'] = ['required', 'integer'];
+            } elseif ($field === 'stateId') {
+                $rules['stateId'] = ['required', 'integer'];
+            } elseif ($field == 'district') {
+                $rules['district'] = [
+                    'required',
+                    'string',
+                    Rule::unique('pims_com_districts', 'district')->where(function ($query) use ($datas) {
+                        $query->whereNull('deleted_flag');
+                        $query->where('state_id', '=', $datas['stateId']);
+                        if (isset($datas['id'])) {
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+                ];
+            }
+
+        }
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+
+            $resStatus = ['errors' => $validator->errors()];
+            $resCode = 400;
+
+        } else {
+
+            $resStatus = ['errors' => false];
+            $resCode = 200;
+
+        }
+        return new SuccessApiResponse($resStatus, $resCode);
+    }
+
+    public function getDistrictById($districtId)
+    {
+        $model = $this->DistrictInterface->getDistrictById($districtId);
+        $activeStatus = $this->ActiveStatusInterface->index();
+        $country = $this->CountryInterface->getAllCountry();
         $datas = array();
         if ($model) {
             $district = $model->district;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
-            $activeStatus = $model->pfm_active_status_id;
-            $stateId = $model->state_id;
+            $status = $model->activeStatus->active_type;
+            $activeStatusId = $model->pfm_active_status_id;
             $description = $model->description;
-            $id = $model->id;
-            $stateData = $state->firstWhere('id', $stateId);
-            $stateName = ($stateData) ? $stateData->state : null;
-            $datas = ['stateId' => $stateId, 'stateName' => $stateName, 'district' => $district, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $districtId = $model->id;
+            $stateId = $model->state->id;
+            $stateName = $model->state->state;
+            $countryId = $model->state->country->id;
+            $countryName = $model->state->country->country;
+            $datas = ['countryId' => $countryId, 'countryName' => $countryName, 'stateId' => $stateId, 'stateName' => $stateName, 'district' => $district, 'description' => $description, 'status' => $status, 'activeStatusId' => $activeStatusId, 'districtId' => $districtId, 'country' => $country, 'activeStatus' => $activeStatus];
         }
         return new SuccessApiResponse($datas, 200);
     }
     public function convertDistrict($datas)
     {
-        $model = $this->DistrictInterface->getDistrictById(isset($datas->id) ? $datas->id : '');
 
-        if ($model) {
-            $model->id = $datas->id;
+        if (isset($datas->id)) {
+            $model = $this->DistrictInterface->getDistrictById($datas->id);
             $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new District();
@@ -94,9 +134,26 @@ class DistrictService
         return $model;
     }
 
-    public function destroyDistrictById($id)
+    public function destroyDistrictById($districtId)
     {
-        $destory = $this->DistrictInterface->destroyDistrict($id);
-        return new SuccessApiResponse($destory, 200);
+
+        $checkCity = $this->CityInterface->checkCityForDistrictId($districtId);
+        if (!count($checkCity) == 0) {
+            $result = ['type' => 2, 'Message' => 'Failed', 'status' => 'This District Dependent on City'];
+        } else {
+            $destory = $this->DistrictInterface->destroyDistrict($districtId);
+            if ($destory) {
+                $result = ['type' => 1, 'Message' => 'Success', 'status' => 'This District Is Deleted'];
+            } else {
+                $result = ['type' => 3, 'Message' => 'DestoryFailed'];
+            }
+        }
+        return new SuccessApiResponse($result, 200);
+    }
+    public function getDistrictByStateId($datas)
+    {
+        $datas = (object) $datas;
+        $state = $this->DistrictInterface->checkDistrictForStateId($datas->stateId);
+        return new SuccessApiResponse($state, 200);
     }
 }

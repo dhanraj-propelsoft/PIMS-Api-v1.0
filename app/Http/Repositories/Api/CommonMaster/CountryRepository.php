@@ -12,7 +12,7 @@ class CountryRepository implements CountryInterface
     public function index()
     {
         return Country::with('activeStatus')
-             ->whereNull('deleted_at')
+            
             ->whereNull('deleted_flag')
             ->get();
     }
@@ -39,15 +39,22 @@ class CountryRepository implements CountryInterface
             ];
         }
     }
-    public function getCountryById($id)
+    public function getCountryById($countryId)
     {
-        return Country::where('id', $id)
-            ->whereNull('deleted_at')
+        return Country::where('id', $countryId)
+            
             ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyCountry($id)
+    public function destroyCountry($countryId)
     {
-        return Country::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
+        return Country::where('id', $countryId)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
+    }
+    public function getAllCountry()
+    {
+        return Country::
+       
+       whereNull('deleted_flag')
+       ->get();
     }
 }

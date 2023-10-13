@@ -6,8 +6,9 @@ interface CountryInterface
 {
 
     public function index();
+    public function getAllCountry(); 
     public function store($model);
-    public function getCountryById($id);
-    public function destroyCountry($id);
+    public function getCountryById($countryId);
+    public function destroyCountry($countryId);
 
 }

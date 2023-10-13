@@ -4,18 +4,16 @@ namespace App\Http\Repositories\Api\CommonMaster;
 
 use App\Http\Interfaces\Api\CommonMaster\StateInterface;
 use App\Models\State;
-use App\Models\District;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class StateRepository implements StateInterface
 {
     public function index()
     {
-        return State::with('activeStatus')
-        ->whereNull('deleted_flag')
-        ->get();
+        return State::with('activeStatus','country')
+            ->whereNull('deleted_flag')
+            ->get();
     }
     public function store($model)
     {
@@ -39,22 +37,28 @@ class StateRepository implements StateInterface
             ];
         }
     }
-    public function getStateById($id)
+    public function getStateById($stateId)
     {
-        return State::where('id',$id)
-        ->whereNull('deleted_at')
-        ->whereNull('deleted_flag')->first();
-
+        return State::with('activeStatus','country')->where('id', $stateId)
+            ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyState($id)
+    public function destroyState($stateId)
     {
-        try {
-            $model = District::where('state_id', $id)->whereNull('deleted_at')->firstOrFail();
-            return ['type' => 2, 'message' => 'Failed','status'=>'This state dependent on District'];
-        } catch (ModelNotFoundException $e) {
-            State::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
-            return ['type' => 1, 'message' => 'Success'];
-        }
+        return State::where('id', $stateId)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
+
     }
+    public function getStateForCountryId($countryId)
+    {
+        return State::where('country_id', $countryId)
+            ->whereNull('deleted_flag')->get();
+    }
+    public function getAllState()
+    {
+        return State::
+        whereNull('deleted_flag')
+        ->get();
+    }
+   
+
 }

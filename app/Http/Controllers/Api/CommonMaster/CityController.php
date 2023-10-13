@@ -50,7 +50,20 @@ class CityController extends Controller
         return $response;
         Log::info('CityController -> Store Return.' . json_encode($response));
     }
-
+    public function cityValidation(Request $request)
+    {
+        Log::info('CityController-> validation Inside.' . json_encode($request->all()));
+        $response = $this->CityService->ValidationForCity($request->all());
+        return $response;
+        Log::info('CityController -> validation Return.' . json_encode($response));
+    }
+    public function getCityByDistrictId(Request $request)
+    {
+        Log::info('CityController-> validation Inside.' . json_encode($request->all()));
+        $response = $this->CityService->getCityByDistrictId($request->all());
+        return $response;
+        Log::info('CityController -> validation Return.' . json_encode($response));
+    }
     /**
      * Display the specified resource.
      *

@@ -6,8 +6,10 @@ interface DistrictInterface
 {
 
     public function index();
+    public function getAllDistrict();
     public function store($model);
-    public function getDistrictById($id);
-    public function destroyDistrict($id);
+    public function getDistrictById($districtId);
+    public function destroyDistrict($districtId);
+    public function checkDistrictForStateId($stateId);
 
 }
