@@ -54,6 +54,13 @@ class AuthorizationController extends Controller
         Log::info('AuthorizationController -> Store Return.' . json_encode($response));
     }
 
+    public function validation(Request $request){
+        Log::info('AuthorizationController -> Authorization Inside.' . json_encode($request->all()));
+        $response = $this->AuthorizationService->ValidationForAuthorization($request->all());
+        return $response;
+        Log::info('AuthorizationController -> Authorization Inside.' . json_encode($response));
+    }
+
     /**
      * Display the specified resource.
      *

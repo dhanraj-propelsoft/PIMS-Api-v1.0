@@ -29,12 +29,12 @@ class StateService
         $entities = $models->map(function ($model) use ($country) {
             $state = $model->state;
             $description = $model->description;
-            $status=$model->activeStatus->active_type;
+            $status = $model->activeStatus->active_type;
             $stateId = $model->id;
             $countryId = $model->country_id;
             $countryData = $country->firstWhere('id',  $countryId);
             $countryName = ($countryData) ? $countryData->country : null;
-            $datas = ['countryId' => $countryId, 'countryName' => $countryName, 'state' => $state, 'description' => $description, 'status' => $status,'stateId' => $stateId];
+            $datas = ['countryId' => $countryId, 'countryName' => $countryName, 'state' => $state, 'description' => $description, 'status' => $status, 'stateId' => $stateId];
             return $datas;
         });
         return new SuccessApiResponse($entities, 200);
@@ -48,38 +48,36 @@ class StateService
             $storeModel = $this->StateInterface->store($convert);
             Log::info('StateService >Store Return.' . json_encode($storeModel));
             return new SuccessApiResponse($storeModel, 200);
-        }
-        else{
+        } else {
             return $validation;
         }
-
     }
-    public function ValidationForState($datas){
-        $rules =[];
+    public function ValidationForState($datas)
+    {
+        $rules = [];
 
-        foreach ($datas as $field => $value){
-            if($field === 'countryId'){
-                $rules['countryId'] = ['required','integer'];
-            }
-            elseif($field === 'state'){
+        foreach ($datas as $field => $value) {
+            if ($field === 'countryId') {
+                $rules['countryId'] = ['required', 'integer'];
+            } elseif ($field === 'state') {
                 $rules['state'] = [
                     'required',
                     'string',
-                    Rule::unique('pims_com_states', 'state')->where(function ($query) use ($datas){
+                    Rule::unique('pims_com_states', 'state')->where(function ($query) use ($datas) {
                         $query->whereNull('deleted_flag');
-                        if(isset($datas['countryId'])){
-                            $query->where('country_id','=', $datas['countryId']);
+                        if (isset($datas['countryId'])) {
+                            $query->where('country_id', '=', $datas['countryId']);
                         }
-                        if(isset($datas['id'])){
+                        if (isset($datas['id'])) {
                             $query->where('id', '!=', $datas['id']);
                         }
                     }),
                 ];
             }
-            $validator = Validator::make($datas, $rules);
-            if($validator->fails()){
-                return response()->json(['errors' => $validator->errors()], 400);
-            }
+        }
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
         }
     }
 

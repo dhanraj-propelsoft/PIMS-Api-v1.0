@@ -68,6 +68,12 @@ class SurvivalController extends Controller
         Log::info('SurvivalController  ->show  Return.' . json_encode($response));
     }
 
+    public function validation(Request $request){
+        Log::info('SurvivalController -> Survival Inside.' . json_encode($request->all()));
+        $response = $this->SurvivalService->ValidationForSurvival($request->all());
+        Log::info('SurvivalController -> Survival Inside.' . json_encode($response));
+        return $response;
+    }
     /**
      * Show the form for editing the specified resource.
      *

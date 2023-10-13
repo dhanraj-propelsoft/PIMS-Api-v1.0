@@ -54,6 +54,13 @@ class CachetController extends Controller
         Log::info('CachetController -> Store Return.' . json_encode($response));
     }
 
+    public function validation(Request $request){
+        Log::info('CachetController -> Cachet Inside.' . json_encode($request->all()));
+        $response = $this->CachetService->ValidationForCachet($request->all());
+        return $response;
+        Log::info('CachetController -> Cachet Inside.' . json_encode($response));
+    }
+
     /**
      * Display the specified resource.
      *

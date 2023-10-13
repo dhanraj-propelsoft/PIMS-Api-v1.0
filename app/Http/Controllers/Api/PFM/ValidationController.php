@@ -54,6 +54,13 @@ class ValidationController extends Controller
         Log::info('ValidationController -> Store Return.' . json_encode($response));
     }
 
+    public function validation(Request $request){
+        Log::info('ValidationController -> Validation Inside.' . json_encode($request->all()));
+        $response = $this->ValidationService->ValidationForValidation($request->all());
+        return $response;
+        Log::info('ValidationController -> Validation Inside.' . json_encode($response));
+    }
+
     /**
      * Display the specified resource.
      *

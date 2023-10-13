@@ -54,6 +54,13 @@ class DeponeStatusController extends Controller
         Log::info('DeponeStatusController -> Store Return.' . json_encode($response));
     }
 
+    public function validation(Request $request){
+        Log::info('DeponeStatusController -> DeponeStatus Inside.' . json_encode($request->all()));
+        $response = $this->DeponeStatusService->ValidationForDeponeStatus($request->all());
+        return $response;
+        Log::info('DeponeStatusController -> DeponeStatus Inside.' . json_encode($response));
+    }
+
     /**
      * Display the specified resource.
      *

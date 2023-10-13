@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Services\Api\PFM;
 
 use App\Http\Interfaces\Api\PFM\AuthorizationInterface;
@@ -35,53 +36,52 @@ class AuthorizationService
     public function store($datas)
     {
         $validation = $this->ValidationForAuthorization($datas);
-        if (!$validation) {
-            $datas = (object) $datas;
-            $convert = $this->convertAuthorization($datas);
-            $storeModel = $this->AuthorizationInterface->store($convert);
-            Log::info('AuthorizationService >Store Return.' . json_encode($storeModel));
-            return new SuccessApiResponse($storeModel, 200);
+        if ($validation['errors'] !== false) {
+            return new ErrorApiResponse($validation['errors'], 400);
         }
-        else{
-            return $validation;
-        }
+        $datas = (object) $datas;
+        $convert = $this->convertAuthorization($datas);
+        $storeModel = $this->AuthorizationInterface->store($convert);
+        Log::info('AuthorizationService >Store Return.' . json_encode($storeModel));
+        return new SuccessApiResponse($storeModel, 200);
     }
-    public function ValidationForAuthorization($datas){
-        $rules =[];
+    public function ValidationForAuthorization($datas)
+    {
+        $rules = [];
 
-        foreach ($datas as $field => $value){
-            if($field === 'authorization'){
+        foreach ($datas as $field => $value) {
+            if ($field === 'authorization') {
                 $rules['authorization'] = [
                     'required',
                     'string',
-                    Rule::unique('pfm_authorizations', 'authorization')->where(function ($query) use ($datas){
+                    Rule::unique('pfm_authorizations', 'authorization')->where(function ($query) use ($datas) {
                         $query->whereNull('deleted_flag');
-                        if(isset($datas['id'])){
+                        if (isset($datas['id'])) {
                             $query->where('id', '!=', $datas['id']);
                         }
                     }),
                 ];
             }
-            $validator = Validator::make($datas, $rules);
-            if($validator->fails()){
-                return response()->json(['errors' => $validator->errors()], 400);
-            }
         }
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors()];
+        }
+        return ['errors' => false, 'status_code' => 200,];
     }
-    public function getAuthorizationById($id )
+    public function getAuthorizationById($id)
     {
         $model = $this->AuthorizationInterface->getAuthorizationById($id);
         $datas = array();
         if ($model) {
             $authorization = $model->authorization;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
+            $status = isset($model->activeStatus->active_type) ? $model->activeStatus->active_type : null;
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $id = $model->id;
             $datas = ['authorization' => $authorization, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
-                }
+        }
         return new SuccessApiResponse($datas, 200);
-
     }
     public function convertAuthorization($datas)
     {
@@ -89,20 +89,24 @@ class AuthorizationService
 
         if ($model) {
             $model->id = $datas->id;
-            $model->last_updated_by=auth()->user()->id;
+            $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Authorization();
-            $model->created_by=auth()->user()->id;
+            $model->created_by = auth()->user()->id;
         }
         $model->authorization = $datas->authorization;
         $model->description = isset($datas->description) ? $datas->description : null;
-        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus :null;
+        $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : null;
         return $model;
     }
 
     public function destroyAuthorizationById($id)
     {
-        $destory = $this->AuthorizationInterface->destroyAuthorization($id);
-        return new SuccessApiResponse($destory, 200);
+        $destroy = $this->AuthorizationInterface->destroyAuthorization($id);
+        if ($destroy) {
+            return response()->json(['Success' => true, 'Message' => 'Record Deleted Successfully']);
+        } else {
+            return response()->json(['Success' => false, 'Message' => 'Record Not Deleted']);
+        }
     }
 }

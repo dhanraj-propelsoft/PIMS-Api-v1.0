@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Services\Api\PFM;
 
 use App\Http\Interfaces\Api\PFM\CachetInterface;
@@ -35,53 +36,53 @@ class CachetService
     public function store($datas)
     {
         $validation = $this->ValidationForCachet($datas);
-        if (!$validation) {
-            $datas = (object) $datas;
-            $convert = $this->convertCachet($datas);
-            $storeModel = $this->CachetInterface->store($convert);
-            Log::info('CachetService >Store Return.' . json_encode($storeModel));
-            return new SuccessApiResponse($storeModel, 200);
+        if ($validation['errors'] !== false) {
+            return new ErrorApiResponse($validation['errors'], 400);
         }
-        else{
-            return $validation;
-        }
+        $datas = (object) $datas;
+        $convert = $this->convertCachet($datas);
+        $storeModel = $this->CachetInterface->store($convert);
+        Log::info('CachetService >Store Return.' . json_encode($storeModel));
+        return new SuccessApiResponse($storeModel, 200);
     }
-    public function ValidationForCachet($datas){
-        $rules =[];
 
-        foreach ($datas as $field => $value){
-            if($field === 'cachet'){
+    public function ValidationForCachet($datas)
+    {
+        $rules = [];
+
+        foreach ($datas as $field => $value) {
+            if ($field === 'cachet') {
                 $rules['cachet'] = [
                     'required',
                     'string',
-                    Rule::unique('pfm_cachet', 'cachet')->where(function ($query) use ($datas){
+                    Rule::unique('pfm_cachet', 'cachet')->where(function ($query) use ($datas) {
                         $query->whereNull('deleted_flag');
-                        if(isset($datas['id'])){
+                        if (isset($datas['id'])) {
                             $query->where('id', '!=', $datas['id']);
                         }
                     }),
                 ];
             }
-            $validator = Validator::make($datas, $rules);
-            if($validator->fails()){
-                return response()->json(['errors' => $validator->errors()], 400);
-            }
         }
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors()];
+        }
+        return ['errors' => false, 'status_code' => 200,];
     }
-    public function getCachetById($id )
+    public function getCachetById($id)
     {
         $model = $this->CachetInterface->getCachetById($id);
         $datas = array();
         if ($model) {
             $cachet = $model->cachet;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
+            $status = isset($model->activeStatus->active_type) ? $model->activeStatus->active_type : null;
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $id = $model->id;
             $datas = ['cachet' => $cachet, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
-                }
+        }
         return new SuccessApiResponse($datas, 200);
-
     }
     public function convertCachet($datas)
     {
@@ -89,11 +90,10 @@ class CachetService
 
         if ($model) {
             $model->id = $datas->id;
-            $model->last_updated_by=auth()->user()->id;
+            $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Cachet();
-            $model->created_by=auth()->user()->id;
-
+            $model->created_by = auth()->user()->id;
         }
         $model->cachet = $datas->cachet;
         $model->description = isset($datas->description) ? $datas->description : null;
@@ -103,7 +103,11 @@ class CachetService
 
     public function destroyCachetById($id)
     {
-        $destory = $this->CachetInterface->destroyCachet($id);
-        return new SuccessApiResponse($destory, 200);
+        $destroy = $this->CachetInterface->destroyCachet($id);
+        if ($destroy) {
+            return response()->json(['Success' => true, 'Message' => 'Record Deleted Successfully']);
+        } else {
+            return response()->json(['Success' => false, 'Message' => 'Record Not Deleted']);
+        }
     }
 }

@@ -54,6 +54,13 @@ class ExistenceController extends Controller
         Log::info('ExistenceController -> Store Return.' . json_encode($response));
     }
 
+    public function validation(Request $request){
+        Log::info('ExistenceController -> Existence Inside.' . json_encode($request->all()));
+        $response = $this->ExistenceService->ValidationForExistence($request->all());
+        return $response;
+        Log::info('ExistenceController -> Existence Inside.' . json_encode($response));
+    }
+
     /**
      * Display the specified resource.
      *

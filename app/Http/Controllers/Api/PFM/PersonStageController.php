@@ -54,6 +54,13 @@ class PersonStageController extends Controller
         Log::info('PersonStageController -> Store Return.' . json_encode($response));
     }
 
+    public function validation(Request $request){
+        Log::info('PersonStageController -> PersonStage Inside.' . json_encode($request->all()));
+        $response = $this->PersonStageService->ValidationForPersonStage($request->all());
+        return $response;
+        Log::info('PersonStageController -> PersonStage Inside.' . json_encode($response));
+    }
+
     /**
      * Display the specified resource.
      *

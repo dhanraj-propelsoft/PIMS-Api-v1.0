@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Services\Api\PFM;
 
 use App\Http\Interfaces\Api\PFM\ValidationInterface;
@@ -36,53 +37,53 @@ class ValidationService
     public function store($datas)
     {
         $validation = $this->ValidationForValidation($datas);
-        if (!$validation) {
-            $datas = (object) $datas;
-            $convert = $this->convertValidation($datas);
-            $storeModel = $this->ValidationInterface->store($convert);
-            Log::info('ValidationService >Store Return.' . json_encode($storeModel));
-            return new SuccessApiResponse($storeModel, 200);
+        if ($validation['errors'] !== false) {
+            return new ErrorApiResponse($validation['errors'], 400);
         }
-        else{
-            return $validation;
-        }
+        $datas = (object) $datas;
+        $convert = $this->convertValidation($datas);
+        $storeModel = $this->ValidationInterface->store($convert);
+        Log::info('ValidationService >Store Return.' . json_encode($storeModel));
+        return new SuccessApiResponse($storeModel, 200);
     }
-    public function ValidationForValidation($datas){
-        $rules =[];
+    public function ValidationForValidation($datas)
+    {
+        $rules = [];
 
-        foreach ($datas as $field => $value){
-            if($field === 'validation'){
+        foreach ($datas as $field => $value) {
+            if ($field === 'validation') {
                 $rules['validation'] = [
                     'required',
                     'string',
-                    Rule::unique('pfm_validation', 'validation')->where(function ($query) use ($datas){
+                    Rule::unique('pfm_validation', 'validation')->where(function ($query) use ($datas) {
                         $query->whereNull('deleted_flag');
-                        if(isset($datas['id'])){
+                        if (isset($datas['id'])) {
                             $query->where('id', '!=', $datas['id']);
                         }
                     }),
                 ];
             }
-            $validator = Validator::make($datas, $rules);
-            if($validator->fails()){
-                return response()->json(['errors' => $validator->errors()], 400);
-            }
         }
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors()];
+        }
+        return ['errors' => false, 'status_code' => 200,];
     }
-    public function getValidationById($id )
+    public function getValidationById($id)
     {
         $model = $this->ValidationInterface->getValidationById($id);
+
         $datas = array();
         if ($model) {
             $validation = $model->validation;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
+            $status = isset($model->activeStatus->active_type) ? $model->activeStatus->active_type : null;
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $id = $model->id;
             $datas = ['validation' => $validation, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
-                }
+        }
         return new SuccessApiResponse($datas, 200);
-
     }
     public function convertValidation($datas)
     {
@@ -90,10 +91,10 @@ class ValidationService
 
         if ($model) {
             $model->id = $datas->id;
-            $model->last_updated_by=auth()->user()->id;
+            $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Validation();
-            $model->created_by=auth()->user()->id;
+            $model->created_by = auth()->user()->id;
         }
         $model->validation = $datas->validation;
         $model->description = isset($datas->description) ? $datas->description : null;
@@ -103,7 +104,11 @@ class ValidationService
 
     public function destroyValidationById($id)
     {
-        $destory = $this->ValidationInterface->destroyValidation($id);
-        return new SuccessApiResponse($destory, 200);
+        $destroy = $this->ValidationInterface->destroyValidation($id);
+        if ($destroy) {
+            return response()->json(['Success' => true, 'Message' => 'Record Deleted Successfully']);
+        } else {
+            return response()->json(['Success' => false, 'Message' => 'Record Not Deleted']);
+        }
     }
 }

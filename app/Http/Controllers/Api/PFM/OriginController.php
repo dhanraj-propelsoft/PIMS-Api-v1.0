@@ -54,6 +54,12 @@ class OriginController extends Controller
         Log::info('OriginController -> Store Return.' . json_encode($response));
     }
 
+    public function validation(Request $request){
+        Log::info('OriginController -> Validation Inside.' . json_encode($request->all()));
+        $response = $this->OriginService->ValidationForOrigin($request->all());
+        return $response;
+        Log::info('OriginController -> Validation Return. ' . json_encode($response));
+    }
     /**
      * Display the specified resource.
      *
