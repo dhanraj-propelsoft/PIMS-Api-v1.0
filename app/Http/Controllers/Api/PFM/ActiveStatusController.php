@@ -54,6 +54,12 @@ class ActiveStatusController extends Controller
         Log::info('ActiveStatusController -> Store Return.' . json_encode($response));
     }
 
+    public function validation(Request $request){
+        Log::info('ActiveStatusController -> Validation Inside.' . json_encode($request->all()));
+        $response = $this->ActiveStatusService->ValidationForActiveStatus($request->all());
+        return $response;
+        Log::info('ActiveStatusController -> Validation Return.' . json_encode($request->all()));
+    }
     /**
      * Display the specified resource.
      *

@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\PFM\OriginController;
 use App\Http\Controllers\Api\PFM\PersonStageController;
 use App\Http\Controllers\Api\PFM\SurvivalController;
 use App\Http\Controllers\Api\PFM\ValidationController;
-
+use App\Models\ActiveStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,3 +31,4 @@ Route::post('existenceValidation', [ExistenceController::class, 'validation']);
 Route::post('personStageValidation', [PersonStageController::class, 'validation']);
 Route::post('survivalValidation', [SurvivalController::class, 'validation']);
 Route::post('validationChecking', [ValidationController::class, 'validation']);
+Route::post('activeStatusValidation', [ActiveStatusController::class, 'validation']);
