@@ -2,30 +2,33 @@
 namespace App\Http\Services\Api\CommonMaster;
 
 use App\Http\Interfaces\Api\CommonMaster\LanguageInterface;
+use App\Http\Interfaces\Api\PFM\ActiveStatusInterface;
 use App\Http\Responses\ErrorApiResponse;
 use App\Http\Responses\SuccessApiResponse;
 use App\Models\Language;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class LanguageService
 {
     protected $LanguageInterface;
-    public function __construct(LanguageInterface $LanguageInterface)
+    public function __construct(LanguageInterface $LanguageInterface,ActiveStatusInterface $ActiveStatusInterface)
     {
         $this->LanguageInterface = $LanguageInterface;
+        $this->ActiveStatusInterface = $ActiveStatusInterface;
     }
 
     public function index()
     {
         $models = $this->LanguageInterface->index();
+      
         $entities = $models->map(function ($model) {
             $language = $model->language;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
-            $activeStatus = $model->pfm_active_status_id;
+            $status = $model->activeStatus->active_type;
             $description=$model->description;
-            $id = $model->id;
-            $datas = ['language' => $language, 'description'=>$description,'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $languageId = $model->id;
+            $datas = ['language' => $language, 'description'=>$description,'status' => $status,  'languageId' => $languageId];
             return $datas;
         });
 
@@ -33,41 +36,71 @@ class LanguageService
     }
     public function store($datas)
     {
-        $validator = Validator::make($datas, [
-            'language' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            $error = $validator->errors();
-            return new ErrorApiResponse($error, 300);
-        }
+        $validation = $this->ValidationForLanguage($datas);
+        if ($validation->data['errors'] === false) {
         $datas = (object) $datas;
         $convert = $this->convertLanguage($datas);
         $storeModel = $this->LanguageInterface->store($convert);
         Log::info('LanguageService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
+    } else {
+        return $validation->data['errors'];
     }
-    public function getLanguageById($id )
+    }
+    public function ValidationForLanguage($datas)
     {
-        $model = $this->LanguageInterface->getLanguageById($id);
+        $rules = [];
+
+        foreach ($datas as $field => $value) {
+            if ($field === 'language') {
+                $rules['language'] = [
+                    'required',
+                    'string',
+                    Rule::unique('pims_com_languages', 'language')->where(function ($query) use ($datas) {
+                        $query->whereNull('deleted_flag');
+                        if (isset($datas['id'])) {
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+
+                ];
+            }
+        }
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+
+            $resStatus = ['errors' => $validator->errors()];
+            $resCode = 400;
+
+        } else {
+
+            $resStatus = ['errors' => false];
+            $resCode = 200;
+
+        }
+        return new SuccessApiResponse($resStatus, $resCode);
+    }
+    public function getLanguageById($languageId )
+    {
+        $model = $this->LanguageInterface->getLanguageById($languageId);
+        $activeStatus =$this->ActiveStatusInterface->index();
         $datas = array();
         if ($model) {
             $language = $model->language;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
-            $activeStatus = $model->pfm_active_status_id;
+            $status = $model->activeStatus->active_type;
+            $activeStatusId = $model->pfm_active_status_id;
             $description=$model->description;
-            $id = $model->id;
-            $datas = ['language' => $language,'description'=>$description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $languageId = $model->id;
+            $datas = ['language' => $language,'description'=>$description, 'status' => $status, 'activeStatusId' => $activeStatusId, 'languageId' => $languageId,'activeStatus'=>$activeStatus];
         }
         return new SuccessApiResponse($datas, 200);
 
     }
     public function convertLanguage($datas)
     {
-        $model = $this->LanguageInterface->getLanguageById(isset($datas->id) ? $datas->id : '');
 
-        if ($model) {
-            $model->id = $datas->id;
+        if (isset($datas->id)) {
+            $model = $this->LanguageInterface->getLanguageById($datas->id);
             $model->last_updated_by=auth()->user()->id;
         } else {
             $model = new Language();
@@ -80,9 +113,9 @@ class LanguageService
         return $model;
     }
 
-    public function destroyLanguageById($id)
+    public function destroyLanguageById($languageId)
     {
-        $destory = $this->LanguageInterface->destroyLanguage($id);
+        $destory = $this->LanguageInterface->destroyLanguage($languageId);
         return new SuccessApiResponse($destory, 200);
     }
 }

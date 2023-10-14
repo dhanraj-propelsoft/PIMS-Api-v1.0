@@ -9,4 +9,8 @@ class AddressType extends Model
 {
     use HasFactory;
     protected $table = 'pims_com_address_types';
+    public function activeStatus()
+    {
+        return $this->hasOne(ActiveStatus::class, 'id', 'pfm_active_status_id');
+    }
 }

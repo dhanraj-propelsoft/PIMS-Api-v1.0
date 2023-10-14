@@ -1,33 +1,31 @@
 <?php
 
-// use App\Http\Controllers\Api\Master\BankAccountTypeController;
-// use App\Http\Controllers\Api\Master\BankController;
-use App\Http\Controllers\Api\CommonMaster\LanguageController;
-use App\Http\Controllers\Api\CommonMaster\CountryController;
-use App\Http\Controllers\Api\CommonMaster\StateController;
-use App\Http\Controllers\Api\CommonMaster\CityController;
+
 use App\Http\Controllers\Api\CommonMaster\AddressTypeController;
-use App\Http\Controllers\Api\CommonMaster\DistrictController;
 use App\Http\Controllers\Api\CommonMaster\AreaController;
-
-
-
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\CommonMaster\CityController;
+use App\Http\Controllers\Api\CommonMaster\CountryController;
+use App\Http\Controllers\Api\CommonMaster\DistrictController;
+use App\Http\Controllers\Api\CommonMaster\LanguageController;
+use App\Http\Controllers\Api\CommonMaster\StateController;
 use Illuminate\Support\Facades\Route;
 
 Route::apiResource('country', CountryController::class);
-Route::apiResource('state',  StateController::class);
+Route::apiResource('state', StateController::class);
 Route::apiResource('city', CityController::class);
 Route::apiResource('addressType', AddressTypeController::class);
 Route::apiResource('language', LanguageController::class);
-Route::apiResource('district',  DistrictController::class);
-Route::apiResource('area',  AreaController::class);
+Route::apiResource('district', DistrictController::class);
+Route::apiResource('area', AreaController::class);
 Route::post('/countryValidation', [CountryController::class, 'validation'])->name('validation');
 Route::post('/stateValidation', [StateController::class, 'stateValidation'])->name('stateValidation');
 Route::post('/cityValidation', [CityController::class, 'cityValidation'])->name('cityValidation');
 Route::post('/DistrictValidation', [DistrictController::class, 'DistrictValidation'])->name('DistrictValidation');
+Route::post('/areaValidation', [AreaController::class, 'areaValidation'])->name('areaValidation');
+Route::post('/addressTypeValidation', [AddressTypeController::class, 'addressTypeValidation'])->name('addressTypeValidation');
+Route::post('/languageValidation', [LanguageController::class, 'languageValidation'])->name('languageValidation');
 
 Route::post('/getStateByCountryId', [StateController::class, 'getStateByCountryId'])->name('getStateByCountryId');
 Route::post('/getDistrictByStateId', [DistrictController::class, 'getDistrictByStateId'])->name('getDistrictByStateId');
 Route::post('/getCityByDistrictId', [CityController::class, 'getCityByDistrictId'])->name('getCityByDistrictId');
-
+Route::post('/getAreaByCityId', [AreaController::class, 'getAreaByCityId'])->name('getAreaByCityId');

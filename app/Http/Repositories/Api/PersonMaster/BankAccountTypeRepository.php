@@ -11,8 +11,7 @@ class BankAccountTypeRepository implements BankAccountTypeInterface
 {
     public function index()
     {
-        return BankAccountType::
-            whereNull('deleted_at')
+        return BankAccountType::with('activeStatus')
             ->whereNull('deleted_flag')
             ->get();
     }
@@ -38,15 +37,15 @@ class BankAccountTypeRepository implements BankAccountTypeInterface
             ];
         }
     }
-    public function getBankAccountTypeById($id)
+    public function getBankAccountTypeById($bankAccountId)
     {
-        return BankAccountType::where('id', $id)
-            ->whereNull('deleted_at')
+        return BankAccountType::with('activeStatus')->where('id', $bankAccountId)
+          
             ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyBankAccountType($id)
+    public function destroyBankAccountType($bankAccountId)
     {
-        return BankAccountType::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
+        return BankAccountType::where('id', $bankAccountId)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
     }
 }

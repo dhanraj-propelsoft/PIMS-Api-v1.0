@@ -7,8 +7,8 @@ interface AreaInterface
 
     public function index();
     public function store($model);
-    public function getAreaById($id);
-    public function destroyArea($id);
+    public function getAreaById($areaId);
+    public function destroyArea($areaId);
     public function checkAreaForCityId($cityId);
 
 }

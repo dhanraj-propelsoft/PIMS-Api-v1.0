@@ -52,7 +52,13 @@ class LanguageController extends Controller
         return $response;
         Log::info('LanguageController -> Store Return.' . json_encode($response));
     }
-
+    public function languageValidation(Request $request)
+    {
+        Log::info('LanguageController-> validation Inside.' . json_encode($request->all()));
+        $response = $this->LanguageService->ValidationForLanguage($request->all());
+        return $response;
+        Log::info('LanguageController -> validation Return.' . json_encode($response));
+    }
     /**
      * Display the specified resource.
      *

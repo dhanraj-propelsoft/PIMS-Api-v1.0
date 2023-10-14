@@ -11,8 +11,7 @@ class SalutationRepository implements salutationInterface
 {
     public function index()
     {
-        return Salutation::
-            whereNull('deleted_at')
+        return Salutation::with('activeStatus')
             ->whereNull('deleted_flag')
             ->get();
     }
@@ -37,15 +36,15 @@ class SalutationRepository implements salutationInterface
             ];
         }
     }
-    public function getSalutationById($id)
+    public function getSalutationById($salutationId)
     {
-        return Salutation::where('id', $id)
-            ->whereNull('deleted_at')
+        return Salutation::where('id', $salutationId)
+           
             ->whereNull('deleted_flag')->first();
 
     }
-    public function destroySalutation($id)
+    public function destroySalutation($salutationId)
     {
-        return Salutation::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
+        return Salutation::where('id', $salutationId)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
     }
 }

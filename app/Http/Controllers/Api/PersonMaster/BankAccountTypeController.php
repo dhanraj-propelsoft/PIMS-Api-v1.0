@@ -49,6 +49,13 @@ class BankAccountTypeController extends Controller
         return $response;
         Log::info('BankAccountTypeController -> Store Return.' . json_encode($response));
     }
+    public function bankAccountTypeValidation(Request $request)
+    {
+        Log::info('BankAccountTypeController-> validation Inside.' . json_encode($request->all()));
+        $response = $this->BankAccountTypeService->ValidationForbankAccountType($request->all());
+        return $response;
+        Log::info('BankAccountTypeController -> validation Return.' . json_encode($response));
+    }
 
     /**
      * Display the specified resource.

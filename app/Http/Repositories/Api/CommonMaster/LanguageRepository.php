@@ -12,8 +12,7 @@ class LanguageRepository implements LanguageInterface
     public function index()
     {
 
-        return Language::
-        whereNull('deleted_at')
+        return Language::with('activeStatus')
         ->whereNull('deleted_flag')
         ->get();   
     }
@@ -39,15 +38,15 @@ class LanguageRepository implements LanguageInterface
             ];
         }
     }
-    public function getLanguageById($id)
+    public function getLanguageById($languageId)
     {
-        return Language::where('id',$id)
-        ->whereNull('deleted_at')
+        return Language::with('activeStatus')->where('id',$languageId)
+        
         ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyLanguage($id)
+    public function destroyLanguage($languageId)
     {
-        return Language::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return Language::where('id', $languageId)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

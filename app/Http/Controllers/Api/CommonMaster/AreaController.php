@@ -52,7 +52,20 @@ class AreaController extends Controller
         return $response;
         Log::info('AreaController -> Store Return.' . json_encode($response));
     }
-
+    public function areaValidation(Request $request)
+    {
+        Log::info('AreaController-> validation Inside.' . json_encode($request->all()));
+        $response = $this->AreaService->ValidationForArea($request->all());
+        return $response;
+        Log::info('AreaController -> validation Return.' . json_encode($response));
+    }
+    public function getAreaByCityId(Request $request)
+    {
+        Log::info('AreaController-> validation Inside.' . json_encode($request->all()));
+        $response = $this->AreaService->getAreaByCityId($request->all());
+        return $response;
+        Log::info('AreaController -> validation Return.' . json_encode($response));
+    }
     /**
      * Display the specified resource.
      *

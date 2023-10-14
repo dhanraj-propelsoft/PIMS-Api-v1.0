@@ -9,5 +9,8 @@ class Language extends Model
 {
     use HasFactory;
     protected $table = 'pims_com_languages';
-
+    public function activeStatus()
+    {
+        return $this->hasOne(ActiveStatus::class, 'id', 'pfm_active_status_id');
+    }
 }

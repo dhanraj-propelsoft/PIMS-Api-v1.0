@@ -7,7 +7,7 @@ interface AddressTypeInterface
 
     public function index();
     public function store($model);
-    public function getAddressTypeById($id);
-    public function destroyAddressType($id);
+    public function getAddressTypeById($addressIdid);
+    public function destroyAddressType($addressId);
 
 }

@@ -6,6 +6,6 @@ interface BankAccountTypeInterface
 {
     public function index();
     public function store($model);
-    public function getBankAccountTypeById($id);
-    public function destroyBankAccountType($id);
+    public function getBankAccountTypeById($bankAccountId);
+    public function destroyBankAccountType($bankAccountId);
 }

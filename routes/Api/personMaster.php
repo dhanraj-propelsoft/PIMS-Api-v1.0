@@ -37,6 +37,10 @@ Route::apiResource('relationShip', RelationShipController::class);
 Route::apiResource('bankAccountType', BankAccountTypeController::class);
 Route::apiResource('documentType', DocumentTypeController::class);
 Route::apiResource('qualification', QualificationController::class);
+Route::post('/bankAccountTypeValidation', [BankAccountTypeController::class, 'bankAccountTypeValidation'])->name('bankAccountTypeValidation');
+Route::post('/salutationValidation', [SalutationController::class, 'salutationValidation'])->name('salutationValidation');
+Route::post('/genderValidation', [GenderController::class, 'genderValidation'])->name('genderValidation');
+
 
 
 

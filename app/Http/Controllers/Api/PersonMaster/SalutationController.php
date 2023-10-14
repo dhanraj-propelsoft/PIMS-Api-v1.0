@@ -52,6 +52,13 @@ class SalutationController extends Controller
         return $response;
         Log::info('SalutationController>Store Return.' . json_encode($response));
     }
+    public function salutationValidation(Request $request)
+    {
+        Log::info('SalutationController-> index Inside.' . json_encode($request->all()));
+        $response = $this->salutationService->ValidationForSalutation($request->all());
+        return $response;
+        Log::info('SalutationController>Store Return.' . json_encode($response));
+    }
 
     /**
      * Display the specified resource.

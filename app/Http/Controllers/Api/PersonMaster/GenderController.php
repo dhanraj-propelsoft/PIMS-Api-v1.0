@@ -52,6 +52,14 @@ class GenderController extends Controller
         return $response;
         Log::info('GenderController>Store Return.' . json_encode($response));
     }
+    public function genderValidation(Request $request)
+    {
+
+        Log::info('GenderController-> Store Inside.' . json_encode($request->all()));
+        $response = $this->GenderService->ValidationForGender($request->all());
+        return $response;
+        Log::info('GenderController>Store Return.' . json_encode($response));
+    }
 
     /**
      * Display the specified resource.

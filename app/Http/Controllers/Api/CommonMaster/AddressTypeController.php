@@ -50,6 +50,13 @@ class AddressTypeController extends Controller
         return $response;
         Log::info('AddressTypeController -> Store Return.' . json_encode($response));
     }
+    public function addressTypeValidation(Request $request)
+    {
+        Log::info('AddressTypeController-> validation Inside.' . json_encode($request->all()));
+        $response = $this->AddressTypeService->ValidationForAddressType($request->all());
+        return $response;
+        Log::info('AddressTypeController -> validation Return.' . json_encode($response));
+    }
 
     /**
      * Display the specified resource.

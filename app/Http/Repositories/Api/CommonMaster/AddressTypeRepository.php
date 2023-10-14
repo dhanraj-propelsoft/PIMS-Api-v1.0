@@ -11,8 +11,7 @@ class AddressTypeRepository implements AddressTypeInterface
 {
     public function index()
     {
-        return AddressType::
-        whereNull('deleted_at')
+        return AddressType::with('activeStatus')
         ->whereNull('deleted_flag')
         ->get();   
     }
@@ -38,15 +37,15 @@ class AddressTypeRepository implements AddressTypeInterface
             ];
         }
     }
-    public function getAddressTypeById($id)
+    public function getAddressTypeById($addressId)
     {
-        return AddressType::where('id',$id)
-        ->whereNull('deleted_at')
+        return AddressType::with('activeStatus')->where('id',$addressId)
+       
         ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyAddressType($id)
+    public function destroyAddressType($addressId)
     {
-        return AddressType::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return AddressType::where('id', $addressId)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

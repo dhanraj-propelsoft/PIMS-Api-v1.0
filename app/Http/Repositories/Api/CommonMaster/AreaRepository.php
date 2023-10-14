@@ -13,9 +13,8 @@ class AreaRepository implements AreaInterface
 {
     public function index()
     {
-        return Area::
-           
-            whereNull('deleted_flag')
+        return Area::with('activeStatus','city.district.state.country')
+            ->whereNull('deleted_flag')
             ->get();
     }
 
@@ -41,16 +40,15 @@ class AreaRepository implements AreaInterface
             ];
         }
     }
-    public function getAreaById($id)
+    public function getAreaById($areaId)
     {
-        return Area::where('id',$id)
-          
+        return Area::with('activeStatus','city.district.state.country')->where('id',$areaId)
             ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyArea($id)
+    public function destroyArea($areaId)
     {
-        return Area::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
+        return Area::where('id', $areaId)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
         
         
     }
@@ -60,4 +58,5 @@ class AreaRepository implements AreaInterface
         return Area::where('city_id', $cityId)->whereNull('deleted_flag')
         ->get();   
     }
+
 }
