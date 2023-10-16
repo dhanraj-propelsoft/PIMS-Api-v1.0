@@ -7,7 +7,7 @@ interface QualificationInterface
 
     public function index();
     public function store($model);
-    public function getQualificationById($id);
-    public function destroyQualification($id);
+    public function getQualificationById($qualifiactionId);
+    public function destroyQualification($qualifiactionId);
 
 }

@@ -50,7 +50,13 @@ class BankController extends Controller
         return $response;
         Log::info('BankController>Store Return.' . json_encode($response));
     }
-
+    public function bankValidation(Request $request)
+    {
+        Log::info('BankController-> Store Inside.' . json_encode($request->all()));
+        $response = $this->BankService->ValidationForBank($request->all());
+        return $response;
+        Log::info('BankController>Store Return.' . json_encode($response));
+    }
     /**
      * Display the specified resource.
      *

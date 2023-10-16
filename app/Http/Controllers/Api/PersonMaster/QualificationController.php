@@ -52,6 +52,13 @@ class QualificationController extends Controller
         return $response;
         Log::info('QualificationController>Store Return.' . json_encode($response));
     }
+    public function qualificationValidation(Request $request)
+    {
+        Log::info('QualificationController-> Store Inside.' . json_encode($request->all()));
+        $response = $this->QualificationService->ValidationForQualification($request->all());
+        return $response;
+        Log::info('QualificationController>Store Return.' . json_encode($response));
+    }
 
     /**
      * Display the specified resource.

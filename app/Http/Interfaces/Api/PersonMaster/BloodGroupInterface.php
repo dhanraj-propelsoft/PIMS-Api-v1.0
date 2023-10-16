@@ -6,6 +6,6 @@ interface BloodGroupInterface
 {
     public function index();
     public function store($model);
-    public function getBloodGroupById($id);
-    public function destroyBloodGroup($id);
+    public function getBloodGroupById($bloodGroupId);
+    public function destroyBloodGroup($bloodGroupId);
 }

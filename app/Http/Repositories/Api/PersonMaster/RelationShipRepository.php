@@ -11,8 +11,7 @@ class RelationShipRepository implements RelationShipInterface
 {
     public function index()
     {
-        return RelationShip::
-            whereNull('deleted_at')
+        return RelationShip::with('activeStatus')
             ->whereNull('deleted_flag')
             ->get();
     }
@@ -39,16 +38,15 @@ class RelationShipRepository implements RelationShipInterface
             ];
         }
     }
-    public function getRelationShipById($id)
+    public function getRelationShipById($relationshipId)
     {
-        return RelationShip::where('id',$id)
-            ->whereNull('deleted_at')
+        return RelationShip::with('activeStatus')->where('id',$relationshipId)
             ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyRelationShip($id)
+    public function destroyRelationShip($relationshipId)
     {
-        return RelationShip::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
+        return RelationShip::where('id', $relationshipId)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
     }
 
 }

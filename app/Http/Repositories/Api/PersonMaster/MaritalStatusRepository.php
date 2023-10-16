@@ -11,8 +11,8 @@ class MaritalStatusRepository implements MaritalStatusInterface
 {
     public function index()
     {
-        return MaritalStatus::
-        whereNull('deleted_at')
+        return MaritalStatus::with('activeStatus')
+    
         ->whereNull('deleted_flag')
         ->get();
     }
@@ -39,17 +39,16 @@ class MaritalStatusRepository implements MaritalStatusInterface
             ];
         }
     }
-    public function getMaritalStatusById($id)
+    public function getMaritalStatusById($maritalId)
     {
-        return MaritalStatus::where('id',$id)
-        ->whereNull('deleted_at')
+        return MaritalStatus::with('activeStatus')->where('id',$maritalId)
         ->whereNull('deleted_flag')->first();
 
 
     }
-    public function destroyMaritalStatus($id)
+    public function destroyMaritalStatus($maritalId)
     {
-        return MaritalStatus::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return MaritalStatus::where('id', $maritalId)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 
 }

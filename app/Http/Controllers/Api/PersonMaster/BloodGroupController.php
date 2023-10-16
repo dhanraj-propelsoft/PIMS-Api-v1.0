@@ -51,7 +51,13 @@ class BloodGroupController extends Controller
         return $response;
         Log::info('BloodGroupController >Store Return.' . json_encode($response));
     }
-
+    public function bloodGroupValidation(Request $request)
+    {
+        Log::info('BloodGroupController-> index Inside.' . json_encode($request->all()));
+        $response = $this->BloodGroupService->ValidationForBloodGroup($request->all());
+        return $response;
+        Log::info('BloodGroupController >Store Return.' . json_encode($response));
+    }
     /**
      * Display the specified resource.
      *

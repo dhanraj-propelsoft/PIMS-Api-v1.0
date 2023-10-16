@@ -6,6 +6,6 @@ interface MaritalStatusInterface
 {
     public function index();
     public function store($model);
-    public function getMaritalStatusById($id);
-    public function destroyMaritalStatus($id);
+    public function getMaritalStatusById($maritalId);
+    public function destroyMaritalStatus($maritalId);
 }

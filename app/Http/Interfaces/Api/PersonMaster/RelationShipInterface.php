@@ -6,6 +6,6 @@ interface RelationShipInterface
 {
     public function index();
     public function store($model);
-    public function getRelationShipById($id);
-    public function destroyRelationShip($id);
+    public function getRelationShipById($relationshipId);
+    public function destroyRelationShip($relationshipId);
 }

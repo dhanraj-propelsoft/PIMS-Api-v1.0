@@ -2,18 +2,20 @@
 namespace App\Http\Services\Api\PersonMaster;
 
 use App\Http\Interfaces\Api\PersonMaster\BankInterface;
-use App\Http\Responses\ErrorApiResponse;
+use App\Http\Interfaces\Api\PFM\ActiveStatusInterface;
 use App\Http\Responses\SuccessApiResponse;
 use App\Models\Bank;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class BankService
 {
     protected $BankInterface;
-    public function __construct(BankInterface $BankInterface)
+    public function __construct(BankInterface $BankInterface, ActiveStatusInterface $ActiveStatusInterface)
     {
         $this->BankInterface = $BankInterface;
+        $this->ActiveStatusInterface = $ActiveStatusInterface;
     }
 
     public function index()
@@ -24,10 +26,10 @@ class BankService
             $orgId = $model->org_id;
             $description = $model->description;
             $bankAlias = $model->bank_alias;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
+            $status = $model->activeStatus->active_type;
             $activeStatus = $model->pfm_active_status_id;
-            $id = $model->id;
-            $datas = ['bankName' => $bankName, 'orgId' => $orgId, 'bankAlias' => $bankAlias, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $bankId = $model->id;
+            $datas = ['bankName' => $bankName, 'orgId' => $orgId, 'bankAlias' => $bankAlias, 'description' => $description, 'status' => $status, 'bankId' => $bankId];
             return $datas;
         });
         return new SuccessApiResponse($entities, 200);
@@ -35,44 +37,79 @@ class BankService
 
     public function store($datas)
     {
-        $validator = Validator::make($datas, [
-            'bank' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            $error = $validator->errors();
-
-            return new ErrorApiResponse($error, 300);
+        $validation = $this->ValidationForBank($datas);
+        if ($validation->data['errors'] === false) {
+            $datas = (object) $datas;
+            $convert = $this->convertBank($datas);
+            $storeModel = $this->BankInterface->store($convert);
+            Log::info('BankService >Store Return.' . json_encode($storeModel));
+            return new SuccessApiResponse($storeModel, 200);
+        } else {
+            return $validation->data['errors'];
         }
-        $datas = (object) $datas;
-        $convert = $this->convertBank($datas);
-        $storeModel = $this->BankInterface->store($convert);
-        Log::info('BankService >Store Return.' . json_encode($storeModel));
-        return new SuccessApiResponse($storeModel, 200);
     }
-    public function getBankById($id)
+    public function ValidationForBank($datas)
     {
-        $model = $this->BankInterface->getBankById($id);
+
+        $rules = [];
+
+        foreach ($datas as $field => $value) {
+            if ($field === 'bank') {
+                $rules['bank'] = [
+                    'required',
+                    'string',
+                    Rule::unique('pims_banks', 'bank')->where(function ($query) use ($datas) {
+                        $query->whereNull('deleted_flag');
+                        if (isset($datas['id'])) {
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+
+                ];
+            } elseif ($field === 'orgId') {
+                $rules['orgId'] = ['required', 'integer'];
+            } elseif ($field === 'bankAlias') {
+                $rules['bankAlias'] = ['required', 'string'];
+            }
+        }
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+
+            $resStatus = ['errors' => $validator->errors()];
+            $resCode = 400;
+
+        } else {
+
+            $resStatus = ['errors' => false];
+            $resCode = 200;
+
+        }
+        return new SuccessApiResponse($resStatus, $resCode);
+
+    }
+    public function getBankById($BankId)
+    {
+        $model = $this->BankInterface->getBankById($BankId);
+        $activeStatus = $this->ActiveStatusInterface->index();
         $datas = array();
         if ($model) {
             $bankName = $model->bank;
             $orgId = $model->org_id;
             $description = $model->description;
             $bankAlias = $model->bank_alias;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
-            $activeStatus = $model->pfm_active_status_id;
-            $id = $model->id;
-            $datas = ['bankName' => $bankName, 'orgId' => $orgId, 'bankAlias' => $bankAlias, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $status = $model->activeStatus->active_type;
+            $activeStatusId = $model->pfm_active_status_id;
+            $bankId = $model->id;
+            $datas = ['bankName' => $bankName, 'orgId' => $orgId, 'bankAlias' => $bankAlias, 'description' => $description, 'status' => $status, 'activeStatusId' => $activeStatusId, 'bankId' => $bankId, 'activeStatus' => $activeStatus];
         }
         return new SuccessApiResponse($datas, 200);
 
     }
     public function convertBank($datas)
     {
-        $model = $this->BankInterface->getBankById(isset($datas->id) ? $datas->id : '');
 
-        if ($model) {
-            $model->id = $datas->id;
+        if (isset($datas->id)) {
+            $model = $this->BankInterface->getBankById($datas->id);
             $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Bank();
@@ -86,9 +123,9 @@ class BankService
         return $model;
     }
 
-    public function destroyBankById($id)
+    public function destroyBankById($BankId)
     {
-        $destory = $this->BankInterface->destroyBank($id);
+        $destory = $this->BankInterface->destroyBank($BankId);
         return new SuccessApiResponse($destory, 200);
     }
 }

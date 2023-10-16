@@ -49,6 +49,13 @@ class MaritalStatusController extends Controller
         return $response;
         Log::info('MaritalStatusController >Store Return.' . json_encode($response));
     }
+    public function MaritalStatusValidation(Request $request)
+    {
+        Log::info('MaritalStatusController-> index Inside.' . json_encode($request->all()));
+        $response = $this->MaritalStatusService->ValidationForMaritalStatus($request->all());
+        return $response;
+        Log::info('MaritalStatusController >Store Return.' . json_encode($response));   
+    }
 
     /**
      * Display the specified resource.

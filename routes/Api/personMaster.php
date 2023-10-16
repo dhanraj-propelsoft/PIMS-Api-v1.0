@@ -32,15 +32,22 @@ Route::apiResource('salutation', SalutationController::class);
 Route::apiResource('gender', GenderController::class);
 Route::apiResource('bank', BankController::class);
 Route::apiResource('bloodGroup', BloodGroupController::class);
-Route::apiResource('maritalStatus', MaritalStatusController::class);
-Route::apiResource('relationShip', RelationShipController::class);
+Route::apiResource('maritalStatus',  MaritalStatusController::class);
 Route::apiResource('bankAccountType', BankAccountTypeController::class);
+Route::apiResource('relationShip', RelationShipController::class);
 Route::apiResource('documentType', DocumentTypeController::class);
+
 Route::apiResource('qualification', QualificationController::class);
+
 Route::post('/bankAccountTypeValidation', [BankAccountTypeController::class, 'bankAccountTypeValidation'])->name('bankAccountTypeValidation');
 Route::post('/salutationValidation', [SalutationController::class, 'salutationValidation'])->name('salutationValidation');
 Route::post('/genderValidation', [GenderController::class, 'genderValidation'])->name('genderValidation');
-
+Route::post('/bankValidation', [BankController::class, 'bankValidation'])->name('bankValidation');
+Route::post('/bloodGroupValidation', [BloodGroupController::class, 'bloodGroupValidation'])->name('bloodGroupValidation');
+Route::post('/MaritalStatusValidation', [MaritalStatusController::class, 'MaritalStatusValidation'])->name('MaritalStatusValidation');
+Route::post('/relationshipValidation', [RelationShipController::class, 'relationshipValidation'])->name('relationshipValidation');
+Route::post('/documentTypeValidation', [DocumentTypeController::class, 'documentTypeValidation'])->name('documentTypeValidation');
+Route::post('/qualificationValidation', [QualificationController::class, 'qualificationValidation'])->name('qualificationValidation');
 
 
 

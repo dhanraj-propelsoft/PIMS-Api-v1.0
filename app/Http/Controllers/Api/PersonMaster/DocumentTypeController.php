@@ -50,7 +50,13 @@ class DocumentTypeController extends Controller
         return $response;
         Log::info('DocumentTypeController -> Store Return.' . json_encode($response));
     }
-
+    public function documentTypeValidation(Request $request)
+    {
+        Log::info('DocumentTypeController -> Store Inside.' . json_encode($request->all()));
+        $response = $this->DocumentTypeService->ValidationForDocumentType($request->all());
+        return $response;
+        Log::info('DocumentTypeController -> Store Return.' . json_encode($response));
+    }
     /**
      * Display the specified resource.
      *

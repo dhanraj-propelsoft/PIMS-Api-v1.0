@@ -2,18 +2,22 @@
 namespace App\Http\Services\Api\PersonMaster;
 
 use App\Http\Interfaces\Api\PersonMaster\DocumentTypeInterface;
+use App\Http\Interfaces\Api\PFM\ActiveStatusInterface;
 use App\Http\Responses\ErrorApiResponse;
 use App\Http\Responses\SuccessApiResponse;
 use App\Models\DocumentType;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class DocumentTypeService
 {
     protected $DocumentTypeInterface;
-    public function __construct(DocumentTypeInterface $DocumentTypeInterface)
+    public function __construct(DocumentTypeInterface $DocumentTypeInterface,ActiveStatusInterface $ActiveStatusInterface)
     {
         $this->DocumentTypeInterface = $DocumentTypeInterface;
+        $this->ActiveStatusInterface = $ActiveStatusInterface;
+
     }
 
     public function index()
@@ -22,12 +26,11 @@ class DocumentTypeService
         $models = $this->DocumentTypeInterface->index();
         $entities = $models->map(function ($model) {
             $docType = $model->person_doc_type;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
-            $activeStatus = $model->pfm_active_status_id;
+            $status = $model->activeStatus->active_type;
             $description = $model->description;
             $mandatoryStatus = $model->mandatory_status;
-            $id = $model->id;
-            $datas = ['mandatoryStatus' => $mandatoryStatus, 'description' => $description, 'docType' => $docType, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id];
+            $docTypeId = $model->id;
+            $datas = ['mandatoryStatus' => $mandatoryStatus, 'description' => $description, 'docType' => $docType, 'status' => $status, 'docTypeId' => $docTypeId];
             return $datas;
         });
 
@@ -36,42 +39,74 @@ class DocumentTypeService
     }
     public function store($datas)
     {
-        $validator = Validator::make($datas, [
-            'documentType' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            $error = $validator->errors();
-            return new ErrorApiResponse($error, 300);
-        }
+        $validation = $this->ValidationForDocumentType($datas);
+        if ($validation->data['errors'] === false) {      
         $datas = (object) $datas;
         $convert = $this->convertDocumentType($datas);
         $storeModel = $this->DocumentTypeInterface->store($convert);
         Log::info('DocumentTypeService >Store Return.' . json_encode($storeModel));
         return new SuccessApiResponse($storeModel, 200);
+    } else {
+        return $validation->data['errors'];
     }
-    public function getDocumentTypeById($id)
+    }
+    public function ValidationForDocumentType($datas)
     {
-        $model = $this->DocumentTypeInterface->getDocumentTypeById($id);
+      
+        $rules = [];
+
+        foreach ($datas as $field => $value) {
+            if ($field === 'documentType') {
+                $rules['documentType'] = [
+                    'required',
+                    'string',
+                    Rule::unique('pims_person_document_types', 'person_doc_type')->where(function ($query) use ($datas) {
+                        $query->whereNull('deleted_flag');
+                        if (isset($datas['id'])) {
+                            $query->where('id', '!=', $datas['id']);
+                        }
+                    }),
+
+                ];
+            }
+        }
+        $validator = Validator::make($datas, $rules);
+        if ($validator->fails()) {
+
+            $resStatus = ['errors' => $validator->errors()];
+            $resCode = 400;
+
+        } else {
+
+            $resStatus = ['errors' => false];
+            $resCode = 200;
+
+        }
+        return new SuccessApiResponse($resStatus, $resCode);
+    }
+    public function getDocumentTypeById($docTypeId)
+    {
+        $model = $this->DocumentTypeInterface->getDocumentTypeById($docTypeId);
+        $activeStatus =$this->ActiveStatusInterface->index();
+
         $datas = array();
         if ($model) {
             $docType = $model->person_doc_type;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
-            $activeStatus = $model->pfm_active_status_id;
+            $status = $model->activeStatus->active_type;
+            $activeStatusId = $model->pfm_active_status_id;
             $description = $model->description;
             $mandatoryStatus = $model->mandatory_status;
-            $id = $model->id;
-            $datas = ['docType' => $docType, 'status' => $status, 'activeStatus' => $activeStatus, 'id' => $id,'description'=>$description,'mandatoryStatus'=>$mandatoryStatus];
+            $docTypeId = $model->id;
+            $datas = ['docType' => $docType, 'status' => $status, 'activeStatusId' => $activeStatusId, 'docTypeId' => $docTypeId,'description'=>$description,'mandatoryStatus'=>$mandatoryStatus,'activeStatus'=>$activeStatus];
         }
         return new SuccessApiResponse($datas, 200);
 
     }
     public function convertDocumentType($datas)
     {
-        $model = $this->DocumentTypeInterface->getDocumentTypeById(isset($datas->id) ? $datas->id : '');
 
-        if ($model) {
-            $model->id = $datas->id;
+        if (isset($datas->id)) {
+            $model = $this->DocumentTypeInterface->getDocumentTypeById($datas->id);
             $model->last_updated_by=auth()->user()->id;
 
         } else {
@@ -85,9 +120,9 @@ class DocumentTypeService
         return $model;
     }
 
-    public function destroyDocumentTypeById($id)
+    public function destroyDocumentTypeById($docTypeId)
     {
-        $destory = $this->DocumentTypeInterface->destroyDocumentType($id);
+        $destory = $this->DocumentTypeInterface->destroyDocumentType($docTypeId);
         return new SuccessApiResponse($destory, 200);
     }
 }

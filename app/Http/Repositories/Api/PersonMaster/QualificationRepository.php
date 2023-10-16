@@ -11,8 +11,8 @@ class QualificationRepository implements QualificationInterface
 {
     public function index()
     {
-        return Qualification::
-        whereNull('deleted_at')
+        return Qualification::with('activeStatus')
+       
         ->whereNull('deleted_flag')
         ->get();
     }
@@ -38,15 +38,14 @@ class QualificationRepository implements QualificationInterface
             ];
         }
     }
-    public function getQualificationById($id)
+    public function getQualificationById($qualifiactionId)
     {
-        return Qualification::where('id',$id)
-        ->whereNull('deleted_at')
+        return Qualification::with('activeStatus')->where('id',$qualifiactionId)
         ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyQualification($id)
+    public function destroyQualification($qualifiactionId)
     {
-        return Qualification::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag' => 1]);
+        return Qualification::where('id', $qualifiactionId)->update(['deleted_at' => Carbon::now(),'deleted_flag' => 1]);
     }
 }

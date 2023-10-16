@@ -51,7 +51,13 @@ class RelationShipController extends Controller
         return $response;
         Log::info('RelationShipController >Store Return.' . json_encode($response));
     }
-
+    public function relationshipValidation(Request $request)
+    {
+        Log::info('RelationShipController-> index Inside.' . json_encode($request->all()));
+        $response = $this->RelationShipService->ValidationForRelationship($request->all());
+        return $response;
+        Log::info('RelationShipController >Store Return.' . json_encode($response));
+    }
     /**
      * Display the specified resource.
      *

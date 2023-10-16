@@ -11,8 +11,7 @@ class BankRepository implements BankInterface
 {
     public function index()
     {
-        return Bank::
-            whereNull('deleted_at')
+        return Bank::with('activeStatus')  
             ->whereNull('deleted_flag')->get();
     }
     public function store($model)
@@ -37,14 +36,14 @@ class BankRepository implements BankInterface
             ];
         }
     }
-    public function getBankById($id)
+    public function getBankById($bankId)
     {
-        return Bank::where('id', $id)
-            ->whereNull('deleted_at')
+        return Bank::with('activeStatus')->where('id', $bankId)
+            
             ->whereNull('deleted_flag')->first();
     }
-    public function destroyBank($id)
+    public function destroyBank($bankId)
     {
-        return Bank::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
+        return Bank::where('id', $bankId)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
     }
 }
