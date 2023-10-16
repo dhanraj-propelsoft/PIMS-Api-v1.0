@@ -16,4 +16,8 @@ class OrganizationOwnership extends Model
     }
     use HasFactory;
     protected $table = 'organization_ownerships';
+    public function activeStatus()
+    {
+        return $this->hasOne('App\Models\ActiveStatus'::class, 'id', 'pfm_active_status_id');
+    }
 }

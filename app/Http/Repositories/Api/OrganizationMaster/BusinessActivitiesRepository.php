@@ -11,8 +11,8 @@ class BusinessActivitiesRepository implements BusinessActivitiesInterface
 {
     public function index()
     {
-        return BusinessActivities::
-        whereNull('deleted_at')
+        return BusinessActivities::with('activeStatus')
+       
         ->whereNull('deleted_flag')
         ->get();   
     }
@@ -38,15 +38,14 @@ class BusinessActivitiesRepository implements BusinessActivitiesInterface
             ];
         }
     }
-    public function getBusinessActivitiesById($id)
+    public function getBusinessActivitiesById($businessActivityId)
     {
-        return BusinessActivities::where('id',$id)
-        ->whereNull('deleted_at')
+        return BusinessActivities::with('activeStatus')->where('id',$businessActivityId)
         ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyBusinessActivities($id)
+    public function destroyBusinessActivities($businessActivityId)
     {
-        return BusinessActivities::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return BusinessActivities::where('id', $businessActivityId)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

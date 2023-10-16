@@ -10,4 +10,8 @@ class TempOrganization extends Model
     use HasFactory;
 
     protected $table = 'temp_organizations';
+    public function activeStatus()
+    {
+        return $this->hasOne('App\Models\ActiveStatus'::class, 'id', 'pfm_active_status_id');
+    }
 }

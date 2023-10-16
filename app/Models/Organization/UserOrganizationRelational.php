@@ -10,4 +10,8 @@ class UserOrganizationRelational extends Model
 {
     use HasFactory , SoftDeletes;
     protected $table = 'user_organization_relationals';
+    public function activeStatus()
+    {
+        return $this->hasOne('App\Models\ActiveStatus'::class, 'id', 'pfm_active_status_id');
+    }
 }

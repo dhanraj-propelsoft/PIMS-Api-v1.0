@@ -43,6 +43,14 @@ class AdministratorTypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function administratorTypeValidation(Request $request)
+    {
+        Log::info('AdministratorTypeController -> Store Inside.' . json_encode($request->all()));
+        $response = $this->AdministratorTypeService->ValidationForAdministratorType($request->all());
+        return $response;
+        Log::info('AdministratorTypeController -> Store Return.' . json_encode($response));
+    }
+
     public function store(Request $request)
     {
         Log::info('AdministratorTypeController -> Store Inside.' . json_encode($request->all()));
@@ -50,7 +58,6 @@ class AdministratorTypeController extends Controller
         return $response;
         Log::info('AdministratorTypeController -> Store Return.' . json_encode($response));
     }
-
     /**
      * Display the specified resource.
      *

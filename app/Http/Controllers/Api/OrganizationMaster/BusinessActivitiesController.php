@@ -51,7 +51,13 @@ class BusinessActivitiesController extends Controller
         return $response;
         Log::info('BusinessActivitiesController -> Store Return.' . json_encode($response));
     }
-
+    public function businessActivityValidation(Request $request)
+    {
+        Log::info('BusinessActivitiesController -> Store Inside.' . json_encode($request->all()));
+        $response = $this->BusinessActivitiesService->ValidationForBusinessActivity($request->all());
+        return $response;
+        Log::info('BusinessActivitiesController -> Store Return.' . json_encode($response));
+    }
     /**
      * Display the specified resource.
      *

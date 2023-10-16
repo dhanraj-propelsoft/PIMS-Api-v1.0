@@ -38,7 +38,7 @@ class OriginRepository implements OriginInterface
     public function getOriginById($id)
     {
         return Origin::where('id', $id)
-            ->whereNull('deleted_at')
+           
             ->whereNull('deleted_flag')->first();
     }
     public function destroyOrigin($id)

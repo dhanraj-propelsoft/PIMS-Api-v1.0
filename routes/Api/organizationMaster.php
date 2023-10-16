@@ -16,7 +16,9 @@ use App\Http\Controllers\Api\OrganizationMaster\OrganizationController;
 
 Route::apiResource('administratorType',AdministratorTypeController::class);
 Route::apiResource('businessActivities',BusinessActivitiesController::class);
+
 Route::apiResource('businessSaleSubset',BusinessSaleSubsetController::class);
+
 Route::apiResource('businessSector',BusinessSectorController::class);
 Route::apiResource('category',CategoryController::class);
 Route::apiResource('orgDocumentType',DocumentTypeController::class);
@@ -24,5 +26,9 @@ Route::apiResource('ownerShip',OwnerShipController::class);
 Route::apiResource('structure',StructureController::class);
 Route::get('tempOrganizationList', [OrganizationController::class, 'tempOrganizationList'])->name('tempOrganizationList');
 Route::get('organizationStore/{tempId}', [OrganizationController::class, 'organizationStore'])->name('organizationStore');
+
+
+Route::post('/administratorTypeValidation', [AdministratorTypeController::class, 'administratorTypeValidation'])->name('administratorTypeValidation');
+Route::post('/businessActivityValidation', [BusinessActivitiesController::class, 'businessActivityValidation'])->name('businessActivityValidation');
 
 

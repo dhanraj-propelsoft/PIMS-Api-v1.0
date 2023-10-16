@@ -12,4 +12,8 @@ class OrganizationWebAddress extends Model
     {
         return $this->belongsTo(Organization::class, 'org_id', 'id');
     }
+    public function activeStatus()
+    {
+        return $this->hasOne('App\Models\ActiveStatus'::class, 'id', 'pfm_active_status_id');
+    }
 }

@@ -11,8 +11,8 @@ class AdministratorTypeRepository implements AdministratorTypeInterface
 {
     public function index()
     {
-        return  AdministratorType::
-        whereNull('deleted_at')
+        return  AdministratorType::with('activeStatus')
+      
         ->whereNull('deleted_flag')
         ->get();   
     }
@@ -38,15 +38,14 @@ class AdministratorTypeRepository implements AdministratorTypeInterface
             ];
         }
     }
-    public function getAdministratorTypeById($id)
+    public function getAdministratorTypeById($adminTypeId)
     {
-        return  AdministratorType::where('id',$id)
-        ->whereNull('deleted_at')
+        return  AdministratorType::with('activeStatus')->where('id',$adminTypeId)
         ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyAdministratorType($id)
+    public function destroyAdministratorType($adminTypeId)
     {
-        return  AdministratorType::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return  AdministratorType::where('id', $adminTypeId)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

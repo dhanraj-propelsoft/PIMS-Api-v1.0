@@ -7,7 +7,7 @@ interface BusinessActivitiesInterface
 
     public function index();
     public function store($model);
-    public function getBusinessActivitiesById($id);
-    public function destroyBusinessActivities($id);
+    public function getBusinessActivitiesById($businessActivityId);
+    public function destroyBusinessActivities($businessActivityId);
 
 }
