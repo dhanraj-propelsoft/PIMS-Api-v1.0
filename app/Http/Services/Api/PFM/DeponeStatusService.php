@@ -86,10 +86,8 @@ class DeponeStatusService
     }
     public function convertDeponeStatus($datas)
     {
-        $model = $this->DeponeStatusInterface->getDeponeStatusById(isset($datas->id) ? $datas->id : '');
-
-        if ($model) {
-            $model->id = $datas->id;
+        if (isset($datas->id)) {
+            $model = $this->DeponeStatusInterface->getDeponeStatusById($datas->id);
             $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new DeponeStatus();

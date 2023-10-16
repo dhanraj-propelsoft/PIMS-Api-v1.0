@@ -89,10 +89,8 @@ class SurvivalService
     }
     public function convertSurvival($datas)
     {
-        $model = $this->SurvivalInterface->getSurvivalById(isset($datas->id) ? $datas->id : '');
-
-        if ($model) {
-            $model->id = $datas->id;
+        if (isset($datas->id)) {
+            $model = $this->SurvivalInterface->getSurvivalById($datas->id);
             $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Survival();

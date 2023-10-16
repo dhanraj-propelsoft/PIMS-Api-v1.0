@@ -88,10 +88,8 @@ class OriginService
     }
     public function convertOrigin($datas)
     {
-        $model = $this->OriginInterface->getOriginById(isset($datas->id) ? $datas->id : '');
-
-        if ($model) {
-            $model->id = $datas->id;
+        if (isset($datas->id)) {
+            $model = $this->OriginInterface->getOriginById($datas->id);
             $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Origin();

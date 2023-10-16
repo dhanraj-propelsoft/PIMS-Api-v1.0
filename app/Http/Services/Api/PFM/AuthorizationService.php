@@ -85,10 +85,8 @@ class AuthorizationService
     }
     public function convertAuthorization($datas)
     {
-        $model = $this->AuthorizationInterface->getAuthorizationById(isset($datas->id) ? $datas->id : '');
-
-        if ($model) {
-            $model->id = $datas->id;
+        if (isset($datas->id)) {
+            $model = $this->AuthorizationInterface->getAuthorizationById($datas->id);
             $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Authorization();

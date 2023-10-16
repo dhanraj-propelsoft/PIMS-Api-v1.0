@@ -84,10 +84,8 @@ class ActiveStatusService
     }
     public function convertActiveStatus($datas)
     {
-        $model = $this->ActiveStatusInterface->getActiveStatusById(isset($datas->id) ? $datas->id : '');
-
-        if ($model) {
-            $model->id = $datas->id;
+        if (isset($datas->id)) {
+            $model = $this->ActiveStatusInterface->getActiveStatusById($datas->id);
             $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new ActiveStatus();

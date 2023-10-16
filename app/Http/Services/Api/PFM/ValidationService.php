@@ -87,10 +87,8 @@ class ValidationService
     }
     public function convertValidation($datas)
     {
-        $model = $this->ValidationInterface->getValidationById(isset($datas->id) ? $datas->id : '');
-
-        if ($model) {
-            $model->id = $datas->id;
+        if (isset($datas->id)) {
+            $model = $this->ValidationInterface->getValidationById($datas->id);
             $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Validation();

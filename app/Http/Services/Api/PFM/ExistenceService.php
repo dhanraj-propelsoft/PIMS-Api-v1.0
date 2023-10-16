@@ -88,10 +88,8 @@ class ExistenceService
     }
     public function convertExistence($datas)
     {
-        $model = $this->ExistenceInterface->getExistenceById(isset($datas->id) ? $datas->id : '');
-
-        if ($model) {
-            $model->id = $datas->id;
+        if (isset($datas->id)) {
+            $model = $this->ExistenceInterface->getExistenceById($datas->id);
             $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Existence();

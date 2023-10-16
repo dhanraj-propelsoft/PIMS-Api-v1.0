@@ -86,10 +86,8 @@ class CachetService
     }
     public function convertCachet($datas)
     {
-        $model = $this->CachetInterface->getCachetById(isset($datas->id) ? $datas->id : '');
-
-        if ($model) {
-            $model->id = $datas->id;
+        if (isset($datas->id)) {
+            $model = $this->CachetInterface->getCachetById($datas->id);
             $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new Cachet();
