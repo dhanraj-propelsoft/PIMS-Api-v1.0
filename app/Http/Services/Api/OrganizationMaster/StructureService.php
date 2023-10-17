@@ -82,11 +82,11 @@ class StructureService
     public function getStructureById($structureId)
     {
         $model = $this->StructureInterface->getStructureById($structureId);
-        $activeStatus = $this->ActiveStatusInterface->index();$datas = array();
+        $activeStatus = $this->ActiveStatusInterface->index();
+        $datas = array();
         if ($model) {
             $structure = $model->org_structure;
             $status = $model->activeStatus->active_type;
-
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $structureId = $model->id;

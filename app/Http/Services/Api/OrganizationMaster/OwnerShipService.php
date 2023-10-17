@@ -83,11 +83,11 @@ class OwnerShipService
     public function getOwnerShipById($ownershipId)
     {
         $model = $this->OwnerShipInterface->getOwnerShipById($ownershipId);
-        $activeStatus = $this->ActiveStatusInterface->index();$datas = array();
+        $activeStatus = $this->ActiveStatusInterface->index();
+        $datas = array();
         if ($model) {
             $ownerShip = $model->org_ownership;
             $status = $model->activeStatus->active_type;
-
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $ownershipId = $model->id;
@@ -107,7 +107,7 @@ class OwnerShipService
             $model->created_by=auth()->user()->id;
 
         }
-        $model->org_ownership = $datas->ownerShip;
+        $model->org_ownership = $datas->ownership;
         $model->description = isset($datas->description) ? $datas->description : null;
         $model->pfm_active_status_id = isset($datas->activeStatus) ? $datas->activeStatus : null;
         return $model;

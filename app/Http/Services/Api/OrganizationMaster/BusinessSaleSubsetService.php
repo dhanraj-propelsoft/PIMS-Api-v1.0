@@ -98,7 +98,7 @@ class BusinessSaleSubsetService
     public function convertBusinessSaleSubset($datas)
     {
         if (isset($datas->id)) {
-            $model = $this->BusinessSaleSubsetInterface->getBusinessSaleSubsetById(($datas->id));
+            $model = $this->BusinessSaleSubsetInterface->getBusinessSaleSubsetById($datas->id);
             $model->last_updated_by = auth()->user()->id;
         } else {
             $model = new BusinessSaleSubset();
