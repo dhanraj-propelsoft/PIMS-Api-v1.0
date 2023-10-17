@@ -46,7 +46,7 @@ class OwnerShipController extends Controller
      public function OwnerShipValidation(Request $request)
      {
          Log::info('OwnerShipController  -> Validation Inside.' . json_encode($request->all()));
-         $response = $this->OwnerShipService->ValidationForOwnerShip($request->all());
+         $response = $this->OwnerShipService->ValidationForOwnership($request->all());
          return $response;
          Log::info('OwnerShipController -> Validation Return.' . json_encode($response));
      }

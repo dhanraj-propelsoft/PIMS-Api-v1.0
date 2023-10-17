@@ -14,7 +14,7 @@ class BusinessSectorRepository implements BusinessSectorInterface
 
         return BusinessSector::with('activeStatus')
         ->whereNull('deleted_flag')
-        ->get();   ;
+        ->get();
     }
     public function store($model)
     {

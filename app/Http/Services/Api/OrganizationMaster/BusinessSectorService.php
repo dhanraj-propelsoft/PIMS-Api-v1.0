@@ -86,7 +86,7 @@ class BusinessSectorService
         $datas = array();
         if ($model) {
             $businessSector = $model->business_sector;
-            $status = ($model->pfm_active_status_id == 1) ? "Active" : "In-Active";
+            $status = $model->activeStatus->active_type;
             $activeStatusId = $model->pfm_active_status_id;
             $description = $model->description;
             $businessSectorId = $model->id;

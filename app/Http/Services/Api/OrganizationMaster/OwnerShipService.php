@@ -88,10 +88,10 @@ class OwnerShipService
         if ($model) {
             $ownerShip = $model->org_ownership;
             $status = $model->activeStatus->active_type;
-            $activeStatus = $model->pfm_active_status_id;
+            $activeStatusId = $model->pfm_active_status_id;
             $description = $model->description;
             $ownershipId = $model->id;
-            $datas = ['ownerShip' => $ownerShip,'description'=>$description ,'status' => $status, 'activeStatus' => $activeStatus, 'ownershipId' => $ownershipId, 'activeStatus' => $activeStatus];
+            $datas = ['ownerShip' => $ownerShip,'description'=>$description ,'status' => $status, 'activeStatusId' => $activeStatusId, 'ownershipId' => $ownershipId, 'activeStatus' => $activeStatus];
         }
         return new SuccessApiResponse($datas, 200);
 

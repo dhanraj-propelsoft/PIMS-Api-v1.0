@@ -33,7 +33,7 @@ Route::post('/businessActivityValidation', [BusinessActivitiesController::class,
 Route::post('/businessSaleSubsetValidation', [BusinessSaleSubsetController::class, 'businessSaleSubsetValidation'])->name('businessSaleSubsetValidation');
 Route::post('/businessSectorValidation', [BusinessSectorController::class, 'businessSectorValidation'])->name('businessSectorValidation');
 Route::post('/categoryValidation', [CategoryController::class, 'categoryValidation'])->name('categoryValidation');
-Route::post('/documentTypeValidation', [DocumentTypeController::class, 'documentTypeValidation'])->name('documentTypeValidation');
+Route::post('/orgDocumentTypeValidation', [DocumentTypeController::class, 'documentTypeValidation'])->name('orgDocumentTypeValidation');
 Route::post('/ownershipValidation', [OwnershipController::class, 'ownershipValidation'])->name('ownershipValidation');
 Route::post('/structureValidation', [StructureController::class, 'structureValidation'])->name('structureValidation');
 

@@ -87,10 +87,10 @@ class StructureService
         if ($model) {
             $structure = $model->org_structure;
             $status = $model->activeStatus->active_type;
-            $activeStatus = $model->pfm_active_status_id;
+            $activeStatusId = $model->pfm_active_status_id;
             $description = $model->description;
             $structureId = $model->id;
-            $datas = ['structure' => $structure, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'structureId' => $structureId, 'activeStatus' => $activeStatus];
+            $datas = ['structure' => $structure, 'description' => $description, 'status' => $status, 'activeStatusId' => $activeStatusId, 'structureId' => $structureId, 'activeStatus' => $activeStatus];
                 }
         return new SuccessApiResponse($datas, 200);
 

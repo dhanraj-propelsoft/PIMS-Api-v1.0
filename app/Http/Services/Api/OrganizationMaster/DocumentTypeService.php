@@ -92,7 +92,7 @@ class DocumentTypeService
             $activeStatus = $model->pfm_active_status_id;
             $description = $model->description;
             $docTypeId = $model->id;
-            $datas = ['documentType' => $documentType, 'description' => $description, 'status' => $status, 'activeStatus' => $activeStatus, 'documentTypeId' => $docTypeId, 'activeStatus' => $activeStatus];
+            $datas = ['documentType' => $documentType, 'description' => $description, 'status' => $status, 'documentTypeId' => $docTypeId, 'activeStatus' => $activeStatus];
         }
         return new SuccessApiResponse($datas, 200);
     }
