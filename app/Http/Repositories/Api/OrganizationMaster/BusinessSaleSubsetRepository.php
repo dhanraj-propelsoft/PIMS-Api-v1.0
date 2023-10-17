@@ -11,8 +11,7 @@ class BusinessSaleSubsetRepository implements BusinessSaleSubsetInterface
 {
     public function index()
     {
-        return BusinessSaleSubset::
-            whereNull('deleted_at')
+        return BusinessSaleSubset::with('activeStatus')
             ->whereNull('deleted_flag')
             ->get();
     }
@@ -39,15 +38,14 @@ class BusinessSaleSubsetRepository implements BusinessSaleSubsetInterface
             ];
         }
     }
-    public function getBusinessSaleSubsetById($id)
+    public function getBusinessSaleSubsetById($businessSaleId)
     {
-        return BusinessSaleSubset::where('id',$id)
-            ->whereNull('deleted_at')
+        return BusinessSaleSubset::with('activeStatus')->where('id',$businessSaleId)
             ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyBusinessSaleSubset($id)
+    public function destroyBusinessSaleSubset($businessSaleId)
     {
-        return BusinessSaleSubset::where('id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
+        return BusinessSaleSubset::where('id', $businessSaleId)->update(['deleted_at' => Carbon::now(), 'deleted_flag' => 1]);
     }
 }

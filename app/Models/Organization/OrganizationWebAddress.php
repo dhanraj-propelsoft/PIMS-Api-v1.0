@@ -4,10 +4,11 @@ namespace App\Models\Organization;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OrganizationWebAddress extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     public function ParentOrganization()
     {
         return $this->belongsTo(Organization::class, 'org_id', 'id');

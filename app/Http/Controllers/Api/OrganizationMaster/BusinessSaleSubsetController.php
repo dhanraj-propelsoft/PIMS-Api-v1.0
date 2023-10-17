@@ -43,6 +43,15 @@ class BusinessSaleSubsetController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     public function BusinessSaleSubsetValidation(Request $request)
+     {
+         Log::info('BusinessSaleSubsetController  -> Validation Inside.' . json_encode($request->all()));
+         $response = $this->BusinessSaleSubsetService->ValidationForBusinessSaleSubset($request->all());
+         return $response;
+         Log::info('BusinessSaleSubsetController -> Validation Return.' . json_encode($response));
+     }
+
     public function store(Request $request)
     {
 

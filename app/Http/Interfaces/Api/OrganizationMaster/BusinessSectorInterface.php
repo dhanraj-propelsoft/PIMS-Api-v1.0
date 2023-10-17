@@ -6,7 +6,7 @@ interface BusinessSectorInterface
 
     public function index();
     public function store($model);
-    public function getBusinessSectorById($id);
-    public function destroyBusinessSector($id);
+    public function getBusinessSectorById($businessSectorId);
+    public function destroyBusinessSector($businessSectorId);
 
 }

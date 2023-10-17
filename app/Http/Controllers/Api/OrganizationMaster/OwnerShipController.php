@@ -42,6 +42,15 @@ class OwnerShipController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     public function OwnerShipValidation(Request $request)
+     {
+         Log::info('OwnerShipController  -> Validation Inside.' . json_encode($request->all()));
+         $response = $this->OwnerShipService->ValidationForOwnerShip($request->all());
+         return $response;
+         Log::info('OwnerShipController -> Validation Return.' . json_encode($response));
+     }
+
     public function store(Request $request)
     {
         Log::info('OwnerShipController -> Store Inside.' . json_encode($request->all()));

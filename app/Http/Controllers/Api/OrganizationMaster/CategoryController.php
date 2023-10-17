@@ -43,6 +43,14 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     public function CategoryValidation(Request $request)
+     {
+         Log::info('CategoryController  -> Validation Inside.' . json_encode($request->all()));
+         $response = $this->CategoryService->ValidationForCategory($request->all());
+         return $response;
+         Log::info('CategoryController -> Validation Return.' . json_encode($response));
+     }
     public function store(Request $request)
     {
         Log::info('CategoryController -> Store Inside.' . json_encode($request->all()));

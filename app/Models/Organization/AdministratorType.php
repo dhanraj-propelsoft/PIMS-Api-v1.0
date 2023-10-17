@@ -3,10 +3,11 @@
 namespace App\Models\Organization;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AdministratorType extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $table = 'pims_org_administrator_types';
     public function activeStatus()
     {

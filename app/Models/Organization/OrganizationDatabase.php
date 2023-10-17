@@ -4,10 +4,11 @@ namespace App\Models\Organization;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OrganizationDatabase extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $table = 'organization_databases';
     public function activeStatus()
     {

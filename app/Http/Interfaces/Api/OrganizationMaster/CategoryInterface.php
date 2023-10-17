@@ -6,7 +6,7 @@ interface CategoryInterface
 {
     public function index();
     public function store($model);
-    public function getCategoryById($id);
-    public function destroyCategory($id);
+    public function getCategoryById($categoryId);
+    public function destroyCategory($categoryId);
 
 }

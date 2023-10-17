@@ -7,7 +7,7 @@ interface BusinessSaleSubsetInterface
 
     public function index();
     public function store($model);
-    public function getBusinessSaleSubsetById($id);
-    public function destroyBusinessSaleSubset($id);
+    public function getBusinessSaleSubsetById($businessSaleId);
+    public function destroyBusinessSaleSubset($businessSaleId);
 
 }

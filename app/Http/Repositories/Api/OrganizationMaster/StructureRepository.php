@@ -12,10 +12,9 @@ class StructureRepository implements StructureInterface
     public function index()
     {
 
-        return Structure::
-        whereNull('deleted_at')
+        return Structure::with('activeStatus')
         ->whereNull('deleted_flag')
-        ->get();   
+        ->get();
     }
 
     public function store($model)
@@ -40,14 +39,13 @@ class StructureRepository implements StructureInterface
             ];
         }
     }
-    public function getStructureById($id)
+    public function getStructureById($structureId)
     {
-        return Structure::where('id',$id)
-        ->whereNull('deleted_at')
+        return Structure::with('activeStatus')->where('id',$structureId)
         ->whereNull('deleted_flag')->first();
     }
-    public function destroyStructure($id)
+    public function destroyStructure($structureId)
     {
-        return Structure::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return Structure::where('id', $structureId)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

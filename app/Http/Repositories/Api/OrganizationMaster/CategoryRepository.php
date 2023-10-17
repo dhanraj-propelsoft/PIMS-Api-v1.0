@@ -12,10 +12,9 @@ class CategoryRepository implements CategoryInterface
     public function index()
     {
 
-        return Category::
-        whereNull('deleted_at')
+        return Category::with('activeStatus')
         ->whereNull('deleted_flag')
-        ->get();   
+        ->get();
     }
     public function store($model)
     {
@@ -39,16 +38,15 @@ class CategoryRepository implements CategoryInterface
             ];
         }
     }
-    public function getCategoryById($id)
+    public function getCategoryById($categoryId)
     {
-        return Category::where('id',$id)
-        ->whereNull('deleted_at')
+        return Category::with('activeStatus')->where('id',$categoryId)
         ->whereNull('deleted_flag')->first();
 
 
     }
-    public function destroyCategory($id)
+    public function destroyCategory($categoryId)
     {
-        return Category::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return Category::where('id', $categoryId)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

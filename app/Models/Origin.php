@@ -10,9 +10,9 @@ class Origin extends Model
 {
     use HasFactory,SoftDeletes;
     protected $table = 'pfm_origin';
-    
+
     public function activeStatus()
     {
-        return $this->hasOne(ActiveStatus::class, 'id', 'pfm_active_status_id'); 
+        return $this->hasOne(ActiveStatus::class, 'id', 'pfm_active_status_id');
     }
 }

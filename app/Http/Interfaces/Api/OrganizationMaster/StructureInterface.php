@@ -6,7 +6,7 @@ interface StructureInterface
 {
     public function index();
     public function store($model);
-    public function getStructureById($id);
-    public function destroyStructure($id);
+    public function getStructureById($structureId);
+    public function destroyStructure($structureId);
 
 }

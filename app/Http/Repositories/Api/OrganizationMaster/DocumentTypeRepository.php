@@ -12,10 +12,9 @@ class DocumentTypeRepository implements DocumentTypeInterface
     public function index()
     {
 
-        return DocumentType::
-        whereNull('deleted_at')
+        return DocumentType::with('activeStatus')
         ->whereNull('deleted_flag')
-        ->get();   
+        ->get();
     }
     public function store($model)
     {
@@ -39,15 +38,14 @@ class DocumentTypeRepository implements DocumentTypeInterface
             ];
         }
     }
-    public function getDocumentTypeById($id)
+    public function getDocumentTypeById($docTypeId)
     {
-        return DocumentType::where('id',$id)
-        ->whereNull('deleted_at')
+        return DocumentType::with('activeStatus')->where('id',$docTypeId)
         ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyDocumentType($id)
+    public function destroyDocumentType($docTypeId)
     {
-        return DocumentType::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return DocumentType::where('id', $docTypeId)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

@@ -42,6 +42,15 @@ class DocumentTypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     public function DocumentTypeValidation(Request $request)
+     {
+         Log::info('DocumentTypeController  -> Validation Inside.' . json_encode($request->all()));
+         $response = $this->DocumentTypeService->ValidationForDocumentType($request->all());
+         return $response;
+         Log::info('DocumentTypeController -> Validation Return.' . json_encode($response));
+     }
+
     public function store(Request $request)
     {
         Log::info('DocumentTypeController -> Store Inside.' . json_encode($request->all()));

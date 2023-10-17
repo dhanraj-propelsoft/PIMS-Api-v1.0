@@ -11,10 +11,9 @@ class OwnerShipRepository implements OwnerShipInterface
     public function index()
     {
 
-        return OwnerShip::
-        whereNull('deleted_at')
+        return OwnerShip::with('activeStatus')
         ->whereNull('deleted_flag')
-        ->get();   
+        ->get();
     }
 
     public function store($model)
@@ -39,15 +38,14 @@ class OwnerShipRepository implements OwnerShipInterface
             ];
         }
     }
-    public function getOwnerShipById($id)
+    public function getOwnerShipById($ownershipId)
     {
-        return OwnerShip::where('id',$id)
-        ->whereNull('deleted_at')
+        return OwnerShip::with('activeStatus')->where('id',$ownershipId)
         ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyOwnerShip($id)
+    public function destroyOwnerShip($ownershipId)
     {
-        return OwnerShip::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return OwnerShip::where('id', $ownershipId)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

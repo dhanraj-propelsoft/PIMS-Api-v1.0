@@ -6,7 +6,7 @@ interface DocumentTypeInterface
 {
     public function index();
     public function store($model);
-    public function getDocumentTypeById($id);
-    public function destroyDocumentType($id);
+    public function getDocumentTypeById($docTypeId);
+    public function destroyDocumentType($docTypeId);
 
 }

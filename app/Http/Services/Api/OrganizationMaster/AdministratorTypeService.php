@@ -12,7 +12,7 @@ use Illuminate\Validation\Rule;
 
 class AdministratorTypeService
 {
-    protected $AdministratorTypeInterface;
+    protected $AdministratorTypeInterface, $ActiveStatusInterface;
     public function __construct(AdministratorTypeInterface $AdministratorTypeInterface,ActiveStatusInterface $ActiveStatusInterface)
     {
         $this->AdministratorTypeInterface = $AdministratorTypeInterface;
@@ -50,7 +50,7 @@ class AdministratorTypeService
     }
     public function ValidationForAdministratorType($datas)
     {
-      
+
         $rules = [];
 
         foreach ($datas as $field => $value) {

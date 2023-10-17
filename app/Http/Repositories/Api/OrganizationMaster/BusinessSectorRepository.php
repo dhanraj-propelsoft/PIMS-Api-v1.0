@@ -12,8 +12,7 @@ class BusinessSectorRepository implements BusinessSectorInterface
     public function index()
     {
 
-        return BusinessSector::
-        whereNull('deleted_at')
+        return BusinessSector::with('activeStatus')
         ->whereNull('deleted_flag')
         ->get();   ;
     }
@@ -39,15 +38,14 @@ class BusinessSectorRepository implements BusinessSectorInterface
             ];
         }
     }
-    public function getBusinessSectorById($id)
+    public function getBusinessSectorById($businessSectorId)
     {
-        return BusinessSector::where('id',$id)
-        ->whereNull('deleted_at')
+        return BusinessSector::with('activeStatus')->where('id',$businessSectorId)
         ->whereNull('deleted_flag')->first();
 
     }
-    public function destroyBusinessSector($id)
+    public function destroyBusinessSector($businessSectorId)
     {
-        return BusinessSector::where('id', $id)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
+        return BusinessSector::where('id', $businessSectorId)->update(['deleted_at' => Carbon::now(),'deleted_flag'=>1]);
     }
 }

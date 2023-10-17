@@ -44,6 +44,15 @@ class BusinessSectorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     public function BusinessSectorValidation(Request $request)
+     {
+         Log::info('BusinessSectorController  -> Validation Inside.' . json_encode($request->all()));
+         $response = $this->BusinessSectorService->ValidationForBusinessSector($request->all());
+         return $response;
+         Log::info('BusinessSectorController -> Validation Return.' . json_encode($response));
+     }
+
     public function store(Request $request)
     {
         Log::info('BusinessSectorController -> Store Inside.' . json_encode($request->all()));

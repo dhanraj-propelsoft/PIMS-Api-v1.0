@@ -42,6 +42,15 @@ class StructureController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     public function StructureValidation(Request $request)
+     {
+         Log::info('StructureController  -> Validation Inside.' . json_encode($request->all()));
+         $response = $this->StructureService->ValidationForStructure($request->all());
+         return $response;
+         Log::info('StructureController -> Validation Return.' . json_encode($response));
+     }
+
     public function store(Request $request)
     {
         Log::info('StructureController -> Store Inside.' . json_encode($request->all()));

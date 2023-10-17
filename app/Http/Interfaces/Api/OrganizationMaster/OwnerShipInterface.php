@@ -6,7 +6,7 @@ interface OwnerShipInterface
 {
     public function index();
     public function store($model);
-    public function getOwnerShipById($id);
-    public function destroyOwnerShip($id);
+    public function getOwnerShipById($ownershipId);
+    public function destroyOwnerShip($ownershipId);
 
 }
