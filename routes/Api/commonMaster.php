@@ -20,7 +20,7 @@ Route::apiResource('area', AreaController::class);
 Route::post('/countryValidation', [CountryController::class, 'validation'])->name('validation');
 Route::post('/stateValidation', [StateController::class, 'stateValidation'])->name('stateValidation');
 Route::post('/cityValidation', [CityController::class, 'cityValidation'])->name('cityValidation');
-Route::post('/DistrictValidation', [DistrictController::class, 'DistrictValidation'])->name('DistrictValidation');
+Route::post('/districtValidation', [DistrictController::class, 'districtValidation'])->name('districtValidation');
 Route::post('/areaValidation', [AreaController::class, 'areaValidation'])->name('areaValidation');
 Route::post('/addressTypeValidation', [AddressTypeController::class, 'addressTypeValidation'])->name('addressTypeValidation');
 Route::post('/languageValidation', [LanguageController::class, 'languageValidation'])->name('languageValidation');

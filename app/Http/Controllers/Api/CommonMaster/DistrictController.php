@@ -38,10 +38,10 @@ class DistrictController extends Controller
     {
         //
     }
-    public function DistrictValidation(Request $request)
+    public function districtValidation(Request $request)
     {
         Log::info('DistrictController-> validation Inside.' . json_encode($request->all()));
-        $response = $this->CountryService->ValidationForDistrict($request->all());
+        $response = $this->DistrictService->ValidationForDistrict($request->all());
         return $response;
         Log::info('DistrictController -> validation Return.' . json_encode($response));
     }
