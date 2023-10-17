@@ -49,7 +49,7 @@ class BankAccountTypeService
     }
     public function ValidationForBankAccountType($datas)
     {
-        dd($datas);
+      
         $rules = [];
 
         foreach ($datas as $field => $value) {
