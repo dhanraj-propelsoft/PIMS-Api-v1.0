@@ -38,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('App\Http\Interfaces\Api\CommonMaster\CityInterface', 'App\Http\Repositories\Api\CommonMaster\CityRepository');
         $this->app->bind('App\Http\Interfaces\Api\CommonMaster\DistrictInterface', 'App\Http\Repositories\Api\CommonMaster\DistrictRepository');
         $this->app->bind('App\Http\Interfaces\Api\CommonMaster\AreaInterface', 'App\Http\Repositories\Api\CommonMaster\AreaRepository');
+        $this->app->bind('App\Http\Interfaces\Api\CommonMaster\PackageInterface', 'App\Http\Repositories\Api\CommonMaster\PackageRepository');
         $this->app->bind('App\Http\Interfaces\Api\PFM\ActiveStatusInterface', 'App\Http\Repositories\Api\PFM\ActiveStatusRepository');
         $this->app->bind('App\Http\Interfaces\Api\PFM\AuthorizationInterface', 'App\Http\Repositories\Api\PFM\AuthorizationRepository');
         $this->app->bind('App\Http\Interfaces\Api\PFM\CachetInterface', 'App\Http\Repositories\Api\PFM\CachetRepository');
